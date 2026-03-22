@@ -1,13 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package dao.interfaces;
+
+import java.util.List;
+import models.Empleado;
 
 /**
  *
  * @author DialeMRZ
  */
+
 public interface IEmpleadoDAO {
-    
+    void create(Empleado empleado);
+    Empleado findById(int idEmpleado);
+    List<Empleado> findAll();
+    void update(Empleado empleado);
+    void delete(int idEmpleado); 
 }
