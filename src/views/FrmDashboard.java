@@ -9,7 +9,7 @@ package views;
  * @author DialeMRZ
  */
 public class FrmDashboard extends javax.swing.JFrame {
-    
+    private controllers.DashboardController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmDashboard.class.getName());
 
     /**
@@ -17,6 +17,13 @@ public class FrmDashboard extends javax.swing.JFrame {
      */
     public FrmDashboard() {
         initComponents();
+        this.setLocationRelativeTo(null); // Centra la ventana
+        this.controller = new controllers.DashboardController(this);
+        
+        // Mensaje de bienvenida dinámico
+        if (utils.SesionGlobal.haySesionActiva()) {
+            lblBienvenida.setText("Bienvenido/a al Sistema, " + utils.SesionGlobal.getUsuarioActivo().getUsername());
+        }
     }
 
     /**
@@ -28,44 +35,142 @@ public class FrmDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        lblBienvenida = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        itmEmpleado = new javax.swing.JMenuItem();
+        itmAsistencia = new javax.swing.JMenuItem();
+        itmPlanillas = new javax.swing.JMenuItem();
+        itmContratos = new javax.swing.JMenuItem();
+        itmHorarios = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        itmCerrarSesion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("ir a clientes");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        lblBienvenida.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblBienvenida.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo-utec.png"))); // NOI18N
+        jLabel1.setMaximumSize(new java.awt.Dimension(1401, 1401));
+        jLabel1.setMinimumSize(new java.awt.Dimension(1401, 1401));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Sistema de Control de Asistencia y Generación de Planillas v1.0");
+
+        jMenu1.setText("Modulos");
+
+        itmEmpleado.setText("Empleados");
+        itmEmpleado.addActionListener(this::itmEmpleadoActionPerformed);
+        jMenu1.add(itmEmpleado);
+
+        itmAsistencia.setText("Asistencia");
+        itmAsistencia.addActionListener(this::itmAsistenciaActionPerformed);
+        jMenu1.add(itmAsistencia);
+
+        itmPlanillas.setText("Planillas");
+        itmPlanillas.addActionListener(this::itmPlanillasActionPerformed);
+        jMenu1.add(itmPlanillas);
+
+        itmContratos.setText("Contratos");
+        itmContratos.addActionListener(this::itmContratosActionPerformed);
+        jMenu1.add(itmContratos);
+
+        itmHorarios.setText("Horarios");
+        itmHorarios.addActionListener(this::itmHorariosActionPerformed);
+        jMenu1.add(itmHorarios);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Sistema");
+
+        itmCerrarSesion.setText("Cerrar Sesion");
+        itmCerrarSesion.addActionListener(this::itmCerrarSesionActionPerformed);
+        jMenu2.add(itmCerrarSesion);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(151, 151, 151)
-                .addComponent(jButton1)
-                .addContainerGap(161, Short.MAX_VALUE))
+            .addComponent(lblBienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addComponent(jButton1)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addGap(64, 64, 64)
+                .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-//Metodo temporal luego debera ser borrado
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        FrmGestionEmpleados empleados = new FrmGestionEmpleados();
-                empleados.setVisible(true);
-                this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void itmAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmAsistenciaActionPerformed
+        // TODO add your handling code here:
+        controller.abrirMarcacion();
+    }//GEN-LAST:event_itmAsistenciaActionPerformed
+
+    private void itmEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmEmpleadoActionPerformed
+        // TODO add your handling code here:
+        controller.abrirGestionEmpleados();
+    }//GEN-LAST:event_itmEmpleadoActionPerformed
+
+    private void itmPlanillasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmPlanillasActionPerformed
+        // TODO add your handling code here:
+        controller.abrirPlanillas();
+    }//GEN-LAST:event_itmPlanillasActionPerformed
+
+    private void itmContratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmContratosActionPerformed
+        // TODO add your handling code here:
+        controller.abrirGestionContratos();
+    }//GEN-LAST:event_itmContratosActionPerformed
+
+    private void itmHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmHorariosActionPerformed
+        // TODO add your handling code here:
+        controller.abrirGestionHorarios();
+    }//GEN-LAST:event_itmHorariosActionPerformed
+
+    private void itmCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        controller.cerrarSesion();
+    }//GEN-LAST:event_itmCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JMenuItem itmAsistencia;
+    private javax.swing.JMenuItem itmCerrarSesion;
+    private javax.swing.JMenuItem itmContratos;
+    private javax.swing.JMenuItem itmEmpleado;
+    private javax.swing.JMenuItem itmHorarios;
+    private javax.swing.JMenuItem itmPlanillas;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLabel lblBienvenida;
     // End of variables declaration//GEN-END:variables
 }
