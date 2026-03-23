@@ -44,7 +44,7 @@ public class DashboardController {
 
     public void abrirGestionContratos() {
         FrmGestionContratos frm = new FrmGestionContratos();
-        new ContratoController(); // Se actualizará cuando tu equipo termine este controlador
+        new ContratoController(frm); // Se actualizará cuando tu equipo termine este controlador
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
     }
