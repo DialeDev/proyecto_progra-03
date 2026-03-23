@@ -1,63 +1,95 @@
 ﻿# Sistema de Control de Asistencia y Generación de Planillas de Pago
 
-Bienvenido al repositorio del proyecto de programación Ⅲ
+Este repositorio contiene el código fuente del proyecto de Programación III. Actualmente estamos construyendo un prototipo funcional (V1) que guarda los datos temporalmente en la memoria RAM para validar la lógica del negocio antes de conectarnos a la base de datos SQL Server.
 
-## Estructura de Carpetas (Arquitectura)
+Este documento sirve como manual estricto para los miembros del equipo y como contexto arquitectónico para cualquier asistente de Inteligencia Artificial que nos ayude a generar código.
 
-```text
+---
+
+## 1. Instrucciones de Ejecución
+
+El proyecto tiene un único punto de entrada seguro. 
+**NUNCA** ejecutes las pantallas (JFrames) de forma individual dando clic derecho y "Run File". 
+
+Para iniciar la aplicación:
+1. Abre NetBeans.
+2. Ve al archivo `src/main/App.java`.
+3. Ejecuta ese archivo. Este se encargará de cargar la configuración visual y abrir la pantalla de Login correctamente.
+
+---
+
+## 2. La Plantilla Maestra (Golden Template)
+
+Si necesitas programar una nueva pantalla (por ejemplo, la Gestión de Contratos o Horarios) **no inventes una nueva forma de hacerlo**. Debes copiar exactamente la estructura de cómo construimos el módulo de **Gestión de Empleados**.
+
+Ese módulo es nuestra plantilla perfecta y consta de 4 partes que debes estudiar:
+
+1. **El Modelo (`models/Empleado.java`):** Solo tiene los datos (ID, nombres, apellidos) y sus Getters/Setters.
+2. **El Guardado (`dao/memory/EmpleadoDAOMemory.java`):** Es el único archivo que mete o saca datos de nuestra base de datos falsa (`DatabaseMock`).
+3. **El Cerebro (`controllers/EmpleadoController.java`):** Es el archivo más importante. Lee lo que el usuario escribió en la pantalla, verifica que no esté vacío y le ordena al DAO que lo guarde. También se encarga de actualizar la tabla visual.
+4. **La Pantalla (`views/FrmGestionEmpleados.java`):** Es el diseño visual. Sus botones no calculan nada, solo avisan al Controlador que alguien hizo clic.
+
+Si tu nuevo módulo se parece a esta estructura, tu código será aprobado.
+
+---
+
+## 3. Estructura de Carpetas
+
+Todo el código debe ir estrictamente dentro de estos paquetes en la carpeta `src`. No dejes archivos sueltos.
+
 src/
 ├── main/
-│   └── App.java                      # Punto de entrada (main). Llama al LoginController.
+│   └── App.java                      # Único archivo que inicia el programa.
 │
-├── models/                           # Entidades puras. Solo atributos, getters y setters.
-│   ├── Empleado.java                 # Datos del empleado.
-│   ├── Contrato.java                 # Validaciones de tipo de contrato (Fijo/Hora).
-│   ├── Jornada.java                  # Definición de horarios y tolerancias.
-│   ├── RegistroAsistencia.java       # Timestamps de entrada/salida.
-│   └── Planilla.java                 # Datos de consolidación de pagos.
+├── models/                           # Clases con datos puros.
+│   ├── Empleado.java                 
+│   ├── Contrato.java                 
+│   ├── Contratacion.java             # Historial de salarios del empleado.
+│   ├── Jornada.java                  
+│   ├── RegistroAsistencia.java       
+│   ├── Usuario.java                  # Datos para el inicio de sesión.
+│   └── Planilla.java                 
 │
-├── dao/                              # Capa de Acceso a Datos (Mock en Memoria por ahora).
-│   ├── interfaces/                   # Contratos de los DAO.
+├── utils/                            # Herramientas globales.
+│   └── SesionGlobal.java             # Guarda quién inició sesión en el sistema.
+│
+├── dao/                              # Capa que guarda y busca información.
+│   ├── interfaces/                   # Archivos que dicen QUÉ se puede hacer.
 │   │   ├── IEmpleadoDAO.java
 │   │   ├── IAsistenciaDAO.java
 │   │   └── IPlanillaDAO.java
-│   └── memory/                       # Implementación temporal (Simulación de BD).
-│       ├── DatabaseMock.java         # ÚNICA FUENTE DE VERDAD. Contiene las List<> estáticas.
+│   └── memory/                       # Archivos que dicen CÓMO se hace en la RAM.
+│       ├── DatabaseMock.java         # Nuestra base de datos temporal (Listas estáticas).
 │       ├── EmpleadoDAOMemory.java
 │       ├── AsistenciaDAOMemory.java
 │       └── PlanillaDAOMemory.java
 │
-├── controllers/                      # Lógica de negocio. Conectan la Vista con el DAO.
-│   ├── AuthController.java           # Gestiona la lógica del Login.
-│   ├── DashboardController.java      # Carga métricas y navega a otras ventanas.
-│   ├── AsistenciaController.java     # Lógica de marcación y cálculo automático de horas.
-│   ├── PlanillaController.java       # Motor de cálculo de deducciones y leyes sociales.
-│   ├── HorarioController.java        # Gestiona la asignación de jornadas.
-│   ├── EmpleadoController.java       # Gestiona CRUD de empleados.
-│	└── ContratoController.java		  # Gestiona CRUD de contratos.
+├── controllers/                      # Lógica principal. Conectan la Pantalla con el DAO.
+│   ├── AuthController.java           
+│   ├── DashboardController.java      
+│   ├── AsistenciaController.java     
+│   ├── PlanillaController.java       
+│   ├── HorarioController.java        
+│   └── EmpleadoController.java       # <-- Úsalo como ejemplo para guiarte.
 │
-├── views/                            # JFrames (Interfaces Gráficas). CERO lógica de negocio aquí.
-    ├── FrmLogin.java                 # Pantalla de acceso.
-    ├── FrmDashboard.java             # Menú principal tras el login.
-    ├── FrmMarcacion.java             # Interfaz para que el empleado marque Entrada/Salida.
-    ├── FrmPlanillas.java             # Interfaz para generar y ver planilas.
-    ├── FrmGestionHorarios.java       # Interfaz de jornadas.
-    ├── FrmGestionEmpleados.java      # Interfaz de registro de personal.
-    └── FrmGestionContratos.java      # Interfaz de contratos.
-```
+└── views/                            # Pantallas visuales (JFrames).
+    ├── FrmLogin.java                 
+    ├── FrmDashboard.java             
+    ├── FrmMarcacion.java             
+    ├── FrmPlanillas.java             
+    ├── FrmGestionHorarios.java       
+    ├── FrmGestionEmpleados.java      
+    └── FrmGestionContratos.java      
 
-## Reglas de Oro para el Equipo (No Negociables)
+---
 
-1.  **Las Vistas (JFrames) son "tontas":** Un JFrame solo recoge datos de los TextFields y se los envía al Controlador. **PROHIBIDO** hacer cálculos matemáticos o guardar datos directamente en los eventos de los botones.
-    
-2.  **Los Controladores son los jefes:** El Controlador recibe los datos del JFrame, valida que sean correctos, aplica la lógica de negocio (ej. calcular horas) y se los envía al DAO para guardarlos.
-    
-3.  **El DAO es el archivero:** Los archivos dentro de `dao/memory` solo guardan o buscan datos en la memoria. No imprimen mensajes (`System.out.print`), no validan si el DUI es correcto. Solo guardan y leen.
-    
-4.  **Uso de Interfaces:** Los Controladores SIEMPRE deben declarar los DAOs usando la interfaz.
-    
-    -   _Correcto:_ `IEmpleadoDAO dao = new EmpleadoDAOMemory();`
-        
-    -   _Incorrecto:_ `EmpleadoDAOMemory dao = new EmpleadoDAOMemory();`
-        
+## 4. Reglas de Oro (No Negociables)
 
+Cualquier código que rompa estas reglas será rechazado durante la revisión:
+
+1. **Las Pantallas son "tontas":** Un JFrame solo sirve para que el usuario escriba texto y haga clic. **PROHIBIDO** hacer validaciones (como revisar si un texto está vacío), cálculos matemáticos o guardar datos directamente en el código de los botones.
+2. **Los Controladores son los jefes:** El Controlador recibe el texto de la pantalla, aplica las reglas (ej. calcular horas extra) y luego se lo envía al DAO. Todo botón de la pantalla debe llamar a un método del Controlador.
+3. **El DAO es el archivero:** Los archivos dentro de `dao/memory` solo meten o sacan datos de las listas. No deben mostrar mensajes de error en pantalla ni validar reglas de negocio. Solo guardan y leen.
+4. **Programa usando las Interfaces:** Cuando crees un Controlador, debes llamar al DAO usando su interfaz, nunca la clase de memoria directa.
+   - *Forma Correcta:* `IEmpleadoDAO dao = new EmpleadoDAOMemory();`
+   - *Forma Incorrecta:* `EmpleadoDAOMemory dao = new EmpleadoDAOMemory();`
