@@ -2,6 +2,7 @@ package dao.interfaces;
 
 import models.Planilla;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -9,8 +10,12 @@ import java.util.List;
  */
 
 public interface IPlanillaDAO {
-    void create(Planilla planilla);
-    Planilla findById(int idPlanilla);
-    List<Planilla> findAll();
-    void updateEstado(int idPlanilla, Planilla.EstadoPlanilla nuevoEstado);
+    //guardar nueva planilla
+    void crear(Planilla planilla);
+    //listar todo
+    List<Planilla> obtenerTodas();
+    //obtener planilla existente
+    Optional<Planilla>obtenerPorId(Integer id);
+    //cambiar estado
+    boolean actualizarEstado(Integer id, Planilla.EstadoPlanilla nuevoEstado);
 }

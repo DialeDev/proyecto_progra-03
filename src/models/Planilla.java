@@ -1,5 +1,8 @@
 package models;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
 /**
  *
@@ -8,62 +11,49 @@ import java.time.LocalDate;
 
 
 public class Planilla {
+    //opciones para "Estado"
     public enum EstadoPlanilla { BORRADOR, EMITIDA, ANULADA }
 
-    private int idPlanilla;
-    private int mes;
-    private int anio;
-    private LocalDate fechaEmision;
+    //definicion de variables y constantes
+    private Integer idPlanilla;
+    private final int mes;
+    private final int anio;
+    private final LocalDate fechaEmision;
     private EstadoPlanilla estado;
-
-    public Planilla(int idPlanilla, int mes, int anio) {
+    
+    //definicion de lista
+    private final List<BoletaPago> boletas;
+    
+    //constructor
+    public Planilla(int idPlanilla, int mes, int anio, LocalDate fechaEmision, EstadoPlanilla estado) {
         this.idPlanilla = idPlanilla;
         this.mes = mes;
         this.anio = anio;
-        this.fechaEmision = LocalDate.now(); 
-        this.estado = EstadoPlanilla.BORRADOR;
-    }
-
-    public int getIdPlanilla() {
-        return idPlanilla;
-    }
-
-    public void setIdPlanilla(int idPlanilla) {
-        this.idPlanilla = idPlanilla;
-    }
-
-    public int getMes() {
-        return mes;
-    }
-
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
-
-    public int getAnio() {
-        return anio;
-    }
-
-    public void setAnio(int anio) {
-        this.anio = anio;
-    }
-
-    public LocalDate getFechaEmision() {
-        return fechaEmision;
-    }
-
-    public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
-    }
-
-    public EstadoPlanilla getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoPlanilla estado) {
         this.estado = estado;
+        this.boletas = new ArrayList<>();
+    }
+
+    //get
+    public Integer getIdPlanilla(){return idPlanilla;}
+    public int getMes(){return mes;}
+    public int getAnio(){return anio;}
+    public LocalDate getFechaEmision(){return fechaEmision;}
+    public EstadoPlanilla getEstado(){return estado;}
+    
+    //lista inmodificable
+    public List<BoletaPago>getBoletas(){
+        return Collections.unmodifiableList(boletas);
     }
     
+    //set
+    public void setIdPlanilla(Integer idPlanilla){
+        this.idPlanilla = idPlanilla;}
+    public void setEstado(EstadoPlanilla estado){
+        this.estado = estado;}
     
-    
+    //meotdo para agregar boletas
+    public void agregarBoleta(BoletaPago boleta){
+        this.boletas.add(boleta);
+    }
 }

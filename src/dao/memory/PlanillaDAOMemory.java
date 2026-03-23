@@ -4,6 +4,7 @@ import dao.interfaces.IPlanillaDAO;
 import models.Planilla;
 import java.util.ArrayList; 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -11,35 +12,36 @@ import java.util.List;
  */
 
 public class PlanillaDAOMemory implements IPlanillaDAO {
-
-    private static int autoIncrement = 1;
+    
+    //db temporal
+    private final List<Planilla> planillasDB =new ArrayList<>();
+    
+    //simulador identity
+    private int contadorId = 1;
 
     @Override
-    public void create(Planilla planilla) {
-        planilla.setIdPlanilla(autoIncrement++);
-        DatabaseMock.tablaPlanillas.add(planilla);
+    public void crear(Planilla planilla) {
+        planilla.setIdPlanilla(contadorId++);
+        planillasDB.add(planilla);
     }
 
     @Override
-    public Planilla findById(int idPlanilla) {
-        for (Planilla p : DatabaseMock.tablaPlanillas) {
-            if (p.getIdPlanilla() == idPlanilla) {
-                return p;
-            }
-        }
-        return null;
+    public List<Planilla> obtenerTodas() {
+        return List.copyOf(planillasDB);
     }
 
     @Override
-    public List<Planilla> findAll() {
-        return DatabaseMock.tablaPlanillas;
+    public Optional<Planilla>obtenerPorId(Integer Id){
+        return planillasDB.stream()
+                .filter(p->p.getIdPlanilla().equals(Id))
+                .findFirst();
     }
-
+    
     @Override
-    public void updateEstado(int idPlanilla, Planilla.EstadoPlanilla nuevoEstado) {
-        Planilla p = findById(idPlanilla);
-        if (p != null) {
-            p.setEstado(nuevoEstado);
-        }
+    public boolean actualizarEstado(Integer id, Planilla.EstadoPlanilla nuevoEstado){
+        return obtenerPorId(id).map(planilla->{
+            planilla.setEstado(nuevoEstado);
+            return true;
+        }).orElse(false);
     }
 }
