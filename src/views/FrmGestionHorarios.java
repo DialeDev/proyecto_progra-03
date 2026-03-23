@@ -15,79 +15,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrmGestionHorarios extends javax.swing.JFrame {
     
-
+ 
     HorarioController controller = new HorarioController();
     
      public FrmGestionHorarios() {
         initComponents();
         cargarTabla();
     }
-  @SuppressWarnings("unchecked")
-    private void initComponents() {
+    //  GUARDAR
 
-        txtNombre = new javax.swing.JTextField();
-        txtTolerancia = new javax.swing.JTextField();
-        txtEntrada = new javax.swing.JTextField();
-        txtSalida = new javax.swing.JTextField();
-        btnGuardar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        JTable = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnGuardar.setText("Guardar");
-
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        JTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {},
-            new String [] {
-                "ID", "Nombre", "Entrada", "Salida", "Tolerancia"
-            }
-        ));
-
-        jScrollPane1.setViewportView(JTable);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTolerancia, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap()
-            )
-        );
-layout.setVerticalGroup(
-            layout.createSequentialGroup()
-                .addGap(20)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10)
-                .addComponent(txtTolerancia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10)
-                .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10)
-                .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10)
-                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
-           pack();
-    }
-  // 🔥 CARGAR TABLA
+  //  CARGAR TABLA
     private void cargarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
 
@@ -109,7 +47,7 @@ layout.setVerticalGroup(
 
         JTable.setModel(modelo);
     }
-     // 🔥 LIMPIAR CAMPOS
+     //  LIMPIAR CAMPOS
     private void limpiar() {
         txtNombre.setText("");
         txtEntrada.setText("");
@@ -117,13 +55,7 @@ layout.setVerticalGroup(
         txtTolerancia.setText("");
     }
 
-
-    /**
-     * Creates new form FrmGestionHorarios
-     */
-
-
-
+    // </editor-fold>
     
     
     /**
@@ -158,6 +90,7 @@ layout.setVerticalGroup(
         label4.setText("Entrada");
 
         btnGuardar.setLabel("Guardar");
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         JTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -235,6 +168,36 @@ layout.setVerticalGroup(
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        try {
+    String nombre = txtNombre.getText();
+    String entradaTxt = txtEntrada.getText();
+    String salidaTxt = txtSalida.getText();
+    String toleranciaTxt = txtTolerancia.getText();
+
+    if (nombre.isEmpty() || entradaTxt.isEmpty() || salidaTxt.isEmpty() || toleranciaTxt.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Completa todos los campos");
+        return;
+    }
+
+    LocalTime entrada = LocalTime.parse(entradaTxt);
+    LocalTime salida = LocalTime.parse(salidaTxt);
+    int tolerancia = Integer.parseInt(toleranciaTxt);
+
+    Jornada j = new Jornada(0, nombre, entrada, salida, tolerancia);
+
+    String mensaje = controller.guardar(j);
+    JOptionPane.showMessageDialog(this, mensaje);
+
+    cargarTabla();
+    limpiar();
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error: usa formato HH:mm");
+}
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
