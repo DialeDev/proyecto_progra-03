@@ -16,6 +16,7 @@ public class DatabaseMock {
     public static List<RegistroAsistencia> tablaAsistencias = new ArrayList<>();
     public static List<Usuario> tablaUsuarios = new ArrayList<>();
     public static List<Planilla> tablaPlanillas = new ArrayList<>();
+    public static List<Jornada> tablaJornadas = new ArrayList<>();
     
     public static int autoIncrementEmpleado = 1;
     public static int autoIncrementContratacion = 1;
