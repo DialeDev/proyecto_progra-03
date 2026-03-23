@@ -37,6 +37,7 @@ Si tu nuevo módulo se parece a esta estructura, tu código será aprobado.
 
 Todo el código debe ir estrictamente dentro de estos paquetes en la carpeta `src`. No dejes archivos sueltos.
 
+```text
 src/
 ├── main/
 │   └── App.java                      # Único archivo que inicia el programa.
@@ -80,7 +81,7 @@ src/
     ├── FrmGestionHorarios.java       
     ├── FrmGestionEmpleados.java      
     └── FrmGestionContratos.java      
-
+```
 ---
 
 ## 4. Reglas de Oro (No Negociables)
