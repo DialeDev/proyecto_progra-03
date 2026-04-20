@@ -50,6 +50,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
 
         btnNuevo.setText("NUEVO");
         btnNuevo.setName("btnNuevo"); // NOI18N
+        btnNuevo.addActionListener(this::btnNuevoActionPerformed);
 
         btnEliminar.setText("ELIMINAR");
 
@@ -124,6 +125,10 @@ public class FrmGestionContratos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
     /**
      * @param args the command line arguments

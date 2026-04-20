@@ -23,31 +23,32 @@ public class DashboardController {
 
     public void abrirMarcacion() {
         FrmMarcacion frm = new FrmMarcacion();
-        new AsistenciaController(); // Se actualizará cuando tu equipo termine este controlador
+        new AsistenciaController(); 
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
     }
 
     public void abrirPlanillas() {
         FrmPlanillas frm = new FrmPlanillas();
-        new PlanillaController(); // Se actualizará cuando tu equipo termine este controlador
+        new PlanillaController(); 
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
     }
     
     public void abrirGestionHorarios() {
         FrmGestionHorarios frm = new FrmGestionHorarios();
-        new HorarioController(); // Se actualizará cuando tu equipo termine este controlador
+        new HorarioController(); 
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
     }
 
     public void abrirGestionContratos() {
         FrmGestionContratos frm = new FrmGestionContratos();
-        new ContratoController(frm); // Se actualizará cuando tu equipo termine este controlador
+        new ContratoController(frm); 
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
     }
+    
 
     public void cerrarSesion() {
         SesionGlobal.cerrarSesion(); // Limpiamos la memoria

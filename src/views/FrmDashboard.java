@@ -17,12 +17,13 @@ public class FrmDashboard extends javax.swing.JFrame {
      */
     public FrmDashboard() {
         initComponents();
+        this.getContentPane().setBackground(java.awt.Color.WHITE);
         this.setLocationRelativeTo(null); // Centra la ventana
         this.controller = new controllers.DashboardController(this);
         
         // Mensaje de bienvenida dinámico
         if (utils.SesionGlobal.haySesionActiva()) {
-            lblBienvenida.setText("Bienvenido/a al Sistema, " + utils.SesionGlobal.getUsuarioActivo().getUsername());
+            lblBienvenida.setText("Bienvenid@ al Sistema de Planilla");
         }
     }
 
@@ -49,8 +50,10 @@ public class FrmDashboard extends javax.swing.JFrame {
         itmCerrarSesion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        lblBienvenida.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblBienvenida.setFont(new java.awt.Font("RBNo3.1 Light", 1, 24)); // NOI18N
+        lblBienvenida.setForeground(new java.awt.Color(51, 51, 51));
         lblBienvenida.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -61,35 +64,59 @@ public class FrmDashboard extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Sistema de Control de Asistencia y Generación de Planillas v1.0");
+        jLabel2.setText("Sistema de Control de Asistencia y Generación de Planillas v1.1");
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/modules_apps_icon_188198.png"))); // NOI18N
         jMenu1.setText("Modulos");
+        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu1.setFocusPainted(true);
+        jMenu1.setMargin(new java.awt.Insets(6, 9, 6, 9));
 
+        itmEmpleado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        itmEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/human_resources_search_employees_icon_187488.png"))); // NOI18N
         itmEmpleado.setText("Empleados");
+        itmEmpleado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         itmEmpleado.addActionListener(this::itmEmpleadoActionPerformed);
         jMenu1.add(itmEmpleado);
 
+        itmAsistencia.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        itmAsistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/calendar-with-a-clock-time-tools_icon-icons.com_56831.png"))); // NOI18N
         itmAsistencia.setText("Asistencia");
+        itmAsistencia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         itmAsistencia.addActionListener(this::itmAsistenciaActionPerformed);
         jMenu1.add(itmAsistencia);
 
+        itmPlanillas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        itmPlanillas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dollar_salary_income_growth_bag_profit_money_icon_232624.png"))); // NOI18N
         itmPlanillas.setText("Planillas");
+        itmPlanillas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         itmPlanillas.addActionListener(this::itmPlanillasActionPerformed);
         jMenu1.add(itmPlanillas);
 
+        itmContratos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        itmContratos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/contract_icon-icons.com_64813.png"))); // NOI18N
         itmContratos.setText("Contratos");
+        itmContratos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         itmContratos.addActionListener(this::itmContratosActionPerformed);
         jMenu1.add(itmContratos);
 
+        itmHorarios.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        itmHorarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/timeclock_tiemp_3924.png"))); // NOI18N
         itmHorarios.setText("Horarios");
+        itmHorarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         itmHorarios.addActionListener(this::itmHorariosActionPerformed);
         jMenu1.add(itmHorarios);
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emblemsystem_93495.png"))); // NOI18N
         jMenu2.setText("Sistema");
+        jMenu2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu2.setMargin(new java.awt.Insets(6, 9, 6, 9));
 
+        itmCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mbrilogout_99583.png"))); // NOI18N
         itmCerrarSesion.setText("Cerrar Sesion");
+        itmCerrarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         itmCerrarSesion.addActionListener(this::itmCerrarSesionActionPerformed);
         jMenu2.add(itmCerrarSesion);
 
@@ -103,12 +130,12 @@ public class FrmDashboard extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblBienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,7 +144,7 @@ public class FrmDashboard extends javax.swing.JFrame {
                 .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -129,11 +156,6 @@ public class FrmDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         controller.abrirMarcacion();
     }//GEN-LAST:event_itmAsistenciaActionPerformed
-
-    private void itmEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmEmpleadoActionPerformed
-        // TODO add your handling code here:
-        controller.abrirGestionEmpleados();
-    }//GEN-LAST:event_itmEmpleadoActionPerformed
 
     private void itmPlanillasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmPlanillasActionPerformed
         // TODO add your handling code here:
@@ -154,6 +176,11 @@ public class FrmDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         controller.cerrarSesion();
     }//GEN-LAST:event_itmCerrarSesionActionPerformed
+
+    private void itmEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmEmpleadoActionPerformed
+        // TODO add your handling code here:
+        controller.abrirGestionEmpleados();
+    }//GEN-LAST:event_itmEmpleadoActionPerformed
 
     /**
      * @param args the command line arguments
