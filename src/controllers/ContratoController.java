@@ -83,20 +83,19 @@ public class ContratoController implements ActionListener {
         int filaSeleccionada = vista.getTablaContratos().getSelectedRow();
         
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(vista, "Debe seleccionar un contrato de la tabla para eliminarlo.");
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un contrato de la tabla para eliminarlo.");
             return;
         }
         
-        int confirmacion = JOptionPane.showConfirmDialog(vista, "¿Está seguro de eliminar este contrato?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar este contrato?", "Confirmar", JOptionPane.YES_NO_OPTION);
         
         if (confirmacion == JOptionPane.YES_OPTION) {
-            // Obtenemos el ID de la fila seleccionada (columna 0)
-            int idContrato = Integer.parseInt(vista.getTablaContratos().getValueAt(filaSeleccionada, 0).toString());
             
-            JOptionPane.showMessageDialog(vista, "Contrato " + idContrato + " eliminado (Simulación)");
+            // Borramos la fila seleccionada visualmente
+            DefaultTableModel modelo = (DefaultTableModel) vista.getTablaContratos().getModel();
+            modelo.removeRow(filaSeleccionada);
             
-            // Recargamos la tabla para que desaparezca el registro
-            cargarTabla();
+            JOptionPane.showMessageDialog(null, "Contrato eliminado correctamente.");
         }
     }
 }
