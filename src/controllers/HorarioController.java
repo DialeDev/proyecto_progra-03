@@ -2,10 +2,9 @@ package controllers;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.time.LocalTime;
 
 import models.Jornada;
-import dao.memory.DatabaseMock;
+import dao.RepositorioJornada;
 
 /**
  *
@@ -14,6 +13,12 @@ import dao.memory.DatabaseMock;
 
 public class HorarioController {
 
+    private final RepositorioJornada jornadaDAO;
+
+    public HorarioController() {
+        this.jornadaDAO = new RepositorioJornada();
+    }
+
     //GUARDAR
     public String guardar(Jornada jornada) {
 
@@ -21,25 +26,19 @@ public class HorarioController {
             return "Datos inválidos";
         }
 
-        jornada.setIdJornada(DatabaseMock.tablaJornadas.size() + 1);
-        DatabaseMock.tablaJornadas.add(jornada);
+        jornadaDAO.create(jornada);
 
         return "Horario guardado correctamente";
     }
 
     // LISTAR
     public List<Jornada> listar() {
-        return DatabaseMock.tablaJornadas;
+        return jornadaDAO.findAll();
     }
 
     // BUSCAR POR ID
     public Jornada buscarPorId(int id) {
-        for (Jornada j : DatabaseMock.tablaJornadas) {
-            if (j.getIdJornada() == id) {
-                return j;
-            }
-        }
-        return null;
+        return jornadaDAO.findById(id);
     }
 
     //ACTUALIZAR
@@ -49,30 +48,15 @@ public class HorarioController {
             return "Datos inválidos";
         }
 
-        for (Jornada j : DatabaseMock.tablaJornadas) {
-            if (j.getIdJornada() == jornada.getIdJornada()) {
-                j.setNombre(jornada.getNombre());
-                j.setHoraEntradaEsperada(jornada.getHoraEntradaEsperada());
-                j.setHoraSalidaEsperada(jornada.getHoraSalidaEsperada());
-                j.setMargenToleranciaMinutos(jornada.getMargenToleranciaMinutos());
-                return "Horario actualizado correctamente";
-            }
-        }
+        jornadaDAO.update(jornada);
 
-        return "Horario no encontrado";
+        return "Horario actualizado correctamente";
     }
 
     //ELIMINAR
     public String eliminar(int id) {
-
-        for (Jornada j : DatabaseMock.tablaJornadas) {
-            if (j.getIdJornada() == id) {
-                DatabaseMock.tablaJornadas.remove(j);
-                return "Horario eliminado correctamente";
-            }
-        }
-
-        return "Horario no encontrado";
+        jornadaDAO.delete(id);
+        return "Horario eliminado correctamente";
     }
 
     // VALIDACIONES
@@ -104,7 +88,8 @@ public class HorarioController {
 
     // VALIDAR DUPLICADOS
     public boolean existeHorario(String nombre) {
-        for (Jornada j : DatabaseMock.tablaJornadas) {
+        List<Jornada> jornadas = jornadaDAO.findAll();
+        for (Jornada j : jornadas) {
             if (j.getNombre().equalsIgnoreCase(nombre)) {
                 return true;
             }
@@ -114,9 +99,10 @@ public class HorarioController {
 
     // LISTAR PARA COMBOBOX
     public String[] listarNombres() {
+        List<Jornada> jornadas = jornadaDAO.findAll();
         List<String> nombres = new ArrayList<>();
 
-        for (Jornada j : DatabaseMock.tablaJornadas) {
+        for (Jornada j : jornadas) {
             nombres.add(j.getNombre());
         }
 

@@ -23,6 +23,16 @@ public class Empleado {
         this.dui = dui;
         this.activo = true;
     }
+    
+    public Empleado(int idEmpleado, int idDepartamento, String nombres, String apellidos, 
+                    String dui, boolean activo) {
+        this.idEmpleado = idEmpleado;
+        this.idDepartamento = idDepartamento;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.dui = dui;
+        this.activo = activo;
+    }
 
     public int getIdEmpleado() {
         return idEmpleado;

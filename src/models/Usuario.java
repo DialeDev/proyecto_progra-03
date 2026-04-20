@@ -9,15 +9,15 @@ public class Usuario {
     private int idUsuario;
     private int idEmpleado; 
     private String username;
-    private String password; 
+    private String passwordHash; 
     private String rol; 
     private boolean activo;
 
-    public Usuario(int idUsuario, int idEmpleado, String username, String password, String rol) {
+    public Usuario(int idUsuario, int idEmpleado, String username, String passwordHash, String rol) {
         this.idUsuario = idUsuario;
         this.idEmpleado = idEmpleado;
         this.username = username;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.rol = rol;
         this.activo = true;
     }
@@ -46,12 +46,12 @@ public class Usuario {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getRol() {
