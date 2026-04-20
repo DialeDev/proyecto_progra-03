@@ -1,7 +1,6 @@
 package controllers;
 
-import dao.interfaces.IUsuarioDAO;
-import dao.memory.UsuarioDAOMemory;
+import dao.RepositorioUsuario;
 import models.Usuario;
 import utils.SesionGlobal;
 import views.FrmLogin;
@@ -15,15 +14,14 @@ import javax.swing.JOptionPane;
 
 public class AuthController {
     
-    private IUsuarioDAO usuarioDAO;
+    private RepositorioUsuario usuarioDAO;
     private FrmLogin vista;
 
     public AuthController(FrmLogin vista) {
         this.vista = vista;
-        this.usuarioDAO = new UsuarioDAOMemory(); //Creamos una instancia del DAO en memoria
+        this.usuarioDAO = new RepositorioUsuario();
     }
 
-// Este es el método que la vista llamará cuando el usuario presione "Ingresar"
     public void procesarLogin() {
         String username = vista.getTxtUsuario().getText();
         String password = new String(vista.getTxtPassword().getPassword());
@@ -45,7 +43,7 @@ public class AuthController {
             
             vista.dispose(); 
             
-        } else { //login fallido
+        } else {
             JOptionPane.showMessageDialog(vista, "Credenciales incorrectas o usuario inactivo.", 
                                           "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
             vista.getTxtPassword().setText(""); 
