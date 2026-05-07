@@ -7,6 +7,7 @@ package views;
 import controllers.HorarioController;
 import models.Jornada;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -14,21 +15,176 @@ import javax.swing.table.DefaultTableModel;
  * @author DialeMRZ
  */
 public class FrmGestionHorarios extends javax.swing.JFrame {
-    
- 
-    HorarioController controller = new HorarioController();
-    
-     public FrmGestionHorarios() {
+
+    private HorarioController controller;
+    private boolean editando = false;
+    // Boton Eliminar agregado programaticamente
+    private java.awt.Button btnEliminar;
+
+    public FrmGestionHorarios() {
+        this.controller = new HorarioController();
         initComponents();
+
+        // Configurar boton Eliminar y agregarlo al panel
+        btnEliminar = new java.awt.Button("Eliminar");
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnEliminar.addActionListener(e -> eliminarJornada());
+
+        // Agregar btnEliminar al jPanel1 que esta arriba (junto a los otros botones)
+        // Usamos GroupLayout para agregarlo al jPanel1
+        javax.swing.GroupLayout jPanel1Layout = (javax.swing.GroupLayout) jPanel1.getLayout();
+        // Recreamos el layout de jPanel1 incluyendo btnEliminar
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(btnNuevo)
+                .addGap(40, 40, 40)
+                .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addComponent(btnCerrar)
+                .addGap(62, 62, 62))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNuevo)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnCerrar))
+                .addGap(20, 20, 20))
+        );
+
+        // Listener para seleccionar fila en la tabla
+        JTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                seleccionarJornada();
+            }
+        });
+
         cargarTabla();
     }
-    //  GUARDAR
 
+    //  GUARDAR (tambien funciona como Actualizar si se selecciono una fila)
+    private void guardarJornada() {
+        try {
+            String nombre = txtNombre.getText().trim();
+            String entradaTxt = txtEntrada.getText().trim();
+            String salidaTxt = txtSalida.getText().trim();
+            String toleranciaTxt = txtTolerancia.getText().trim();
 
-  //  CARGAR TABLA
+            if (nombre.isEmpty() || entradaTxt.isEmpty() || salidaTxt.isEmpty() || toleranciaTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos.");
+                return;
+            }
+
+            LocalTime entrada = LocalTime.parse(entradaTxt);
+            LocalTime salida = LocalTime.parse(salidaTxt);
+            int tolerancia = Integer.parseInt(toleranciaTxt);
+
+            if (salida.isBefore(entrada)) {
+                JOptionPane.showMessageDialog(this, "La hora de salida debe ser después de la hora de entrada.");
+                return;
+            }
+
+            if (editando) {
+                // Modo ACTUALIZAR
+                int fila = JTable.getSelectedRow();
+                if (fila == -1) {
+                    editando = false;
+                    btnGuardar.setLabel("Guardar");
+                    return;
+                }
+                DefaultTableModel model = (DefaultTableModel) JTable.getModel();
+                int idJornada = (int) model.getValueAt(fila, 0);
+
+                int confirm = JOptionPane.showConfirmDialog(this,
+                    "¿Está seguro de actualizar la jornada '" + nombre + "'?",
+                    "Confirmar Actualización", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    Jornada j = new Jornada(idJornada, nombre, entrada, salida, tolerancia);
+                    String mensaje = controller.actualizar(j);
+                    JOptionPane.showMessageDialog(this, mensaje);
+                }
+            } else {
+                // Modo GUARDAR nuevo
+                if (controller.existeHorario(nombre)) {
+                    JOptionPane.showMessageDialog(this,
+                        "Ya existe una jornada con el nombre '" + nombre + "'.");
+                    return;
+                }
+                Jornada j = new Jornada(0, nombre, entrada, salida, tolerancia);
+                String mensaje = controller.guardar(j);
+                JOptionPane.showMessageDialog(this, mensaje);
+            }
+
+            cargarTabla();
+            limpiar();
+
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Error: use formato HH:mm (ej: 08:00)");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: la tolerancia debe ser un numero entero.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }
+
+    //  ELIMINAR
+    private void eliminarJornada() {
+        int fila = JTable.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una jornada de la tabla para eliminar.");
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) JTable.getModel();
+        int idJornada = (int) model.getValueAt(fila, 0);
+        String nombre = (String) model.getValueAt(fila, 1);
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "¿Esta seguro de eliminar la jornada '" + nombre + "'?",
+            "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                String mensaje = controller.eliminar(idJornada);
+                JOptionPane.showMessageDialog(this, mensaje);
+                cargarTabla();
+                limpiar();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+            }
+        }
+    }
+
+    //  SELECCIONAR JORNADA DE LA TABLA (para editar)
+    private void seleccionarJornada() {
+        if (JTable.getSelectedRow() == -1) return;
+
+        DefaultTableModel model = (DefaultTableModel) JTable.getModel();
+        int fila = JTable.getSelectedRow();
+        txtNombre.setText(model.getValueAt(fila, 1).toString());
+        txtEntrada.setText(model.getValueAt(fila, 2).toString());
+        txtSalida.setText(model.getValueAt(fila, 3).toString());
+        txtTolerancia.setText(model.getValueAt(fila, 4).toString());
+
+        editando = true;
+        btnGuardar.setLabel("Actualizar");
+    }
+
+    //  CARGAR TABLA
     private void cargarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
-
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Entrada");
@@ -47,24 +203,20 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
 
         JTable.setModel(modelo);
     }
-     //  LIMPIAR CAMPOS
+
+    //  LIMPIAR CAMPOS
     private void limpiar() {
         txtNombre.setText("");
         txtEntrada.setText("");
         txtSalida.setText("");
         txtTolerancia.setText("");
+        JTable.clearSelection();
+        editando = false;
+        btnGuardar.setLabel("Guardar");
+        txtNombre.requestFocus();
     }
 
-    // </editor-fold>
-    
-    
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         txtNombre = new javax.swing.JTextField();
@@ -78,15 +230,16 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
         btnGuardar = new java.awt.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         JTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label1.setText("Nombre");
-
         label2.setText("Salida");
-
         label3.setText("Tolerancia");
-
         label4.setText("Entrada");
 
         btnGuardar.setLabel("Guardar");
@@ -106,6 +259,44 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(JTable);
 
+        // Configurar jPanel1 (barra superior)
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18));
+        jLabel1.setText("GESTION HORARIOS");
+
+        btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(this::btnNuevoActionPerformed);
+
+        btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(this::btnCerrarActionPerformed);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(btnNuevo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                .addComponent(btnCerrar)
+                .addGap(62, 62, 62))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNuevo)
+                    .addComponent(btnCerrar))
+                .addGap(20, 20, 20))
+        );
+
+        // Layout principal
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,16 +329,18 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
                             .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(166, 166, 166))))
-        );
+                        .addGap(166, 166, 166))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        ));
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTolerancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -161,51 +354,38 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
                         .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        try {
-    String nombre = txtNombre.getText();
-    String entradaTxt = txtEntrada.getText();
-    String salidaTxt = txtSalida.getText();
-    String toleranciaTxt = txtTolerancia.getText();
-
-    if (nombre.isEmpty() || entradaTxt.isEmpty() || salidaTxt.isEmpty() || toleranciaTxt.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Completa todos los campos");
-        return;
     }
 
-    LocalTime entrada = LocalTime.parse(entradaTxt);
-    LocalTime salida = LocalTime.parse(salidaTxt);
-    int tolerancia = Integer.parseInt(toleranciaTxt);
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {
+        guardarJornada();
+    }
 
-    Jornada j = new Jornada(0, nombre, entrada, salida, tolerancia);
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {
+        limpiar();
+    }
 
-    String mensaje = controller.guardar(j);
-    JOptionPane.showMessageDialog(this, mensaje);
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {
+        dispose();
+    }
 
-    cargarTabla();
-    limpiar();
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(() -> new FrmGestionHorarios().setVisible(true));
+    }
 
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(this, "Error: usa formato HH:mm");
-}
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify (NetBeans compatibility)
     private javax.swing.JTable JTable;
     private java.awt.Button btnGuardar;
+    private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnCerrar;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Label label1;
     private java.awt.Label label2;
@@ -215,5 +395,4 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtSalida;
     private javax.swing.JTextField txtTolerancia;
-    // End of variables declaration//GEN-END:variables
 }
