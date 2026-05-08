@@ -1,0 +1,26 @@
+Las observaciones al desarrollo del proyecto de cátedra entregado son:
+
+Sistema de control de asistencia y generación de planillas de pagos. 
+
+ *Documento* :
+
+    Índice: han mezclado dos tipos de fuentes, revisar.
+    Factibilidad económica: En este apartado tiene que hacerse un estimado del costo económico que tendría la realización del aplicativo en el entorno real. Se refiere a la relación costo-beneficio que tendría el aplicativo, si se realizara la inversión. Revisar descripción de este apartado en documento de lineamientos.
+    Cronograma: Deben elaborar un Diagrama de Gantt y detallarlo para todas las fases e irlo modificando cuando sea necesario. Revisar descripción de este apartado en documento de lineamientos.
+    Herramientas de investigación: no incluyen las herramientas que indican que utilizaron: fichas de investigación.
+    Presentación y análisis de resultados: En estos apartados debe colocarse la información recopilada y el análisis de la misma, obtenida a través de las técnicas y herramientas de investigación indicadas en 2.1.1 y 2.1.2.  Revisar descripción de este apartado en documento de lineamientos.
+
+ *Aplicativo* : 
+
+    Han proporcionado el script de la BD: crea 11 tablas: AsignacionJornada, BoletaDetalle, BoletaPago, Contratacion, Contrato, Departamento, Empleado, Jornada, Planilla, RegistroAsistencia, Usuario.
+    Cambiaron la estructura del proyecto. Usaban interfaces, hoy clases.
+    Han creado 7 packages: controllers, dao, img, main, models, utils, views.
+    En el package "controllers" han definido ocho clases: AsistenciaController (vacía), AuthController, ContratoController, DashboardController, EmpleadoController, HorarioController, PlanillaController, RegistroContratoController.
+    En el package "dao" han creado siete clases: Conexion, RepositorioAsistencia, RepositorioContratacion, RepositorioEmpleado, RepositorioJornada, RepositorioPlanilla, RepositorioUsuario.
+    En el package "img" gestionan las imágenes que utiliza el aplicativo.
+    En el package "main" han definido una clase: App.
+    En el package "models" han definido nueve clases: BoletaDetalle, BoletaPago (ambas  "record"), Contratacion, Contrato, Empleado, Jornada, Planilla, RegistroAsistencia, Usuario.
+    En el package "utils" han definido una clase: SesionGlobal.
+    En el package "views" han creado ocho formularios: FrmLogin: para validar usuarios del aplicativo, ya valida con BD; FrmDashboard: será el menú; FrmGestionEmpleados: para agregar empleados (funcional con BD); GestionContratos: para crear contratos (solo diseño); FrmGestionHorarios; para crear horarios; FrmMarcacion: para realizar marcaciones (solo diseño); FrmPlanillas: para la gestión de planillas; FrmRegistroContratos: para crear contratos (solo diseño).
+    No han proporcionado las librerías que utiliza el proyecto.
+    Ya hay interacción con BD.

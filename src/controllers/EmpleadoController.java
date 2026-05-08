@@ -3,18 +3,12 @@ package controllers;
 import dao.RepositorioEmpleado;
 import models.Empleado;
 import views.FrmGestionEmpleados;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-/**
- *
- * @author DialeMRZ
- */
-
+// @author DialeMRZ
 public class EmpleadoController {
-
     private final RepositorioEmpleado empleadoDAO;
     private final FrmGestionEmpleados vista;
     private DefaultTableModel modeloTabla;
@@ -22,7 +16,6 @@ public class EmpleadoController {
     public EmpleadoController(FrmGestionEmpleados vista) {
         this.vista = vista;
         this.empleadoDAO = new RepositorioEmpleado();
-        
         initView();
     }
 
@@ -33,9 +26,7 @@ public class EmpleadoController {
         modeloTabla.addColumn("Nombres");
         modeloTabla.addColumn("Apellidos");
         modeloTabla.addColumn("Estado");
-        
         vista.getTblEmpleados().setModel(modeloTabla);
-
         cargarTabla();
     }
 
@@ -43,67 +34,33 @@ public class EmpleadoController {
         String nombres = vista.getTxtNombres().getText().trim();
         String apellidos = vista.getTxtApellidos().getText().trim();
         String dui = vista.getTxtDui().getText().trim();
-        int idDepartamento = 1; 
-
         if (nombres.isEmpty() || apellidos.isEmpty() || dui.isEmpty()) {
-            JOptionPane.showMessageDialog(vista, "Todos los campos son obligatorios.", 
-                                          "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(vista, "Todos los campos son obligatorios.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         if (!dui.matches("\\d{8}-\\d")) {
-            JOptionPane.showMessageDialog(vista, "El formato del DUI es incorrecto (ej: 12345678-9).", 
-                                          "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(vista, "Formato DUI incorrecto (ej: 12345678-9).", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        // Verificar DUI duplicado
         if (empleadoDAO.existeDui(dui)) {
-            JOptionPane.showMessageDialog(vista, "El DUI " + dui + " ya está registrado en el sistema.", 
-                                          "DUI Duplicado", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(vista, "El DUI " + dui + " ya está registrado.", "Duplicado", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        Empleado nuevoEmpleado = new Empleado(
-            0, 
-            idDepartamento, 
-            nombres, 
-            apellidos, 
-            dui
-        );
-
         try {
-            empleadoDAO.create(nuevoEmpleado);
-            JOptionPane.showMessageDialog(vista, "Empleado registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            empleadoDAO.create(new Empleado(0, 1, nombres, apellidos, dui));
+            JOptionPane.showMessageDialog(vista, "Empleado registrado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             cargarTabla();
             limpiarFormulario();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(vista, "Error al registrar el empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(vista, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void cargarTabla() {
-        // Obtener el modelo directamente de la tabla para asegurar consistencia
         DefaultTableModel model = (DefaultTableModel) vista.getTblEmpleados().getModel();
         model.setRowCount(0);
-
-        List<Empleado> lista = empleadoDAO.findAll();
-
-        for (Empleado e : lista) {
-            Object[] fila = new Object[5];
-            fila[0] = e.getIdEmpleado();
-            fila[1] = e.getDui();
-            fila[2] = e.getNombres();
-            fila[3] = e.getApellidos();
-            fila[4] = e.isActivo() ? "Activo" : "Inactivo";
-            
-            model.addRow(fila);
-        }
-        
-        // Guardar referencia para otros métodos
-        this.modeloTabla = model;
-        
-        // Forzar refresh de la tabla
+        empleadoDAO.findAll().forEach(e -> model.addRow(new Object[]{
+            e.getIdEmpleado(), e.getDui(), e.getNombres(), e.getApellidos(), e.isActivo() ? "Activo" : "Inactivo"}));
         vista.getTblEmpleados().updateUI();
     }
 
@@ -116,32 +73,19 @@ public class EmpleadoController {
     }
 
     public void desactivarEmpleado() {
-        int filaSeleccionada = vista.getTblEmpleados().getSelectedRow();
-
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(vista, "Por favor, seleccione un empleado de la tabla para desactivarlo.", 
-                                          "Ninguna selección", JOptionPane.WARNING_MESSAGE);
+        int fila = vista.getTblEmpleados().getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(vista, "Seleccione un empleado.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         DefaultTableModel model = (DefaultTableModel) vista.getTblEmpleados().getModel();
-        int idEmpleado = (int) model.getValueAt(filaSeleccionada, 0);
-        String nombreEmpleado = (String) model.getValueAt(filaSeleccionada, 2);
-
-        int respuesta = JOptionPane.showConfirmDialog(vista, 
-                "¿Está seguro que desea dar de baja al empleado " + nombreEmpleado + "?", 
-                "Confirmar Desactivación", 
-                JOptionPane.YES_NO_OPTION, 
-                JOptionPane.QUESTION_MESSAGE);
-
-        if (respuesta == JOptionPane.YES_OPTION) {
-            empleadoDAO.delete(idEmpleado);
-
-            JOptionPane.showMessageDialog(vista, "Empleado desactivado exitosamente.", 
-                                          "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        int id = (int) model.getValueAt(fila, 0);
+        String nombre = (String) model.getValueAt(fila, 2);
+        if (JOptionPane.showConfirmDialog(vista, "¿Desactivar a " + nombre + "?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            empleadoDAO.delete(id);
+            JOptionPane.showMessageDialog(vista, "Empleado desactivado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             cargarTabla();
             limpiarFormulario();
         }
     }
-
 }

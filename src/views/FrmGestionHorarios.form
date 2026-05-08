@@ -105,29 +105,29 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtSalida">
     </Component>
-    <Component class="java.awt.Label" name="label1">
+    <Component class="javax.swing.JLabel" name="label1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nombre"/>
       </Properties>
     </Component>
-    <Component class="java.awt.Label" name="label2">
+    <Component class="javax.swing.JLabel" name="label2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Salida"/>
       </Properties>
     </Component>
-    <Component class="java.awt.Label" name="label3">
+    <Component class="javax.swing.JLabel" name="label3">
       <Properties>
         <Property name="text" type="java.lang.String" value="Tolerancia"/>
       </Properties>
     </Component>
-    <Component class="java.awt.Label" name="label4">
+    <Component class="javax.swing.JLabel" name="label4">
       <Properties>
         <Property name="text" type="java.lang.String" value="Entrada"/>
       </Properties>
     </Component>
-    <Component class="java.awt.Button" name="btnGuardar">
+    <Component class="javax.swing.JButton" name="btnGuardar">
       <Properties>
-        <Property name="label" type="java.lang.String" value="Guardar"/>
+        <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>

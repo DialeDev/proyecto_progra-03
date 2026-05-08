@@ -1,30 +1,18 @@
 package models;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
+import java.util.*;
 
-/**
- *
- * @author DialeMRZ
- */
-
-
+// @author DialeMRZ
 public class Planilla {
-    //opciones para "Estado"
     public enum EstadoPlanilla { BORRADOR, EMITIDA, ANULADA }
 
-    //definicion de variables y constantes
     private Integer idPlanilla;
     private final int mes;
     private final int anio;
     private final LocalDate fechaEmision;
     private EstadoPlanilla estado;
-    
-    //definicion de lista
     private final List<BoletaPago> boletas;
-    
-    //constructor
+
     public Planilla(int idPlanilla, int mes, int anio, LocalDate fechaEmision, EstadoPlanilla estado) {
         this.idPlanilla = idPlanilla;
         this.mes = mes;
@@ -34,26 +22,13 @@ public class Planilla {
         this.boletas = new ArrayList<>();
     }
 
-    //get
-    public Integer getIdPlanilla(){return idPlanilla;}
-    public int getMes(){return mes;}
-    public int getAnio(){return anio;}
-    public LocalDate getFechaEmision(){return fechaEmision;}
-    public EstadoPlanilla getEstado(){return estado;}
-    
-    //lista inmodificable
-    public List<BoletaPago>getBoletas(){
-        return Collections.unmodifiableList(boletas);
-    }
-    
-    //set
-    public void setIdPlanilla(Integer idPlanilla){
-        this.idPlanilla = idPlanilla;}
-    public void setEstado(EstadoPlanilla estado){
-        this.estado = estado;}
-    
-    //meotdo para agregar boletas
-    public void agregarBoleta(BoletaPago boleta){
-        this.boletas.add(boleta);
-    }
+    public Integer getIdPlanilla() { return idPlanilla; }
+    public int getMes() { return mes; }
+    public int getAnio() { return anio; }
+    public LocalDate getFechaEmision() { return fechaEmision; }
+    public EstadoPlanilla getEstado() { return estado; }
+    public List<BoletaPago> getBoletas() { return Collections.unmodifiableList(boletas); }
+    public void setIdPlanilla(Integer idPlanilla) { this.idPlanilla = idPlanilla; }
+    public void setEstado(EstadoPlanilla estado) { this.estado = estado; }
+    public void agregarBoleta(BoletaPago boleta) { this.boletas.add(boleta); }
 }

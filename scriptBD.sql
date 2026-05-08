@@ -276,6 +276,114 @@ GO
 -- ========================================================================
 -- MENSAJE DE CONFIRMACIÓN
 -- ========================================================================
+GO
+
+-- ========================================================================
+-- 8. TEST DATA
+-- ========================================================================
+
+-- Empleados de prueba
+IF NOT EXISTS (SELECT 1 FROM dbo.Empleado WHERE DUI = '12345678-9')
+BEGIN
+    DECLARE @IdDeptoRRHH INT, @IdDeptoIng INT;
+    SELECT @IdDeptoRRHH = IdDepartamento FROM dbo.Departamento WHERE Nombre = 'RRHH';
+    SELECT @IdDeptoIng = IdDepartamento FROM dbo.Departamento WHERE Nombre = 'Ingeniería';
+
+    INSERT INTO dbo.Empleado (IdDepartamento, Nombres, Apellidos, DUI, Activo) VALUES (@IdDeptoRRHH, 'María', 'García', '12345678-9', 1);
+    INSERT INTO dbo.Empleado (IdDepartamento, Nombres, Apellidos, DUI, Activo) VALUES (@IdDeptoIng, 'Carlos', 'Martínez', '87654321-0', 1);
+END
+GO
+
+-- Usuarios de prueba
+DECLARE @IdEmpleadoMaria INT, @IdEmpleadoCarlos INT;
+SELECT @IdEmpleadoMaria = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
+SELECT @IdEmpleadoCarlos = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+
+IF @IdEmpleadoMaria IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Usuario WHERE Username = 'mgarcia')
+    INSERT INTO dbo.Usuario (IdEmpleado, Username, PasswordHash, Rol, Activo) VALUES (@IdEmpleadoMaria, 'mgarcia', '123456', 'RRHH', 1);
+IF @IdEmpleadoCarlos IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Usuario WHERE Username = 'cmartinez')
+    INSERT INTO dbo.Usuario (IdEmpleado, Username, PasswordHash, Rol, Activo) VALUES (@IdEmpleadoCarlos, 'cmartinez', '123456', 'Empleado', 1);
+GO
+
+-- Contrataciones de prueba
+DECLARE @IdContratoIndef INT, @IdContratoFijo INT;
+SELECT @IdContratoIndef = IdContrato FROM dbo.Contrato WHERE Nombre = 'Indefinido';
+SELECT @IdContratoFijo = IdContrato FROM dbo.Contrato WHERE Nombre = 'Fijo';
+
+DECLARE @IdEmpMaria INT, @IdEmpCarlos INT;
+SELECT @IdEmpMaria = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
+SELECT @IdEmpCarlos = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+
+IF @IdEmpMaria IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpMaria)
+    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
+    VALUES (@IdEmpMaria, @IdContratoIndef, '2024-01-15', 1200.00, 7.50, 1);
+IF @IdEmpCarlos IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpCarlos)
+    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
+    VALUES (@IdEmpCarlos, @IdContratoFijo, '2024-03-01', 1500.00, 9.38, 1);
+GO
+
+-- Asignaciones de jornada de prueba
+DECLARE @IdJornMat INT, @IdJornVesp INT;
+SELECT @IdJornMat = IdJornada FROM dbo.Jornada WHERE Nombre = 'Matutina';
+SELECT @IdJornVesp = IdJornada FROM dbo.Jornada WHERE Nombre = 'Vespertina';
+
+DECLARE @IdEmpM INT, @IdEmpC INT;
+SELECT @IdEmpM = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
+SELECT @IdEmpC = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+
+IF @IdEmpM IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.AsignacionJornada WHERE IdEmpleado = @IdEmpM)
+    INSERT INTO dbo.AsignacionJornada (IdEmpleado, IdJornada, FechaAsignacion, Activa) VALUES (@IdEmpM, @IdJornMat, GETDATE(), 1);
+IF @IdEmpC IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.AsignacionJornada WHERE IdEmpleado = @IdEmpC)
+    INSERT INTO dbo.AsignacionJornada (IdEmpleado, IdJornada, FechaAsignacion, Activa) VALUES (@IdEmpC, @IdJornVesp, GETDATE(), 1);
+GO
+
+-- Registros de asistencia de prueba
+DECLARE @IdEmpA1 INT, @IdEmpA2 INT;
+SELECT @IdEmpA1 = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
+SELECT @IdEmpA2 = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+
+IF @IdEmpA1 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.RegistroAsistencia WHERE IdEmpleado = @IdEmpA1)
+BEGIN
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada) VALUES (@IdEmpA1, '2025-05-01 07:00:00', '2025-05-01 16:00:00', 0);
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada) VALUES (@IdEmpA1, '2025-05-02 07:15:00', '2025-05-02 16:30:00', 0);
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada) VALUES (@IdEmpA1, '2025-05-03 07:00:00', '2025-05-03 17:00:00', 0);
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada) VALUES (@IdEmpA2, '2025-05-01 13:00:00', '2025-05-01 22:00:00', 0);
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada) VALUES (@IdEmpA2, '2025-05-02 13:30:00', '2025-05-02 22:15:00', 0);
+END
+GO
+
+-- Planilla de prueba
+DECLARE @IdPlanillaTest INT;
+IF NOT EXISTS (SELECT 1 FROM dbo.Planilla WHERE Mes = 5 AND Anio = 2025)
+BEGIN
+    INSERT INTO dbo.Planilla (Mes, Anio, FechaEmision, Estado) VALUES (5, 2025, GETDATE(), 'Borrador');
+    SET @IdPlanillaTest = SCOPE_IDENTITY();
+END
+ELSE
+    SELECT @IdPlanillaTest = IdPlanilla FROM dbo.Planilla WHERE Mes = 5 AND Anio = 2025;
+GO
+
+-- Boleta de pago de prueba
+IF NOT EXISTS (SELECT 1 FROM dbo.BoletaPago)
+BEGIN
+    DECLARE @IdPlan INT;
+    SELECT @IdPlan = IdPlanilla FROM dbo.Planilla WHERE Mes = 5 AND Anio = 2025;
+
+    DECLARE @IdEmpB1 INT, @IdEmpB2 INT;
+    SELECT @IdEmpB1 = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
+    SELECT @IdEmpB2 = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+
+    INSERT INTO dbo.BoletaPago (IdPlanilla, IdEmpleado, SueldoBaseAplicado, HorasOrdinariasCalculadas, HorasExtraDiurnas, HorasExtraNocturnas, TotalIngresos, TotalDeducciones, LiquidoAPagar)
+    VALUES (@IdPlan, @IdEmpB1, 1200.00, 160.00, 0, 0, 1200.00, 160.50, 1039.50);
+
+    DECLARE @IdBoleta BIGINT = SCOPE_IDENTITY();
+
+    INSERT INTO dbo.BoletaDetalle (IdBoleta, Concepto, Tipo, Monto) VALUES (@IdBoleta, 'Sueldo Base', 'Ingreso', 1200.00);
+    INSERT INTO dbo.BoletaDetalle (IdBoleta, Concepto, Tipo, Monto) VALUES (@IdBoleta, 'AFP (7.25%)', 'Deduccion', 87.00);
+    INSERT INTO dbo.BoletaDetalle (IdBoleta, Concepto, Tipo, Monto) VALUES (@IdBoleta, 'ISSS (3%)', 'Deduccion', 30.00);
+END
+GO
+
 PRINT '==============================================';
 PRINT '  BASE DE DATOS CONFIGURADA CORRECTAMENTE   ';
 PRINT '==============================================';

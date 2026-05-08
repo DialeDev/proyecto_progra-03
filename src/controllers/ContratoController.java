@@ -1,101 +1,134 @@
 package controllers;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import dao.RepositorioContrato;
+import dao.RepositorioContratacion;
+import models.Contrato;
+import models.Contrato.TipoContrato;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import views.FrmGestionContratos;
+import views.FrmRegistroContratos;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ContratoController implements ActionListener {
-
-    private FrmGestionContratos vista;
+    private final FrmGestionContratos vista;
+    private final RepositorioContrato contratoDAO;
+    private final RepositorioContratacion contratacionDAO;
     private DefaultTableModel modeloTabla;
-    // private ContratoDAO dao; // Descomenta esto cuando tengas tu DAO listo
 
     public ContratoController(FrmGestionContratos vista) {
         this.vista = vista;
-        // this.dao = new ContratoDAOImpl(); // Inicializa tu DAO aquí
-        System.out.println("¡EL CONTROLADOR DE CONTRATOS ESTÁ VIVO!");
-        // 1. Añadimos los "Action Listeners" para que el controlador escuche los clics
-        // Asegúrate de tener los "Getters" creados en tu vista para estos botones
+        this.contratoDAO = new RepositorioContrato();
+        this.contratacionDAO = new RepositorioContratacion();
         this.vista.getBtnNuevo().addActionListener(this);
         this.vista.getBtnEliminar().addActionListener(this);
         this.vista.getBtnCerrar().addActionListener(this);
-        
-        // 2. Preparamos la tabla
         iniciarTabla();
-        
-        // 3. Cargamos los datos iniciales
         cargarTabla();
     }
 
     private void iniciarTabla() {
         modeloTabla = new DefaultTableModel();
-        
-        // Añadimos las columnas exactamente como las tienes en tu diseño
         modeloTabla.addColumn("ID");
-        modeloTabla.addColumn("Empleado");
+        modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Tipo");
-        modeloTabla.addColumn("Inicio");
-        modeloTabla.addColumn("Fin");
-        modeloTabla.addColumn("Salario");
-        modeloTabla.addColumn("Observaciones");
-
-        // Asignamos el modelo a la tabla de la vista
-        // Asume que creaste el getter getTablaContratos() en tu FrmGestionContratos
+        modeloTabla.addColumn("Descripción");
+        modeloTabla.addColumn("Activo");
         vista.getTablaContratos().setModel(modeloTabla);
     }
 
     private void cargarTabla() {
-        // Limpiamos la tabla antes de cargar
         modeloTabla.setRowCount(0);
-        
-
+        try {
+            contratoDAO.findAll().forEach(c -> modeloTabla.addRow(new Object[]{
+                c.getIdContrato(), c.getNombre(), c.getTipo().name(), c.getDescripcion(), c.isActivo() ? "Activo" : "Inactivo"}));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista, "Error al cargar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-@Override
+    @Override
     public void actionPerformed(ActionEvent e) {
-        // Detectamos qué botón fue presionado
-        
         if (e.getSource() == vista.getBtnNuevo()) {
-            
-            // --- AQUÍ ESTÁ EL CAMBIO ---
-            // 1. Instanciamos la NUEVA vista que acabas de crear
-            views.FrmRegistroContratos vistaRegistro = new views.FrmRegistroContratos();
-            
-            // 2. La centramos en la pantalla
-            controllers.RegistroContratoController controladorRegistro = new controllers.RegistroContratoController(vistaRegistro,vista);
-            
+            FrmRegistroContratos vistaRegistro = new FrmRegistroContratos();
+            new RegistroContratoController(vistaRegistro, vista);
             vistaRegistro.setLocationRelativeTo(null);
             vistaRegistro.setVisible(true);
-            
         } else if (e.getSource() == vista.getBtnEliminar()) {
-            // Lógica para eliminar el contrato seleccionado
             eliminarContrato();
-            
         } else if (e.getSource() == vista.getBtnCerrar()) {
-            // Lógica para cerrar la ventana
             vista.dispose();
         }
     }
 
-    private void eliminarContrato() {
-        int filaSeleccionada = vista.getTablaContratos().getSelectedRow();
-        
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar un contrato de la tabla para eliminarlo.");
+    public void guardarTipoContrato(String nombre, String tipoStr, String descripcion) {
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "El nombre es obligatorio.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar este contrato?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            
-            // Borramos la fila seleccionada visualmente
-            DefaultTableModel modelo = (DefaultTableModel) vista.getTablaContratos().getModel();
-            modelo.removeRow(filaSeleccionada);
-            
-            JOptionPane.showMessageDialog(null, "Contrato eliminado correctamente.");
+        TipoContrato tipo;
+        try { tipo = TipoContrato.valueOf(tipoStr); }
+        catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(vista, "Tipo no válido.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+        if (contratoDAO.buscarPorNombre(nombre) != null) {
+            JOptionPane.showMessageDialog(vista, "Ya existe un tipo con el nombre '" + nombre + "'.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            contratoDAO.create(new Contrato(0, nombre, tipo, descripcion));
+            JOptionPane.showMessageDialog(vista, "Guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarTabla();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void actualizarTipoContrato(int id, String nombre, String tipoStr, String descripcion) {
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "El nombre es obligatorio.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        TipoContrato tipo;
+        try { tipo = TipoContrato.valueOf(tipoStr); }
+        catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(vista, "Tipo no válido.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (JOptionPane.showConfirmDialog(vista, "¿Actualizar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                contratoDAO.update(new Contrato(id, nombre, tipo, descripcion));
+                JOptionPane.showMessageDialog(vista, "Actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarTabla();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    public void eliminarTipoContrato(int id, String nombre) {
+        if (JOptionPane.showConfirmDialog(vista, "¿Eliminar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                contratoDAO.delete(id);
+                JOptionPane.showMessageDialog(vista, "Eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarTabla();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void eliminarContrato() {
+        int fila = vista.getTablaContratos().getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(vista, "Seleccione un contrato.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        DefaultTableModel modelo = (DefaultTableModel) vista.getTablaContratos().getModel();
+        modelo.removeRow(fila);
+        JOptionPane.showMessageDialog(vista, "Contrato eliminado.");
     }
 }
