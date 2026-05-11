@@ -30,6 +30,10 @@ public class FrmRegistroContratos extends javax.swing.JFrame {
         this.contratoDAO = new RepositorioContrato();
         this.contratacionDAO = new RepositorioContratacion();
         initComponents();
+        configurarComponentes();
+    }
+
+    private void configurarComponentes() {
         cargarEmpleados();
         cargarTiposContrato();
     }
@@ -148,9 +152,10 @@ public class FrmRegistroContratos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(btnGuardar).addComponent(btnCancelar)).addGap(15, 15, 15)));
         pack();
-    }
+    }//GEN-END:initComponents
+    // </editor-fold>
 
-    // Variables declaration - do not modify
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<String> cmbEmpleado;
@@ -165,6 +170,7 @@ public class FrmRegistroContratos extends javax.swing.JFrame {
     private javax.swing.JTextField txtInicio;
     private javax.swing.JTextField txtObservaciones;
     private javax.swing.JTextField txtSalario;
+    // End of variables declaration//GEN-END:variables
 
     // Getters para compatibilidad con RegistroContratoController
     public JButton getBtnCancelar() { return btnCancelar; }

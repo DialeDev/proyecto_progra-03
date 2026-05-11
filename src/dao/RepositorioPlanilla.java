@@ -10,18 +10,34 @@ public class RepositorioPlanilla {
     private static final String SQL_SELECT_ALL = "SELECT * FROM Planilla ORDER BY anio DESC, mes DESC";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM Planilla WHERE idPlanilla = ?";
     private static final String SQL_UPDATE_ESTADO = "UPDATE Planilla SET estado = ? WHERE idPlanilla = ?";
+    private static final String SQL_EXISTS_MES_ANIO = "SELECT COUNT(*) FROM Planilla WHERE mes = ? AND anio = ?";
 
-    public void crear(Planilla planilla) {
-        try (Connection conn = Conexion.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
+    public int crear(Planilla planilla) {
+        try (Connection conn = Conexion.getConnection()) {
+            return crear(conn, planilla);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al crear planilla: " + e.getMessage(), e);
+        }
+    }
+
+    public int crear(Connection conn, Planilla planilla) {
+        try (PreparedStatement ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, planilla.getMes());
             ps.setInt(2, planilla.getAnio());
             ps.setDate(3, java.sql.Date.valueOf(planilla.getFechaEmision()));
             ps.setString(4, planilla.getEstado().name());
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+                throw new RuntimeException("No se pudo obtener el ID generado para la planilla.");
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error al crear planilla: " + e.getMessage(), e);
         }
+    }
+
+    public List<Planilla> findAll() {
+        return obtenerTodas();
     }
 
     public List<Planilla> obtenerTodas() {
@@ -45,6 +61,19 @@ public class RepositorioPlanilla {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error al buscar planilla: " + e.getMessage(), e);
+        }
+    }
+
+    public boolean existePorMesYAnio(int mes, int anio) {
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_EXISTS_MES_ANIO)) {
+            ps.setInt(1, mes);
+            ps.setInt(2, anio);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al verificar planilla duplicada: " + e.getMessage(), e);
         }
     }
 

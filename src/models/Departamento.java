@@ -17,4 +17,7 @@ public class Departamento {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public boolean isActivo() { return activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
+
+    @Override
+    public String toString() { return nombre; }
 }

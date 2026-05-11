@@ -11,29 +11,11 @@ import javax.swing.table.DefaultTableModel;
 public class FrmGestionHorarios extends javax.swing.JFrame {
     private HorarioController controller;
     private boolean editando = false;
-    private javax.swing.JButton btnEliminar;
 
     public FrmGestionHorarios() {
         this.controller = new HorarioController();
         initComponents();
-        btnEliminar = new javax.swing.JButton("Eliminar");
-        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12));
-        btnEliminar.addActionListener(e -> eliminarJornada());
-        javax.swing.GroupLayout jPanel1Layout = (javax.swing.GroupLayout) jPanel1.getLayout();
-        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup().addGap(51, 51, 51).addComponent(btnNuevo).addGap(40, 40, 40).addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE).addComponent(btnCerrar).addGap(62, 62, 62))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup().addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
-        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup().addGap(22, 22, 22).addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnNuevo).addComponent(btnEliminar).addComponent(btnCerrar)).addGap(20, 20, 20)));
-        tblHorarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) { seleccionarJornada(); }
-        });
-        cargarTabla();
+        configurarComponentes();
     }
 
     private void guardarJornada() {
@@ -49,6 +31,10 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
             LocalTime entrada = LocalTime.parse(entradaTxt);
             LocalTime salida = LocalTime.parse(salidaTxt);
             int tolerancia = Integer.parseInt(toleranciaTxt);
+            if (tolerancia < 0) {
+                JOptionPane.showMessageDialog(this, "La tolerancia no puede ser negativa.");
+                return;
+            }
             if (salida.isBefore(entrada)) {
                 JOptionPane.showMessageDialog(this, "La salida debe ser después de la entrada.");
                 return;
@@ -57,7 +43,16 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
                 int fila = tblHorarios.getSelectedRow();
                 if (fila == -1) { editando = false; btnGuardar.setText("Guardar"); return; }
                 DefaultTableModel model = (DefaultTableModel) tblHorarios.getModel();
-                int id = (int) model.getValueAt(fila, 0);
+                int id = ((Number) model.getValueAt(fila, 0)).intValue();
+                // Verificar duplicado excluyendo el registro actual
+                if (controller.existeHorario(nombre)) {
+                    boolean esOtro = controller.listar().stream()
+                        .anyMatch(j -> j.getNombre().equalsIgnoreCase(nombre) && j.getIdJornada() != id);
+                    if (esOtro) {
+                        JOptionPane.showMessageDialog(this, "Ya existe otra jornada con el nombre '" + nombre + "'.");
+                        return;
+                    }
+                }
                 if (JOptionPane.showConfirmDialog(this, "¿Actualizar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     JOptionPane.showMessageDialog(this, controller.actualizar(new Jornada(id, nombre, entrada, salida, tolerancia)));
                 }
@@ -80,15 +75,19 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
     }
 
     private void eliminarJornada() {
-        int fila = tblHorarios.getSelectedRow();
-        if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione una jornada."); return; }
-        DefaultTableModel model = (DefaultTableModel) tblHorarios.getModel();
-        int id = (int) model.getValueAt(fila, 0);
-        String nombre = (String) model.getValueAt(fila, 1);
-        if (JOptionPane.showConfirmDialog(this, "¿Eliminar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(this, controller.eliminar(id));
-            cargarTabla();
-            limpiar();
+        try {
+            int fila = tblHorarios.getSelectedRow();
+            if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione una jornada."); return; }
+            DefaultTableModel model = (DefaultTableModel) tblHorarios.getModel();
+            int id = ((Number) model.getValueAt(fila, 0)).intValue();
+            String nombre = (String) model.getValueAt(fila, 1);
+            if (JOptionPane.showConfirmDialog(this, "¿Eliminar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                JOptionPane.showMessageDialog(this, controller.eliminar(id));
+                cargarTabla();
+                limpiar();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar jornada: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -96,10 +95,10 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
         if (tblHorarios.getSelectedRow() == -1) return;
         DefaultTableModel model = (DefaultTableModel) tblHorarios.getModel();
         int fila = tblHorarios.getSelectedRow();
-        txtNombre.setText(model.getValueAt(fila, 1).toString());
-        txtEntrada.setText(model.getValueAt(fila, 2).toString());
-        txtSalida.setText(model.getValueAt(fila, 3).toString());
-        txtTolerancia.setText(model.getValueAt(fila, 4).toString());
+        txtNombre.setText(String.valueOf(model.getValueAt(fila, 1)));
+        txtEntrada.setText(String.valueOf(model.getValueAt(fila, 2)));
+        txtSalida.setText(String.valueOf(model.getValueAt(fila, 3)));
+        txtTolerancia.setText(String.valueOf(model.getValueAt(fila, 4)));
         editando = true;
         btnGuardar.setText("Actualizar");
     }
@@ -119,6 +118,7 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         txtNombre = new javax.swing.JTextField();
         txtTolerancia = new javax.swing.JTextField();
@@ -135,6 +135,9 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         label1.setText("Nombre"); label2.setText("Salida"); label3.setText("Tolerancia"); label4.setText("Entrada");
         btnGuardar.setText("Guardar");
@@ -154,13 +157,14 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup().addGap(51, 51, 51).addComponent(btnNuevo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE).addComponent(btnCerrar).addGap(62, 62, 62))
+                .addGap(40, 40, 40).addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE).addComponent(btnCerrar).addGap(62, 62, 62))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup().addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
         jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup().addGap(22, 22, 22).addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnNuevo).addComponent(btnCerrar)).addGap(20, 20, 20)));
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnNuevo).addComponent(btnEliminar).addComponent(btnCerrar)).addGap(20, 20, 20)));
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,20 +211,31 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE)));
         pack();
+    }//GEN-END:initComponents
+    // </editor-fold>
+
+    private void configurarComponentes() {
+        tblHorarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) { seleccionarJornada(); }
+        });
+        cargarTabla();
     }
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) { guardarJornada(); }
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) { limpiar(); }
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) { dispose(); }
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) { eliminarJornada(); }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new FrmGestionHorarios().setVisible(true));
     }
 
-    // Variables declaration - do not modify
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable tblHorarios;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel jLabel1;
@@ -233,4 +248,5 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtSalida;
     private javax.swing.JTextField txtTolerancia;
+    // End of variables declaration//GEN-END:variables
 }

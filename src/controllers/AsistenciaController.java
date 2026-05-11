@@ -59,6 +59,9 @@ public class AsistenciaController {
         Optional<RegistroAsistencia> opt = asistenciaDAO.findEntradaActivaByEmpleado(idEmpleado);
         if (opt.isEmpty()) return false;
         RegistroAsistencia activa = opt.get();
+        if (fechaHora.isBefore(activa.getMarcaEntrada())) {
+            throw new IllegalArgumentException("La hora de salida no puede ser anterior a la hora de entrada.");
+        }
         activa.setMarcaSalida(fechaHora);
         asistenciaDAO.actualizarSalida(activa);
         return true;
@@ -81,6 +84,10 @@ public class AsistenciaController {
         if (asistencia == null || asistencia.getMarcaSalida() == null) return -1;
         long minutos = ChronoUnit.MINUTES.between(asistencia.getMarcaEntrada(), asistencia.getMarcaSalida());
         return Math.round(minutos / 60.0 * 100.0) / 100.0;
+    }
+
+    public void eliminarAsistencia(long idRegistro) {
+        asistenciaDAO.eliminar(idRegistro);
     }
 
     public RegistroAsistencia tieneEntradaActiva(int idEmpleado) {

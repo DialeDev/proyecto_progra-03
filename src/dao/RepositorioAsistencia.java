@@ -2,6 +2,7 @@ package dao;
 
 import models.RegistroAsistencia;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
 
 // @author DialeMRZ
@@ -13,7 +14,7 @@ public class RepositorioAsistencia {
 
     public void registrar(RegistroAsistencia asistencia) {
         try (Connection conn = Conexion.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, asistencia.getIdEmpleado());
             ps.setTimestamp(2, java.sql.Timestamp.valueOf(asistencia.getMarcaEntrada()));
             if (asistencia.getMarcaSalida() != null) {
@@ -23,6 +24,11 @@ public class RepositorioAsistencia {
             }
             ps.setBoolean(4, asistencia.isFaltaJustificada());
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    asistencia.setIdRegistro(rs.getLong(1));
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error al registrar asistencia: " + e.getMessage(), e);
         }
@@ -49,6 +55,36 @@ public class RepositorioAsistencia {
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar salida: " + e.getMessage(), e);
         }
+    }
+
+    public void eliminar(long idRegistro) {
+        String sql = "DELETE FROM RegistroAsistencia WHERE idRegistro = ?";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, idRegistro);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al eliminar asistencia: " + e.getMessage(), e);
+        }
+    }
+
+    private static final String SQL_SELECT_BY_RANGO =
+        "SELECT * FROM RegistroAsistencia WHERE idEmpleado = ? AND marcaEntrada >= ? AND marcaEntrada < ? ORDER BY marcaEntrada";
+
+    public List<RegistroAsistencia> findByEmpleadoAndRango(int idEmpleado, LocalDate desde, LocalDate hasta) {
+        List<RegistroAsistencia> lista = new ArrayList<>();
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_BY_RANGO)) {
+            ps.setInt(1, idEmpleado);
+            ps.setTimestamp(2, java.sql.Timestamp.valueOf(desde.atStartOfDay()));
+            ps.setTimestamp(3, java.sql.Timestamp.valueOf(hasta.plusDays(1).atStartOfDay()));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) lista.add(mapResultSet(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar asistencia por rango: " + e.getMessage(), e);
+        }
+        return lista;
     }
 
     public List<RegistroAsistencia> findByEmpleadoAndMes(int idEmpleado, int mes, int anio) {

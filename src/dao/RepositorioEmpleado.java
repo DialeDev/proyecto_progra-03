@@ -61,6 +61,19 @@ public class RepositorioEmpleado {
         return lista;
     }
 
+    public List<Empleado> findAllActivos() {
+        String sql = "SELECT * FROM Empleado WHERE Activo = 1";
+        List<Empleado> lista = new ArrayList<>();
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) lista.add(mapResultSet(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar empleados activos: " + e.getMessage(), e);
+        }
+        return lista;
+    }
+
     public void update(Empleado empleado) {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {

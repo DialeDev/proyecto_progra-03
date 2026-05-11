@@ -24,45 +24,45 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-              <Component id="btnDesactivar" min="-2" pref="127" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnLimpiar" min="-2" pref="127" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="183" max="-2" attributes="0"/>
-              <Component id="btnGuardar" min="-2" pref="127" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+        <Group type="102" alignment="1" attributes="0">
+          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+          <Component id="btnDesactivar" min="-2" pref="127" max="-2" attributes="0"/>
+          <EmptySpace max="32767" attributes="0"/>
+          <Component id="btnLimpiar" min="-2" pref="127" max="-2" attributes="0"/>
+          <EmptySpace min="-2" pref="183" max="-2" attributes="0"/>
+          <Component id="btnGuardar" min="-2" pref="127" max="-2" attributes="0"/>
+          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+        </Group>
+        <Group type="102" alignment="1" attributes="0">
+          <EmptySpace pref="43" max="32767" attributes="0"/>
+          <Group type="103" groupAlignment="1" attributes="0">
+            <Component id="btnAtras" min="-2" pref="32" max="-2" attributes="0"/>
+            <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Component id="jPanel1" max="32767" attributes="0"/>
+              <Component id="jPanel2" max="32767" attributes="0"/>
+            </Group>
           </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="43" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="btnAtras" min="-2" pref="32" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jPanel1" max="32767" attributes="0"/>
-                      <Component id="jPanel2" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-          </Group>
+          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnAtras" min="-2" pref="32" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnGuardar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
-                  <Component id="btnLimpiar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
-                  <Component id="btnDesactivar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+        <Group type="102" alignment="0" attributes="0">
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="btnAtras" min="-2" pref="32" max="-2" attributes="0"/>
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="3" attributes="0">
+            <Component id="btnGuardar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
+            <Component id="btnLimpiar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
+            <Component id="btnDesactivar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
           </Group>
+          <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -80,32 +80,40 @@
           </Border>
         </Property>
       </Properties>
-
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                  <Component id="txtNombres" min="-2" pref="151" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="txtApellidos" min="-2" pref="151" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-                  <Component id="txtDui" min="-2" pref="151" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
-              </Group>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+              <Component id="txtNombres" min="-2" pref="151" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="txtApellidos" min="-2" pref="151" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
+              <Component id="txtDui" min="-2" pref="151" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="jLabelDepartamento" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="cmbDepartamento" min="-2" pref="151" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtNombres" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
-                      <Component id="txtApellidos" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
-                      <Component id="txtDui" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="25" max="32767" attributes="0"/>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                <Component id="txtNombres" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
+                <Component id="txtApellidos" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
+                <Component id="txtDui" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                <Component id="jLabelDepartamento" alignment="3" min="-2" max="-2" attributes="0"/>
+                <Component id="cmbDepartamento" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -152,6 +160,13 @@
             </Property>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="jLabelDepartamento">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Departamento:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cmbDepartamento">
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel2">
@@ -167,24 +182,23 @@
           </Border>
         </Property>
       </Properties>
-
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="711" max="-2" attributes="0"/>
-                  <EmptySpace pref="25" max="32767" attributes="0"/>
-              </Group>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="711" max="-2" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="173" max="-2" attributes="0"/>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
-              </Group>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="173" max="-2" attributes="0"/>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -193,17 +207,17 @@
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
-
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
             <Component class="javax.swing.JTable" name="tblEmpleados">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
-                    <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                  <Table columnCount="5" rowCount="4">
+                    <Column editable="true" title="ID" type="java.lang.Object"/>
+                    <Column editable="true" title="DUI" type="java.lang.Object"/>
+                    <Column editable="true" title="Nombres" type="java.lang.Object"/>
+                    <Column editable="true" title="Apellidos" type="java.lang.Object"/>
+                    <Column editable="true" title="Estado" type="java.lang.Object"/>
                   </Table>
                 </Property>
               </Properties>
@@ -222,9 +236,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Limpiar"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimpiarActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnGuardar">
       <Properties>
@@ -236,9 +247,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnDesactivar">
       <Properties>
@@ -250,9 +258,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Desactivar"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDesactivarActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnAtras">
       <Properties>
@@ -260,9 +265,6 @@
           <Image iconType="3" name="/img/icons8-flecha-32.png"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAtrasActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

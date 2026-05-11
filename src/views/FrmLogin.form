@@ -24,20 +24,20 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="43" max="32767" attributes="0"/>
-          </Group>
+        <Group type="102" alignment="0" attributes="0">
+          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+          <EmptySpace pref="43" max="32767" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="30" max="32767" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-          </Group>
+        <Group type="102" alignment="1" attributes="0">
+          <EmptySpace pref="30" max="32767" attributes="0"/>
+          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -46,7 +46,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder justification="2" title="Iniciar Secci&#xf3;n">
+            <TitledBorder justification="2" title="Iniciar Sesion">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
@@ -59,32 +59,39 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="txtPassword" pref="230" max="32767" attributes="0"/>
-                      <Component id="txtUsuario" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+            <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                <Component id="txtUsuario" max="32767" attributes="0"/>
+                <Group type="102" attributes="0">
+                  <Component id="txtPassword" pref="200" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="btnMostrarPassword" min="-2" max="-2" attributes="0"/>
+                </Group>
               </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                  <Component id="btnIngresar" min="-2" pref="291" max="-2" attributes="0"/>
-                  <EmptySpace pref="68" max="32767" attributes="0"/>
-              </Group>
+              <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+            </Group>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+              <Component id="btnIngresar" min="-2" pref="291" max="-2" attributes="0"/>
+              <EmptySpace pref="68" max="32767" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                  <Component id="txtUsuario" min="-2" pref="54" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="txtPassword" min="-2" pref="54" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnIngresar" min="-2" pref="48" max="-2" attributes="0"/>
-                  <EmptySpace pref="35" max="32767" attributes="0"/>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Component id="txtUsuario" min="-2" pref="54" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                <Component id="txtPassword" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
+                <Component id="btnMostrarPassword" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="btnIngresar" min="-2" pref="48" max="-2" attributes="0"/>
+              <EmptySpace pref="35" max="32767" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -115,6 +122,14 @@
             </Property>
           </Properties>
         </Component>
+        <Component class="javax.swing.JToggleButton" name="btnMostrarPassword">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Mostrar"/>
+          </Properties>
+        </Component>
         <Component class="javax.swing.JButton" name="btnIngresar">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -123,7 +138,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Iniciar Secci&#xf3;n"/>
+            <Property name="text" type="java.lang.String" value="Iniciar Sesion"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIngresarActionPerformed"/>

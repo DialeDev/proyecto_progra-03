@@ -26,14 +26,8 @@ public class FrmMarcacion extends javax.swing.JFrame {
     // private int[] idsEmpleados;
     // [PRODUCCIÓN] private Timer relojTimer;
 
-    private javax.swing.JSpinner spnFecha;
-    private javax.swing.JSpinner spnHora;
-    private javax.swing.JLabel lblFechaHora;
-    private javax.swing.JLabel lblIdEmpleado;
-    private javax.swing.JTextField txtIdEmpleado;
-    private javax.swing.JButton btnVerificar;
-    private javax.swing.JLabel lblNombreEmpleado;
     private int idEmpleadoVerificado = -1;
+    private java.util.List<RegistroAsistencia> asistenciasActuales = java.util.Collections.emptyList();
 
     public FrmMarcacion() {
         this.asistenciaController = new AsistenciaController();
@@ -48,9 +42,6 @@ public class FrmMarcacion extends javax.swing.JFrame {
         modeloLista = new DefaultListModel<>();
         jList1.setModel(modeloLista);
         jList1.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        jButton1.setText("Marcar Entrada");
-        jButton2.setText("Marcar Salida");
-        jButton3.setText("Refrescar");
 
         // Configurar spinner de fecha
         SpinnerDateModel fechaModel = new SpinnerDateModel();
@@ -69,7 +60,8 @@ public class FrmMarcacion extends javax.swing.JFrame {
 
         jButton1.addActionListener(e -> marcarEntrada());
         jButton2.addActionListener(e -> marcarSalida());
-        jButton3.addActionListener(e -> { cargarMarcacionesDelDia(); });
+        jButton3.addActionListener(e -> cargarMarcacionesDelDia());
+        jButton4.addActionListener(e -> eliminarMarcacionSeleccionada());
     }
 
     private void verificarEmpleado() {
@@ -131,6 +123,10 @@ public class FrmMarcacion extends javax.swing.JFrame {
     private LocalDateTime getFechaHoraDesdeSpinners() {
         Date fechaDate = (Date) spnFecha.getValue();
         Date horaDate = (Date) spnHora.getValue();
+        if (fechaDate == null || horaDate == null) {
+            JOptionPane.showMessageDialog(this, "Fecha u hora no válida en los spinners.", "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
         LocalDate fecha = new java.sql.Date(fechaDate.getTime()).toLocalDate();
         LocalTime hora = new java.sql.Time(horaDate.getTime()).toLocalTime();
         return LocalDateTime.of(fecha, hora);
@@ -140,11 +136,12 @@ public class FrmMarcacion extends javax.swing.JFrame {
         if (idEmpleadoVerificado == -1) { JOptionPane.showMessageDialog(this, "Verifique un empleado primero.", "Error", JOptionPane.WARNING_MESSAGE); return; }
         try {
             LocalDateTime fechaHora = getFechaHoraDesdeSpinners();
+            if (fechaHora == null) return;
             RegistroAsistencia resultado = asistenciaController.marcarEntrada(idEmpleadoVerificado, fechaHora);
             if (resultado == null) {
                 JOptionPane.showMessageDialog(this, "El empleado ya tiene entrada activa.", "Error", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Entrada: " + resultado.getMarcaEntrada().format(DateTimeFormatter.ofPattern("HH:mm:ss")), "Exito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Entrada: " + resultado.getMarcaEntrada().format(DateTimeFormatter.ofPattern("HH:mm:ss")), "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 cargarMarcacionesDelDia();
             }
         } catch (Exception e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
@@ -154,8 +151,9 @@ public class FrmMarcacion extends javax.swing.JFrame {
         if (idEmpleadoVerificado == -1) { JOptionPane.showMessageDialog(this, "Verifique un empleado primero.", "Error", JOptionPane.WARNING_MESSAGE); return; }
         try {
             LocalDateTime fechaHora = getFechaHoraDesdeSpinners();
+            if (fechaHora == null) return;
             if (asistenciaController.marcarSalida(idEmpleadoVerificado, fechaHora)) {
-                JOptionPane.showMessageDialog(this, "Salida registrada.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Salida registrada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 cargarMarcacionesDelDia();
             } else { JOptionPane.showMessageDialog(this, "No hay entrada activa.", "Error", JOptionPane.WARNING_MESSAGE); }
         } catch (Exception e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
@@ -165,13 +163,13 @@ public class FrmMarcacion extends javax.swing.JFrame {
         modeloLista.clear();
         if (idEmpleadoVerificado == -1) { modeloLista.addElement("=== Verifique un empleado ==="); return; }
         try {
-            LocalDate fechaSel = ((java.sql.Date) new java.sql.Date(((Date) spnFecha.getValue()).getTime())).toLocalDate();
-            List<RegistroAsistencia> asistencias = asistenciaController.obtenerAsistenciasDelDia(idEmpleadoVerificado, fechaSel);
-            if (asistencias.isEmpty()) { modeloLista.addElement("=== Sin marcaciones en esta fecha ==="); return; }
+            LocalDate fechaSel = new java.sql.Date(((Date) spnFecha.getValue()).getTime()).toLocalDate();
+            asistenciasActuales = asistenciaController.obtenerAsistenciasDelDia(idEmpleadoVerificado, fechaSel);
+            if (asistenciasActuales.isEmpty()) { modeloLista.addElement("=== Sin marcaciones en esta fecha ==="); return; }
             DateTimeFormatter hf = DateTimeFormatter.ofPattern("HH:mm:ss");
             modeloLista.addElement("=== MARCACIONES DEL " + fechaSel.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " ===");
             modeloLista.addElement("");
-            asistencias.forEach(r -> {
+            asistenciasActuales.forEach(r -> {
                 String entrada = r.getMarcaEntrada().format(hf);
                 String salida = r.getMarcaSalida() != null ? r.getMarcaSalida().format(hf) : "--- (activo)";
                 String horas = r.getMarcaSalida() != null ? String.format("%.2f hrs", asistenciaController.calcularHorasTrabajadas(r)) : "En curso";
@@ -180,21 +178,41 @@ public class FrmMarcacion extends javax.swing.JFrame {
                 modeloLista.addElement("Total:   " + horas);
                 modeloLista.addElement("------------------------");
             });
-        } catch (Exception e) { modeloLista.addElement("Error: " + e.getMessage()); }
+        } catch (Exception e) { JOptionPane.showMessageDialog(this, "Error al cargar marcaciones: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
+    }
+
+    private void eliminarMarcacionSeleccionada() {
+        int idx = jList1.getSelectedIndex();
+        if (idx < 0 || idx >= asistenciasActuales.size()) {
+            JOptionPane.showMessageDialog(this, "Seleccione una marcacion de la lista.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        RegistroAsistencia seleccionada = asistenciasActuales.get(idx);
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Eliminar marcacion del " + seleccionada.getMarcaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "?",
+            "Confirmar eliminacion", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
+        try {
+            asistenciaController.eliminarAsistencia(seleccionada.getIdRegistro());
+            JOptionPane.showMessageDialog(this, "Marcacion eliminada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarMarcacionesDelDia();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
-        // [PRODUCCIÓN] lblReloj = new javax.swing.JLabel();
-        // lblSeleccionEmpleado = new javax.swing.JLabel();
-        // cmbEmpleado = new javax.swing.JComboBox<>();
+
+
 
         spnFecha = new javax.swing.JSpinner();
         spnHora = new javax.swing.JSpinner();
@@ -208,21 +226,17 @@ public class FrmMarcacion extends javax.swing.JFrame {
         setTitle("Marcacion");
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 10));
+
 
         jButton1.setText("Marcar entrada");
         jButton2.setText("Marcar salida");
 
         jScrollPane1.setViewportView(jList1);
 
-        jButton3.setText("Almuerzo");
+        jButton3.setText("Refrescar");
+        jButton4.setText("Eliminar");
 
-        // [PRODUCCIÓN] lblReloj.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        // [PRODUCCIÓN] lblReloj.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        // [PRODUCCIÓN] lblReloj.setText(java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
 
-        // lblSeleccionEmpleado.setText("Empleado:");
-        // cmbEmpleado.setPreferredSize(new java.awt.Dimension(200, 30));
 
         lblFechaHora.setText("Fecha y Hora:");
         lblIdEmpleado.setText("ID Empleado:");
@@ -251,7 +265,8 @@ public class FrmMarcacion extends javax.swing.JFrame {
                     .addComponent(lblNombreEmpleado)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -276,21 +291,33 @@ public class FrmMarcacion extends javax.swing.JFrame {
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         pack();
-    }
+    }//GEN-END:initComponents
+    // </editor-fold>
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new FrmMarcacion().setVisible(true));
     }
 
-    // Variables declaration - do not modify
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton4;
+
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner spnFecha;
+    private javax.swing.JSpinner spnHora;
+    private javax.swing.JLabel lblFechaHora;
+    private javax.swing.JLabel lblIdEmpleado;
+    private javax.swing.JTextField txtIdEmpleado;
+    private javax.swing.JButton btnVerificar;
+    private javax.swing.JLabel lblNombreEmpleado;
+    // End of variables declaration//GEN-END:variables
 }

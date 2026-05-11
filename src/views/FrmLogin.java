@@ -12,8 +12,21 @@ public class FrmLogin extends javax.swing.JFrame {
 
     public FrmLogin() {
         initComponents();
+        configurarComponentes();
         this.setLocationRelativeTo(null);
         this.controller = new AuthController(this);
+    }
+
+    private void configurarComponentes() {
+        btnMostrarPassword.addActionListener(e -> {
+            if (btnMostrarPassword.isSelected()) {
+                txtPassword.setEchoChar((char) 0);
+                btnMostrarPassword.setText("Ocultar");
+            } else {
+                txtPassword.setEchoChar('*');
+                btnMostrarPassword.setText("Mostrar");
+            }
+        });
     }
 
     public JPasswordField getTxtPassword() { return txtPassword; }
@@ -27,16 +40,6 @@ public class FrmLogin extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         btnMostrarPassword = new javax.swing.JToggleButton("Mostrar");
         btnMostrarPassword.setFont(new java.awt.Font("Segoe UI", 1, 13));
-        // Toggle listener: muestra/oculta la contraseña con programación funcional (lambda)
-        btnMostrarPassword.addActionListener(e -> {
-            if (btnMostrarPassword.isSelected()) {
-                txtPassword.setEchoChar((char) 0); // Show password
-                btnMostrarPassword.setText("Ocultar");
-            } else {
-                txtPassword.setEchoChar('*'); // Hide password
-                btnMostrarPassword.setText("Mostrar");
-            }
-        });
         btnIngresar = new javax.swing.JButton();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
@@ -76,7 +79,8 @@ public class FrmLogin extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap(30, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(31, 31, 31)));
         pack();
-    }
+    }//GEN-END:initComponents
+    // </editor-fold>
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {
         try {
@@ -90,10 +94,11 @@ public class FrmLogin extends javax.swing.JFrame {
         }
     }
 
-    // Variables declaration - do not modify
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JToggleButton btnMostrarPassword;
     private javax.swing.JTextField txtUsuario;
+    // End of variables declaration//GEN-END:variables
 }

@@ -128,7 +128,15 @@ public class ContratoController implements ActionListener {
             return;
         }
         DefaultTableModel modelo = (DefaultTableModel) vista.getTablaContratos().getModel();
-        modelo.removeRow(fila);
-        JOptionPane.showMessageDialog(vista, "Contrato eliminado.");
+        int id = (int) modelo.getValueAt(fila, 0);
+        if (JOptionPane.showConfirmDialog(vista, "¿Eliminar el contrato seleccionado?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                contratoDAO.delete(id);
+                cargarTabla();
+                JOptionPane.showMessageDialog(vista, "Contrato eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(vista, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

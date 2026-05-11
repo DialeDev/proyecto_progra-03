@@ -10,8 +10,15 @@ public class RepositorioBoletaDetalle {
     private static final String SQL_SELECT_ALL = "SELECT * FROM BoletaDetalle";
 
     public Long create(BoletaDetalle bd) {
-        try (Connection conn = Conexion.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = Conexion.getConnection()) {
+            return create(conn, bd);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al crear detalle: " + e.getMessage(), e);
+        }
+    }
+
+    public Long create(Connection conn, BoletaDetalle bd) {
+        try (PreparedStatement ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
             ps.setLong(1, bd.idBoleta());
             ps.setString(2, bd.concepto());
             ps.setString(3, bd.tipo());

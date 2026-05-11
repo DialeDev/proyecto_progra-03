@@ -31,7 +31,38 @@ public class FrmGestionContratos extends javax.swing.JFrame {
     public FrmGestionContratos() {
         initComponents();
         inicializarPanelTiposContrato();
+        configurarComponentes();
         this.controller = new ContratoController(this);
+    }
+
+    private void configurarComponentes() {
+        btnGuardarTipo.addActionListener(e -> {
+            controller.guardarTipoContrato(txtNombreTipo.getText().trim(), cmbTipoContrato.getSelectedItem().toString(), txtDescripcion.getText().trim());
+            limpiarFormularioTipo();
+        });
+        btnActualizarTipo.addActionListener(e -> {
+            int fila = tablaContratos.getSelectedRow();
+            if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione un tipo.", "Error", JOptionPane.WARNING_MESSAGE); return; }
+            int id = (int) ((DefaultTableModel) tablaContratos.getModel()).getValueAt(fila, 0);
+            controller.actualizarTipoContrato(id, txtNombreTipo.getText().trim(), cmbTipoContrato.getSelectedItem().toString(), txtDescripcion.getText().trim());
+            limpiarFormularioTipo();
+        });
+        btnEliminarTipo.addActionListener(e -> {
+            int fila = tablaContratos.getSelectedRow();
+            if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione un tipo.", "Error", JOptionPane.WARNING_MESSAGE); return; }
+            DefaultTableModel model = (DefaultTableModel) tablaContratos.getModel();
+            int id = (int) model.getValueAt(fila, 0);
+            String nombre = (String) model.getValueAt(fila, 1);
+            if (JOptionPane.showConfirmDialog(this, "¿Eliminar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                controller.eliminarTipoContrato(id, nombre);
+                limpiarFormularioTipo();
+            }
+        });
+        btnLimpiarTipo.addActionListener(e -> limpiarFormularioTipo());
+        tablaContratos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) { seleccionarTipoContrato(); }
+        });
     }
 
     private void inicializarPanelTiposContrato() {
@@ -101,34 +132,10 @@ public class FrmGestionContratos extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(panelTipoContrato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(15, Short.MAX_VALUE)));
-        btnGuardarTipo.addActionListener(e -> {
-            controller.guardarTipoContrato(txtNombreTipo.getText().trim(), cmbTipoContrato.getSelectedItem().toString(), txtDescripcion.getText().trim());
-            limpiarFormularioTipo();
-        });
-        btnActualizarTipo.addActionListener(e -> {
-            int fila = tablaContratos.getSelectedRow();
-            if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione un tipo.", "Error", JOptionPane.WARNING_MESSAGE); return; }
-            int id = (int) ((DefaultTableModel) tablaContratos.getModel()).getValueAt(fila, 0);
-            controller.actualizarTipoContrato(id, txtNombreTipo.getText().trim(), cmbTipoContrato.getSelectedItem().toString(), txtDescripcion.getText().trim());
-            limpiarFormularioTipo();
-        });
-        btnEliminarTipo.addActionListener(e -> {
-            int fila = tablaContratos.getSelectedRow();
-            if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione un tipo.", "Error", JOptionPane.WARNING_MESSAGE); return; }
-            DefaultTableModel model = (DefaultTableModel) tablaContratos.getModel();
-            int id = (int) model.getValueAt(fila, 0);
-            String nombre = (String) model.getValueAt(fila, 1);
-            controller.eliminarTipoContrato(id, nombre);
-            limpiarFormularioTipo();
-        });
-        btnLimpiarTipo.addActionListener(e -> limpiarFormularioTipo());
-        tablaContratos.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) { seleccionarTipoContrato(); }
-        });
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -169,7 +176,8 @@ public class FrmGestionContratos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(23, Short.MAX_VALUE)));
         pack();
-    }
+    }//GEN-END:initComponents
+    // </editor-fold>
 
     private void seleccionarTipoContrato() {
         int fila = tablaContratos.getSelectedRow();
@@ -192,7 +200,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new FrmGestionContratos().setVisible(true));
     }
 
-    // Variables declaration
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
@@ -200,6 +208,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaContratos;
+    // End of variables declaration//GEN-END:variables
 
     public JButton getBtnCerrar() { return btnCerrar; }
     public JButton getBtnEliminar() { return btnEliminar; }
