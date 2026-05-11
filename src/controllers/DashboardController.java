@@ -41,6 +41,24 @@ public class DashboardController {
         frm.setVisible(true);
     }
 
+    public void abrirDepartamentos() {
+        FrmGestionDepartamentos frm = new FrmGestionDepartamentos();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);
+    }
+
+    public void abrirAsignacionJornada() {
+        FrmAsignacionJornada frm = new FrmAsignacionJornada();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);
+    }
+
+    public void abrirReportes() {
+        FrmReportes frm = new FrmReportes();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);
+    }
+
     public void cerrarSesion() {
         SesionGlobal.cerrarSesion();
         FrmLogin frmLogin = new FrmLogin();
