@@ -1,13 +1,36 @@
 package dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-// @author DialeMRZ
+/**
+ * @author DialeMRZ
+ */
 public class Conexion {
-    // Linux / Docker: confiar en certificado auto-firmado
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=AsistenciaPlanillasDB;user=sa;password=Password_2022!;encrypt=true;trustServerCertificate=true;";
-    // Windows (SQL Server local / autenticacion mixta): descomentar y comentar la de arriba
-    // private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=AsistenciaPlanillasDB;user=sa;password=Password_2022!;encrypt=false;";
 
-    public static Connection getConnection() throws SQLException { return DriverManager.getConnection(URL); }
+    private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=AsistenciaPlanillasDB;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
+
+    static {
+        try {
+            Class.forName(DRIVER);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Driver SQL Server no encontrado: " + DRIVER, e);
+        }
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL);
+    }
+
+    public static void close(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
