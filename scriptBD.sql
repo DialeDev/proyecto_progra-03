@@ -109,11 +109,15 @@ BEGIN
         IdEmpleado INT NOT NULL,
         IdJornada INT NOT NULL,
         FechaAsignacion DATE NOT NULL DEFAULT GETDATE(),
+        FechaFin DATE NULL,
         Activa BIT NOT NULL DEFAULT 1,
         CONSTRAINT FK_Asig_Empleado FOREIGN KEY (IdEmpleado) REFERENCES dbo.Empleado(IdEmpleado),
         CONSTRAINT FK_Asig_Jornada FOREIGN KEY (IdJornada) REFERENCES dbo.Jornada(IdJornada)
     );
 END
+-- Agregar columna FechaFin si la tabla ya existe sin ella
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='AsignacionJornada' AND COLUMN_NAME='FechaFin')
+    ALTER TABLE dbo.AsignacionJornada ADD FechaFin DATE NULL;
 
 IF OBJECT_ID('dbo.RegistroAsistencia', 'U') IS NULL
 BEGIN
