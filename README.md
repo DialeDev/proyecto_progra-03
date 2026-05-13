@@ -207,22 +207,7 @@ WARNING: java.lang.System::loadLibrary has been called by com.microsoft.sqlserve
 
 ---
 
-## 9. Módulos del Sistema
-
-| Módulo | Descripción | Estado |
-|--------|-------------|--------|
-| Login | Autenticación de usuarios | ✅ Completo |
-| Dashboard | Menú principal | ✅ Completo |
-| Gestión Empleados | CRUD completo | ✅ Completo |
-| Gestión Contratos | Catálogo de tipos de contrato | ✅ Completo |
-| Registro Contratos | Alta de empleados | 🟡 Parcial |
-| Gestión Horarios | Jornadas laborales | 🟡 Parcial |
-| Marcación | Registro de asistencia | 🔴 Incompleto |
-| Planillas | Generación de nómina | ✅ Completo |
-
----
-
-## 10. Créditos
+## 9. Créditos
 
 Desarrollado por estudiantes de Programación III - UTEC
 
