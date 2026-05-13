@@ -1,33 +1,33 @@
-**/build/
-**/dist/
-**/bin/
-**/target/
-**/out/
-*.class
+# Directorios de construcción y salida
+/build/
+/out/
+/dist/
+/bin/
+/target/
 
+# Archivos generados por el IDE
+**/*.class
+**/*.form
+**/manifest.mf
+.classpath
+.project
+.settings/
 *.jar
 *.war
 *.ear
 *.zip
 *.tar.gz
 
-**/nbproject/private/
-**/nbproject/project.ui.properties
-
-.classpath
-.project
-.settings/
-
-.idea/
+# Configuraciones de IDE
+/nbproject/private/
+/nbproject/genfiles.properties
+/nbproject/project.ui.properties
+/.idea/
 *.iml
 *.iws
+/.vscode/
 
-.vscode/
-
-hs_err_pid*
-replay_pid*
-*.log
-
+# Archivos de sistema o temporales
 .DS_Store
 .DS_Store?
 ._*
@@ -36,3 +36,8 @@ replay_pid*
 ehthumbs.db
 Thumbs.db
 desktop.ini
+hs_err_pid*
+replay_pid*
+*.log
+*.swp
+
