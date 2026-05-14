@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: OpenCode Agent
   version: 1.0.0
-  project: Proyecto
+  project: proyecto_progra-03
 ---
 
 # NetBeans Form Safe Edit
@@ -35,7 +35,7 @@ Do NOT load for:
    ```
 4. **Use NetBeans Design View** for UI changes — never manually edit component initialization.
 5. **Validate after edits** — ensure the `.form` opens in NetBeans without errors.
-6. **Backup first** — create a backup of the `.form` and `.java` files before editing.
+6. **Backup first** — Create a backup of `.form` and `.java` files in `assets/backups/` before editing. See `references/netbeans-form-guide.md` for details.
 
 ---
 
@@ -54,7 +54,7 @@ Do NOT load for:
 ## Execution Steps
 
 1. **Backup**
-   - Copy `.form` and `.java` files to `assets/backups/` with timestamp.
+   - Copy `.form` and `.java` files to `assets/backups/` with timestamp. See `references/netbeans-form-guide.md` for commands.
 
 2. **Identify Editable Regions**
    - Open `.java` file and locate:
@@ -91,7 +91,7 @@ Do NOT load for:
 Return:
 - **Modified `.java` file** with changes applied safely.
 - **Backup files** in `assets/backups/` (if created).
-- **Validation report** (success/failure and errors).
+- **Validation status**: `success` or `failure` with errors.
 
 Example output:
 ```json
@@ -99,10 +99,7 @@ Example output:
   "status": "success",
   "modified_files": ["src/views/FrmLogin.java"],
   "backups_created": ["assets/backups/FrmLogin.java_20260513_120000"],
-  "validation": {
-    "design_view": "no_errors",
-    "runtime": "functional"
-  }
+  "validation": "no_errors"
 }
 ```
 
@@ -111,6 +108,5 @@ Example output:
 ## References
 
 - `assets/backups/` — Backup copies of `.form` and `.java` files.
-- `references/netbeans-form-guide.md` — Detailed guide on NetBeans `.form` structure (create this file if needed).
-- Project `README.md` — Architecture rules for Swing UI.
-- NetBeans Design View Documentation: [Official Guide](https://netbeans.apache.org/kb/docs/java/quickstart-gui.html)
+- `references/netbeans-form-guide.md` — Detailed guide on NetBeans `.form` structure and backup procedures.
+- Project `AGENTS.md` — Architecture rules for Swing UI.
