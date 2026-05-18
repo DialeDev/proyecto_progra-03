@@ -25,7 +25,8 @@ public class RepositorioPlanilla {
             ps.setInt(1, planilla.getMes());
             ps.setInt(2, planilla.getAnio());
             ps.setDate(3, java.sql.Date.valueOf(planilla.getFechaEmision()));
-            ps.setString(4, planilla.getEstado().name());
+            String estadoStr = planilla.getEstado().name();
+            ps.setString(4, estadoStr.substring(0, 1).toUpperCase() + estadoStr.substring(1).toLowerCase());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) return rs.getInt(1);
@@ -80,7 +81,8 @@ public class RepositorioPlanilla {
     public boolean actualizarEstado(Integer id, Planilla.EstadoPlanilla nuevoEstado) {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_ESTADO)) {
-            ps.setString(1, nuevoEstado.name());
+            String estadoStr = nuevoEstado.name();
+            ps.setString(1, estadoStr.substring(0, 1).toUpperCase() + estadoStr.substring(1).toLowerCase());
             ps.setInt(2, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -90,6 +92,6 @@ public class RepositorioPlanilla {
 
     private Planilla mapResultSet(ResultSet rs) throws SQLException {
         return new Planilla(rs.getInt("idPlanilla"), rs.getInt("mes"), rs.getInt("anio"),
-            rs.getDate("fechaEmision").toLocalDate(), Planilla.EstadoPlanilla.valueOf(rs.getString("estado")));
+            rs.getDate("fechaEmision").toLocalDate(), Planilla.EstadoPlanilla.valueOf(rs.getString("estado").toUpperCase()));
     }
 }

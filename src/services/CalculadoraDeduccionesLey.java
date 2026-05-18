@@ -32,8 +32,8 @@ public class CalculadoraDeduccionesLey {
         if (salario.compareTo(ISR_TRAMO1) <= 0)
             return excedente.multiply(ISR_TASA1).setScale(2, RoundingMode.HALF_UP);
         if (salario.compareTo(ISR_TRAMO2) <= 0)
-            return excedente.multiply(ISR_TASA2).add(ISR_CUOTA2).setScale(2, RoundingMode.HALF_UP);
-        return excedente.multiply(ISR_TASA3).add(ISR_CUOTA3).setScale(2, RoundingMode.HALF_UP);
+            return salario.subtract(ISR_TRAMO1).multiply(ISR_TASA2).add(ISR_CUOTA2).setScale(2, RoundingMode.HALF_UP);
+        return salario.subtract(ISR_TRAMO2).multiply(ISR_TASA3).add(ISR_CUOTA3).setScale(2, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal calcularDeduccionesTotales(BigDecimal salarioBase) {
