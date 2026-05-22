@@ -14,6 +14,7 @@
 .settings/
 *.jar
 !lib/*.jar
+!src/lib/*.jar
 *.war
 *.ear
 *.zip
