@@ -13,7 +13,6 @@
 .project
 .settings/
 *.jar
-!lib/*.jar
 !src/lib/*.jar
 *.war
 *.ear
@@ -21,6 +20,7 @@
 *.tar.gz
 
 # Configuraciones de IDE
+/.atl/
 /nbproject/private/
 /nbproject/genfiles.properties
 /nbproject/project.ui.properties
