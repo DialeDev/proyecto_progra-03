@@ -38,7 +38,7 @@ public class HorarioController {
         if (j.getNombre() == null || j.getNombre().trim().isEmpty()) return false;
         if (j.getHoraEntradaEsperada() == null || j.getHoraSalidaEsperada() == null) return false;
         if (j.getMargenToleranciaMinutos() < 0) return false;
-        return !j.getHoraSalidaEsperada().isBefore(j.getHoraEntradaEsperada());
+        return true;
     }
 
     public boolean existeHorario(String nombre) {

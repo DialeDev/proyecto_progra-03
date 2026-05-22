@@ -17,7 +17,7 @@ public class RepositorioContrato {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
             ps.setString(1, contrato.getNombre());
-            ps.setString(2, contrato.getTipo().name());
+            ps.setString(2, contrato.getTipo() == TipoContrato.FIJO ? "Fijo" : "Por Hora");
             ps.setString(3, contrato.getDescripcion());
             ps.setBoolean(4, contrato.isActivo());
             ps.executeUpdate();
@@ -54,7 +54,7 @@ public class RepositorioContrato {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
             ps.setString(1, contrato.getNombre());
-            ps.setString(2, contrato.getTipo().name());
+            ps.setString(2, contrato.getTipo() == TipoContrato.FIJO ? "Fijo" : "Por Hora");
             ps.setString(3, contrato.getDescripcion());
             ps.setInt(4, contrato.getIdContrato());
             ps.executeUpdate();
