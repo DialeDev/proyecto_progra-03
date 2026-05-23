@@ -7,7 +7,6 @@
 
 # Archivos generados por el IDE
 **/*.class
-**/*.form
 **/manifest.mf
 .classpath
 .project

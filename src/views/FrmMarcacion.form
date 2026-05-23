@@ -2,7 +2,7 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="Marcacion"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
@@ -25,63 +25,63 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-        <Group type="102" attributes="0">
-          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="0" attributes="0">
-            <Group type="102" attributes="0">
-              <Component id="lblFechaHora" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="spnFecha" min="-2" pref="120" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="spnHora" min="-2" pref="80" max="-2" attributes="0"/>
-            </Group>
-            <Group type="102" attributes="0">
-              <Component id="lblIdEmpleado" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="txtIdEmpleado" min="-2" pref="80" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="btnVerificar" min="-2" max="-2" attributes="0"/>
-            </Group>
-            <Component id="lblNombreEmpleado" min="-2" max="-2" attributes="0"/>
-            <Component id="jButton1" min="-2" pref="140" max="-2" attributes="0"/>
-            <Component id="jButton2" min="-2" pref="140" max="-2" attributes="0"/>
-            <Component id="jButton3" min="-2" pref="140" max="-2" attributes="0"/>
-            <Component id="jButton4" min="-2" pref="140" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="lblFechaHora" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="spnFecha" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="spnHora" min="-2" pref="80" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="lblIdEmpleado" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="txtIdEmpleado" min="-2" pref="80" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnVerificar" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="lblNombreEmpleado" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton1" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="jButton2" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="jButton3" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="jButton4" min="-2" pref="140" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="293" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          <Component id="jScrollPane1" min="-2" pref="293" max="-2" attributes="0"/>
-          <EmptySpace max="-2" attributes="0"/>
-        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-        <Group type="102" alignment="0" attributes="0">
-          <EmptySpace max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="3" attributes="0">
-            <Component id="lblFechaHora" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="spnFecha" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="spnHora" alignment="3" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblFechaHora" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spnFecha" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spnHora" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblIdEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtIdEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnVerificar" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="lblNombreEmpleado" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="jButton2" min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="jButton3" min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="jButton4" min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
           </Group>
-          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="3" attributes="0">
-            <Component id="lblIdEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtIdEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="btnVerificar" alignment="3" min="-2" max="-2" attributes="0"/>
-          </Group>
-          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-          <Component id="lblNombreEmpleado" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-          <Component id="jButton1" min="-2" pref="35" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-          <Component id="jButton2" min="-2" pref="35" max="-2" attributes="0"/>
-          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          <Component id="jButton3" min="-2" pref="35" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-          <Component id="jButton4" min="-2" pref="35" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-        </Group>
-        <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -100,6 +100,7 @@
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
+
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JList" name="jList1">
@@ -151,9 +152,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblNombreEmpleado">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>
