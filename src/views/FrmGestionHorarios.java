@@ -318,9 +318,7 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
     //private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) { dispose(); }
     //private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) { eliminarJornada(); }
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new FrmGestionHorarios().setVisible(true));
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;

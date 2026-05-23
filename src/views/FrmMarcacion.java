@@ -300,9 +300,7 @@ public class FrmMarcacion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     // </editor-fold>
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new FrmMarcacion().setVisible(true));
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVerificar;
