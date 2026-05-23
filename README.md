@@ -101,18 +101,7 @@ src/
 
 ---
 
-## 4. La Plantilla Maestra (Golden Template)
-
-El módulo de **Gestión de Empleados** es la plantilla perfecta. Si necesitas programar algo nuevo, estudia este módulo:
-
-1. **Model (`models/Empleado.java`):** Solo datos + getters/setters
-2. **Repositorio (`dao/RepositorioEmpleado.java`):** Queries SQL a la base de datos
-3. **Controller (`controllers/EmpleadoController.java`):** Validaciones + orquestación
-4. **View (`views/FrmGestionEmpleados.java`):** UI "tonta" que solo captura eventos
-
----
-
-## 5. Reglas de Oro
+## 4. Reglas de Oro
 
 **NUNCA** rompas estas reglas:
 
@@ -126,7 +115,7 @@ El módulo de **Gestión de Empleados** es la plantilla perfecta. Si necesitas p
 
 ---
 
-## 6. Base de Datos
+## 5. Base de Datos
 
 ### Requisitos
 - SQL Server 2022
@@ -150,7 +139,7 @@ El driver JDBC está en la carpeta `lib/`:
 
 ---
 
-## 7. Requisitos Técnicos
+## 6. Requisitos Técnicos
 
 ### Java
 - **Versión:** JDK 25 
@@ -162,7 +151,7 @@ El driver JDBC está en la carpeta `lib/`:
 
 ---
 
-## 8. Troubleshooting
+## 7. Troubleshooting
 
 ### Error: "TCP/IP connection to host localhost, port 1433 has failed"
 
@@ -207,7 +196,7 @@ WARNING: java.lang.System::loadLibrary has been called by com.microsoft.sqlserve
 
 ---
 
-## 9. Créditos
+## 8. Créditos
 
 Desarrollado por estudiantes de Programación III - UTEC
 

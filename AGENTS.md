@@ -129,14 +129,6 @@ The project follows the **MVC (Model-View-Controller)** pattern with a **Reposit
 3. **Repository**: Handles SQL queries and database interactions. **Must not** contain business logic or show error messages.
 4. **Model (POJOs)**: Plain Old Java Objects for data representation. **Must not** contain logic.
 
-### Golden Template
-
-Use the **Employee Management module** as the golden template for new features:
-- `models/Empleado.java`
-- `dao/RepositorioEmpleado.java`
-- `controllers/EmpleadoController.java`
-- `views/FrmGestionEmpleados.java`
-
 ### Rules
 
 1. **Single Entry Point**: Always run the application via `src/main/App.java`. **Never** run JFrames individually.
