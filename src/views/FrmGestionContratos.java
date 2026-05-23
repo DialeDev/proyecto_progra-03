@@ -147,6 +147,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         tablaContratos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Gestion de contratos");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("GESTION CONTRATOS");
@@ -213,7 +214,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,7 +223,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         pack();

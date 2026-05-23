@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="Gesti&#xf3;n de empleados"/>
@@ -24,44 +24,34 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-              <Component id="btnDesactivar" min="-2" pref="127" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnLimpiar" min="-2" pref="127" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="183" max="-2" attributes="0"/>
-              <Component id="btnGuardar" min="-2" pref="127" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="43" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="btnAtras" min="-2" pref="32" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="jPanel1" max="32767" attributes="0"/>
-                      <Component id="jPanel2" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnAtras" min="-2" pref="32" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jPanel1" max="32767" attributes="0"/>
+                  <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnGuardar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
-                  <Component id="btnLimpiar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
-                  <Component id="btnDesactivar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -71,7 +61,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder justification="2" title="Datos del Empleado">
+            <TitledBorder justification="1" title="Datos del Empleado">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
@@ -84,89 +74,93 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                  <Component id="txtNombres" min="-2" pref="151" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="txtApellidos" min="-2" pref="151" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-                  <Component id="txtDui" min="-2" pref="151" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                  <Component id="jLabelDepartamento" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="cmbDepartamento" min="-2" pref="151" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="txtNombres" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDui" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                      <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabelDepartamento" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbDepartamento" alignment="0" min="-2" pref="151" max="-2" attributes="0"/>
+                      <Component id="txtApellidos" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtNombres" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
-                      <Component id="txtApellidos" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
-                      <Component id="txtDui" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtNombres" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtApellidos" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabelDepartamento" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cmbDepartamento" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtDui" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabelDepartamento" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cmbDepartamento" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="15" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JTextField" name="txtApellidos">
-          <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Apellidos">
-                  <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder/>
-                  </Border>
-                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
-                </TitledBorder>
-              </Border>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtDui">
-          <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="DUI">
-                  <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder/>
-                  </Border>
-                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
-                </TitledBorder>
-              </Border>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtNombres">
-          <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Nombres">
-                  <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder/>
-                  </Border>
-                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
-                </TitledBorder>
-              </Border>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabelDepartamento">
           <Properties>
             <Property name="text" type="java.lang.String" value="Departamento:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbDepartamento">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbDepartamentoActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtNombres">
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtApellidos">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtApellidosActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtDui">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nombre"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Apellido"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="DUI"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -187,19 +181,19 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="711" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="711" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="173" max="-2" attributes="0"/>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="213" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -223,51 +217,127 @@
                     <Column editable="true" title="Estado" type="java.lang.Object"/>
                   </Table>
                 </Property>
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                  <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                  </TableColumnModel>
+                </Property>
+                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                </Property>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btnLimpiar">
+    <Container class="javax.swing.JPanel" name="jPanel3">
       <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="99" red="99" type="rgb"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder justification="2" title="Acciones">
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+              <Font PropertyName="font" name="Segoe UI" size="18" style="1"/>
+            </TitledBorder>
+          </Border>
         </Property>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Limpiar"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnGuardar">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="cc" green="ff" red="cc" type="rgb"/>
-        </Property>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Guardar"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnDesactivar">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="99" red="ff" type="rgb"/>
-        </Property>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Desactivar"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnAtras">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/img/icons8-flecha-32.png"/>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
-    </Component>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="btnDesactivar" alignment="0" pref="100" max="32767" attributes="0"/>
+                      <Component id="btnGuardar" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnLimpiar" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                  <Component id="btnLimpiar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="btnDesactivar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="btnGuardar">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="99" red="0" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Guardar"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnLimpiar">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Limpiar"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnDesactivar">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="cc" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Desactivar"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

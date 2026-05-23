@@ -2,12 +2,11 @@ package controllers;
 
 import views.*;
 import utils.SesionGlobal;
-import javax.swing.JFrame;
 
 public class DashboardController {
-    private final JFrame vista;
+    private final FrmDashboard vista;
 
-    public DashboardController(JFrame vista) {
+    public DashboardController(FrmDashboard vista) {
         this.vista = vista;
     }
 
