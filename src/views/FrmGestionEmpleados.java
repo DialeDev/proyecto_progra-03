@@ -210,7 +210,7 @@ public class FrmGestionEmpleados extends javax.swing.JFrame {
     private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) { controller.desactivarEmpleado(); }
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        FrmDashboard dashboard = new FrmDashboard();
+        FrmDashboardSTOP dashboard = new FrmDashboardSTOP();
         dashboard.setVisible(true);
         new DashboardController(dashboard);
     }
