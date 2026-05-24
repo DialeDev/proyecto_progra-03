@@ -12,7 +12,22 @@ public class RepositorioJornada {
     private static final String SQL_UPDATE = "UPDATE Jornada SET Nombre = ?, HoraEntradaEsperada = ?, HoraSalidaEsperada = ?, MargenToleranciaMinutos = ? WHERE IdJornada = ?";
     private static final String SQL_DELETE = "UPDATE Jornada SET Activa = 0 WHERE IdJornada = ?";
 
+    public boolean existeTraslape(Jornada nueva) {
+        for (Jornada j : findAll()) {
+            if (nueva.getIdJornada() == j.getIdJornada()) continue;
+            boolean startAntesEnd = nueva.getHoraEntradaEsperada().isBefore(j.getHoraSalidaEsperada());
+            boolean endDespuesStart = nueva.getHoraSalidaEsperada().isAfter(j.getHoraEntradaEsperada());
+            if (startAntesEnd && endDespuesStart) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void create(Jornada jornada) {
+        if (existeTraslape(jornada)) {
+            throw new RuntimeException("La jornada se traslapa con otra jornada activa existente.");
+        }
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
             ps.setString(1, jornada.getNombre());
@@ -51,6 +66,9 @@ public class RepositorioJornada {
     }
 
     public void update(Jornada jornada) {
+        if (existeTraslape(jornada)) {
+            throw new RuntimeException("La jornada se traslapa con otra jornada activa existente.");
+        }
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
             ps.setString(1, jornada.getNombre());
@@ -75,8 +93,10 @@ public class RepositorioJornada {
     }
 
     private Jornada mapResultSet(ResultSet rs) throws SQLException {
-        return new Jornada(rs.getInt("IdJornada"), rs.getString("Nombre"),
+        Jornada j = new Jornada(rs.getInt("IdJornada"), rs.getString("Nombre"),
             rs.getTime("HoraEntradaEsperada").toLocalTime(), rs.getTime("HoraSalidaEsperada").toLocalTime(),
             rs.getInt("MargenToleranciaMinutos"));
+        j.setActiva(rs.getBoolean("Activa"));
+        return j;
     }
 }

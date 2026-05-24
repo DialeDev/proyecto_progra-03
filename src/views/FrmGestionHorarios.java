@@ -54,14 +54,18 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
                     }
                 }
                 if (JOptionPane.showConfirmDialog(this, "¿Actualizar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(this, controller.actualizar(new Jornada(id, nombre, entrada, salida, tolerancia)));
+                    String error = controller.actualizar(new Jornada(id, nombre, entrada, salida, tolerancia));
+                    if (error != null) JOptionPane.showMessageDialog(this, error, "Aviso", JOptionPane.WARNING_MESSAGE);
+                    else JOptionPane.showMessageDialog(this, "Horario actualizado correctamente.");
                 }
             } else {
                 if (controller.existeHorario(nombre)) {
                     JOptionPane.showMessageDialog(this, "Ya existe una jornada '" + nombre + "'.");
                     return;
                 }
-                JOptionPane.showMessageDialog(this, controller.guardar(new Jornada(0, nombre, entrada, salida, tolerancia)));
+                String error = controller.guardar(new Jornada(0, nombre, entrada, salida, tolerancia));
+                if (error != null) JOptionPane.showMessageDialog(this, error, "Aviso", JOptionPane.WARNING_MESSAGE);
+                else JOptionPane.showMessageDialog(this, "Horario guardado correctamente.");
             }
             cargarTabla();
             limpiar();

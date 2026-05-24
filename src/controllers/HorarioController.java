@@ -13,8 +13,12 @@ public class HorarioController {
 
     public String guardar(Jornada jornada) {
         if (!validar(jornada)) return "Datos inválidos";
-        jornadaDAO.create(jornada);
-        return "Horario guardado correctamente";
+        try {
+            jornadaDAO.create(jornada);
+            return null; // Éxito
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
     }
 
     public List<Jornada> listar() { return jornadaDAO.findAll(); }
@@ -25,8 +29,12 @@ public class HorarioController {
 
     public String actualizar(Jornada jornada) {
         if (!validar(jornada)) return "Datos inválidos";
-        jornadaDAO.update(jornada);
-        return "Horario actualizado correctamente";
+        try {
+            jornadaDAO.update(jornada);
+            return null; // Éxito
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
     }
 
     public String eliminar(int id) {

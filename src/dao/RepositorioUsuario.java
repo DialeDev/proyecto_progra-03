@@ -25,16 +25,38 @@ public class RepositorioUsuario {
     }
 
     public void create(Usuario usuario) {
-        try (Connection conn = Conexion.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = Conexion.getConnection();
+            conn.setAutoCommit(false);
+            ps = conn.prepareStatement(SQL_INSERT);
             ps.setInt(1, usuario.getIdEmpleado());
             ps.setString(2, usuario.getUsername());
             ps.setString(3, usuario.getPasswordHash());
             ps.setString(4, usuario.getRol());
             ps.setBoolean(5, usuario.isActivo());
             ps.executeUpdate();
+            conn.commit();
         } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new RuntimeException("Error fatal al hacer rollback de usuario: " + ex.getMessage(), ex);
+                }
+            }
             throw new RuntimeException("Error al crear usuario: " + e.getMessage(), e);
+        } finally {
+            if (ps != null) {
+                try { ps.close(); } catch (SQLException e) { /* ignored */ }
+            }
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) { /* ignored */ }
+            }
         }
     }
 
@@ -61,7 +83,9 @@ public class RepositorioUsuario {
     }
 
     private Usuario mapResultSet(ResultSet rs) throws SQLException {
-        return new Usuario(rs.getInt("IdUsuario"), rs.getInt("IdEmpleado"),
+        Usuario u = new Usuario(rs.getInt("IdUsuario"), rs.getInt("IdEmpleado"),
             rs.getString("Username"), rs.getString("PasswordHash"), rs.getString("Rol"));
+        u.setActivo(rs.getBoolean("Activo"));
+        return u;
     }
 }
