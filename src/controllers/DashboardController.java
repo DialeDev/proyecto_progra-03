@@ -18,6 +18,8 @@ public class DashboardController {
             @Override
             public void windowClosed(WindowEvent e) {
                 vista.setVisible(true);
+                // Restaurar icono después de hacerlo visible (workaround para comportamiento de Swing)
+                vista.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
             }
         });
     }
@@ -82,6 +84,7 @@ public class DashboardController {
     public void cerrarSesion() {
         SesionGlobal.cerrarSesion();
         FrmLogin frmLogin = new FrmLogin();
+        frmLogin.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         frmLogin.setVisible(true);
         vista.dispose();
     }
