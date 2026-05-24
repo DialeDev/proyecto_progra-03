@@ -59,7 +59,7 @@ public class FrmPlanillas extends javax.swing.JFrame {
         btnAnular = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gesti\u00f3n de Planillas");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18));

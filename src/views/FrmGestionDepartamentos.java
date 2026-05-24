@@ -97,7 +97,7 @@ public class FrmGestionDepartamentos extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         label1.setText("Nombre");
 
