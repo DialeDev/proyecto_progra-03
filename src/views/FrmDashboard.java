@@ -18,6 +18,7 @@ public class FrmDashboard extends javax.swing.JFrame {
     public FrmDashboard() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         this.controller = new controllers.DashboardController(this);
         if (utils.SesionGlobal.haySesionActiva()) {
             lblBienvenida.setText("Bienvenid@ al Sistema de Planilla");

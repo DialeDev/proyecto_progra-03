@@ -1,8 +1,10 @@
 package main;
 
 import views.FrmLogin;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import java.awt.Taskbar;
 
 // @author DialeMRZ
 public class App {
@@ -14,6 +16,21 @@ public class App {
         } catch (Exception ex) {
             System.err.println("Error al cargar Nimbus. Usando tema por defecto.");
         }
-        SwingUtilities.invokeLater(() -> new FrmLogin().setVisible(true));
+
+        // Icono global de la aplicación (barra de tareas / dock)
+        var icono = new ImageIcon(App.class.getResource("/img/icono.png")).getImage();
+        if (Taskbar.isTaskbarSupported()) {
+            try {
+                Taskbar.getTaskbar().setIconImage(icono);
+            } catch (Exception ex) {
+                System.err.println("No se pudo establecer el icono en la barra de tareas.");
+            }
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            var login = new FrmLogin();
+            login.setIconImage(icono);
+            login.setVisible(true);
+        });
     }
 }
