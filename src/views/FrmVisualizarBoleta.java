@@ -9,6 +9,7 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
 
     public FrmVisualizarBoleta(BoletaPago boleta) {
         initComponents();
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         configurarComponentes(boleta);
     }
 

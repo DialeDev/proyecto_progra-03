@@ -30,6 +30,7 @@ public class FrmRegistroContratos extends javax.swing.JFrame {
         this.contratoDAO = new RepositorioContrato();
         this.contratacionDAO = new RepositorioContratacion();
         initComponents();
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         configurarComponentes();
     }
 

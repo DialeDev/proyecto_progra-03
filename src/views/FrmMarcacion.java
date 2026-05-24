@@ -32,6 +32,7 @@ public class FrmMarcacion extends javax.swing.JFrame {
     public FrmMarcacion() {
         this.asistenciaController = new AsistenciaController();
         initComponents();
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         configurarComponentes();
         // [PRODUCCIÓN] cargarEmpleados();
         // [PRODUCCIÓN] iniciarReloj();

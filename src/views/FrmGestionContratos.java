@@ -44,6 +44,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
 
     public FrmGestionContratos() {
         initComponents();
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         inicializarPanelTiposContrato();
         configurarComponentes();
         this.controller = new ContratoController(this);

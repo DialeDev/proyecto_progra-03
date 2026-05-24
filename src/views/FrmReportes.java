@@ -19,6 +19,7 @@ public class FrmReportes extends javax.swing.JFrame {
 
     public FrmReportes() {
         initComponents();
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         configurarComponentes();
         this.setLocationRelativeTo(null);
     }

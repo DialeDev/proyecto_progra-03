@@ -14,6 +14,7 @@ public class FrmPlanillas extends javax.swing.JFrame {
     public FrmPlanillas() {
         this.controller = new PlanillaController();
         initComponents();
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         configurarComponentes();
         this.setLocationRelativeTo(null);
     }
