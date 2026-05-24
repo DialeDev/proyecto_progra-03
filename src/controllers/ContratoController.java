@@ -4,7 +4,6 @@ import dao.RepositorioContrato;
 import dao.RepositorioContratacion;
 import models.Contrato;
 import models.Contrato.TipoContrato;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import views.FrmGestionContratos;
 import views.FrmRegistroContratos;
@@ -45,7 +44,7 @@ public class ContratoController implements ActionListener {
             contratoDAO.findAll().forEach(c -> modeloTabla.addRow(new Object[]{
                 c.getIdContrato(), c.getNombre(), c.getTipo().name(), c.getDescripcion(), c.isActivo() ? "Activo" : "Inactivo"}));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(vista, "Error al cargar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            vista.mostrarMensaje("error", "Error al cargar: " + e.getMessage());
         }
     }
 
@@ -65,58 +64,58 @@ public class ContratoController implements ActionListener {
 
     public void guardarTipoContrato(String nombre, String tipoStr, String descripcion) {
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(vista, "El nombre es obligatorio.", "Error", JOptionPane.WARNING_MESSAGE);
+            vista.mostrarMensaje("advertencia", "El nombre es obligatorio.");
             return;
         }
         TipoContrato tipo;
         try { tipo = TipoContrato.valueOf(tipoStr); }
         catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(vista, "Tipo no válido.", "Error", JOptionPane.WARNING_MESSAGE);
+            vista.mostrarMensaje("advertencia", "Tipo no válido.");
             return;
         }
         if (contratoDAO.buscarPorNombre(nombre) != null) {
-            JOptionPane.showMessageDialog(vista, "Ya existe un tipo con el nombre '" + nombre + "'.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+            vista.mostrarMensaje("advertencia", "Ya existe un tipo con el nombre '" + nombre + "'.");
             return;
         }
         try {
             contratoDAO.create(new Contrato(0, nombre, tipo, descripcion));
-            JOptionPane.showMessageDialog(vista, "Guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            vista.mostrarMensaje("exito", "Guardado exitosamente.");
             cargarTabla();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            vista.mostrarMensaje("error", "Error: " + ex.getMessage());
         }
     }
 
     public void actualizarTipoContrato(int id, String nombre, String tipoStr, String descripcion) {
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(vista, "El nombre es obligatorio.", "Error", JOptionPane.WARNING_MESSAGE);
+            vista.mostrarMensaje("advertencia", "El nombre es obligatorio.");
             return;
         }
         TipoContrato tipo;
         try { tipo = TipoContrato.valueOf(tipoStr); }
         catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(vista, "Tipo no válido.", "Error", JOptionPane.WARNING_MESSAGE);
+            vista.mostrarMensaje("advertencia", "Tipo no válido.");
             return;
         }
-        if (JOptionPane.showConfirmDialog(vista, "¿Actualizar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        if (vista.mostrarConfirmacion("¿Actualizar '" + nombre + "'?")) {
             try {
                 contratoDAO.update(new Contrato(id, nombre, tipo, descripcion));
-                JOptionPane.showMessageDialog(vista, "Actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                vista.mostrarMensaje("exito", "Actualizado exitosamente.");
                 cargarTabla();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                vista.mostrarMensaje("error", "Error: " + ex.getMessage());
             }
         }
     }
 
     public void eliminarTipoContrato(int id, String nombre) {
-        if (JOptionPane.showConfirmDialog(vista, "¿Eliminar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        if (vista.mostrarConfirmacion("¿Eliminar '" + nombre + "'?")) {
             try {
                 contratoDAO.delete(id);
-                JOptionPane.showMessageDialog(vista, "Eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                vista.mostrarMensaje("exito", "Eliminado exitosamente.");
                 cargarTabla();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                vista.mostrarMensaje("error", "Error: " + ex.getMessage());
             }
         }
     }
@@ -124,18 +123,18 @@ public class ContratoController implements ActionListener {
     private void eliminarContrato() {
         int fila = vista.getTablaContratos().getSelectedRow();
         if (fila == -1) {
-            JOptionPane.showMessageDialog(vista, "Seleccione un contrato.", "Error", JOptionPane.WARNING_MESSAGE);
+            vista.mostrarMensaje("advertencia", "Seleccione un contrato.");
             return;
         }
         DefaultTableModel modelo = (DefaultTableModel) vista.getTablaContratos().getModel();
         int id = (int) modelo.getValueAt(fila, 0);
-        if (JOptionPane.showConfirmDialog(vista, "¿Eliminar el contrato seleccionado?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        if (vista.mostrarConfirmacion("¿Eliminar el contrato seleccionado?")) {
             try {
                 contratoDAO.delete(id);
                 cargarTabla();
-                JOptionPane.showMessageDialog(vista, "Contrato eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                vista.mostrarMensaje("exito", "Contrato eliminado exitosamente.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(vista, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                vista.mostrarMensaje("error", "Error al eliminar: " + e.getMessage());
             }
         }
     }

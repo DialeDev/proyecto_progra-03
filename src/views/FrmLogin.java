@@ -2,6 +2,7 @@ package views;
 
 import controllers.AuthController;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -35,6 +36,16 @@ public class FrmLogin extends javax.swing.JFrame {
             }
         });
         
+    }
+
+    // -- MVC Messaging Methods --
+    public void mostrarMensaje(String tipo, String mensaje) {
+        switch (tipo) {
+            case "exito" -> JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            case "error" -> JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+            case "advertencia" -> JOptionPane.showMessageDialog(this, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+            case "info" -> JOptionPane.showMessageDialog(this, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     public JPasswordField getTxtPassword() { return txtPassword; }

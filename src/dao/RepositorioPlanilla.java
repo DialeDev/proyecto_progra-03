@@ -1,6 +1,8 @@
 package dao;
 
+import models.Empleado;
 import models.Planilla;
+import services.GeneradorBoletas;
 import java.sql.*;
 import java.util.*;
 
@@ -87,6 +89,37 @@ public class RepositorioPlanilla {
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar estado: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Crea una planilla y sus boletas en una sola transacción atómica.
+     * Maneja Connection, setAutoCommit(false), commit/rollback y close internamente.
+     */
+    public String crearPlanillaConBoletas(Planilla planilla, List<Empleado> empleadosActivos, int mes, int anio) {
+        if (empleadosActivos == null || empleadosActivos.isEmpty()) {
+            return "No hay empleados activos para generar planilla.";
+        }
+        GeneradorBoletas generador = new GeneradorBoletas();
+        Connection conn = null;
+        try {
+            conn = Conexion.getConnection();
+            conn.setAutoCommit(false);
+            int idPlanilla = crear(conn, planilla);
+            for (Empleado e : empleadosActivos) {
+                generador.generarYGuardarBoleta(conn, idPlanilla, e.getIdEmpleado(), mes, anio);
+            }
+            conn.commit();
+            return "Planilla creada. Boletas generadas: " + empleadosActivos.size() + " de " + empleadosActivos.size() + " empleados activos.";
+        } catch (Exception e) {
+            if (conn != null) try { conn.rollback(); } catch (SQLException ex) {
+                throw new RuntimeException("Rollback falló: " + ex.getMessage(), ex);
+            }
+            return "Error al generar planilla: " + e.getMessage();
+        } finally {
+            if (conn != null) try { conn.close(); } catch (SQLException e) {
+                throw new RuntimeException("Error cerrando conexión: " + e.getMessage(), e);
+            }
         }
     }
 

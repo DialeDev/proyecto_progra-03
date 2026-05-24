@@ -5,7 +5,6 @@ import models.Usuario;
 import utils.SesionGlobal;
 import views.FrmLogin;
 import views.FrmDashboard;
-import javax.swing.JOptionPane;
 import java.util.Optional;
 
 // @author DialeMRZ
@@ -24,8 +23,7 @@ public class AuthController {
             String username = vista.getTxtUsuario().getText();
             String password = new String(vista.getTxtPassword().getPassword());
             if (username.trim().isEmpty() || password.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(vista, "Por favor, ingrese usuario y contraseña.",
-                    "Error de Validación", JOptionPane.WARNING_MESSAGE);
+                vista.mostrarMensaje("advertencia", "Por favor, ingrese usuario y contraseña.");
                 return;
             }
             Optional<Usuario> usuarioValidado = usuarioDAO.autenticar(username, password);
@@ -36,15 +34,12 @@ public class AuthController {
                 dashboard.setLocationRelativeTo(null);
                 vista.dispose();
             } else {
-                JOptionPane.showMessageDialog(vista, "Credenciales incorrectas o usuario inactivo.",
-                    "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
+                vista.mostrarMensaje("error", "Credenciales incorrectas o usuario inactivo.");
                 vista.getTxtPassword().setText("");
             }
         } catch (Exception e) {
             // Muestra errores inesperados (driver BD, imagen, etc.) en pantalla
-            JOptionPane.showMessageDialog(vista,
-                "Error inesperado al iniciar sesión: " + e.getMessage(),
-                "Error del Sistema", JOptionPane.ERROR_MESSAGE);
+            vista.mostrarMensaje("error", "Error inesperado al iniciar sesión: " + e.getMessage());
             logger.severe("Error en procesarLogin: " + e.getMessage());
         }
     }

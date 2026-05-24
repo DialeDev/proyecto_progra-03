@@ -1,10 +1,10 @@
 package views;
 
 import controllers.DashboardController;
-import controllers.DepartamentoController;
 import controllers.EmpleadoController;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -16,9 +16,23 @@ public class FrmGestionEmpleados extends javax.swing.JFrame {
 
     public FrmGestionEmpleados() {
         initComponents();
+        this.controller = new EmpleadoController(this);
         configurarComponentes();
         this.setLocationRelativeTo(null);
-        this.controller = new EmpleadoController(this);
+    }
+
+    // -- MVC Messaging Methods --
+    public void mostrarMensaje(String tipo, String mensaje) {
+        switch (tipo) {
+            case "exito" -> JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            case "error" -> JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+            case "advertencia" -> JOptionPane.showMessageDialog(this, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+            case "info" -> JOptionPane.showMessageDialog(this, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public boolean mostrarConfirmacion(String mensaje) {
+        return JOptionPane.showConfirmDialog(this, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
     public JTable getTblEmpleados() { return tblEmpleados; }
@@ -40,8 +54,7 @@ public class FrmGestionEmpleados extends javax.swing.JFrame {
     }
 
     private void cargarDepartamentos() {
-        DepartamentoController deptoCtrl = new DepartamentoController();
-        deptoCtrl.listar().forEach(d -> cmbDepartamento.addItem(d));
+        controller.obtenerDepartamentos().forEach(d -> cmbDepartamento.addItem(d));
         cmbDepartamento.setSelectedIndex(-1);
     }
 

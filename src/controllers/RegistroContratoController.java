@@ -2,7 +2,6 @@ package controllers;
 
 import dao.RepositorioContratacion;
 import models.Contratacion;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import views.FrmRegistroContratos;
 import views.FrmGestionContratos;
@@ -38,31 +37,31 @@ public class RegistroContratoController implements ActionListener {
         int idEmpleado = vistaRegistro.getEmpleadoSeleccionadoId();
         int idContrato = vistaRegistro.getContratoSeleccionadoId();
         if (idEmpleado <= 0 || idContrato <= 0) {
-            JOptionPane.showMessageDialog(vistaRegistro, "Seleccione empleado y tipo de contrato.", "Error", JOptionPane.WARNING_MESSAGE);
+            vistaRegistro.mostrarMensaje("advertencia", "Seleccione empleado y tipo de contrato.");
             return;
         }
         String inicioStr = vistaRegistro.getTxtInicio().getText().trim();
         String finStr = vistaRegistro.getTxtFin().getText().trim();
         String salarioStr = vistaRegistro.getTxtSalario().getText().trim();
         if (inicioStr.isEmpty()) {
-            JOptionPane.showMessageDialog(vistaRegistro, "La fecha de inicio es obligatoria (yyyy-MM-dd).", "Error", JOptionPane.WARNING_MESSAGE);
+            vistaRegistro.mostrarMensaje("advertencia", "La fecha de inicio es obligatoria (yyyy-MM-dd).");
             return;
         }
         LocalDate fechaInicio;
         try { fechaInicio = LocalDate.parse(inicioStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")); }
         catch (DateTimeParseException ex) {
-            JOptionPane.showMessageDialog(vistaRegistro, "Formato inválido. Use yyyy-MM-dd.", "Error", JOptionPane.WARNING_MESSAGE);
+            vistaRegistro.mostrarMensaje("advertencia", "Formato inválido. Use yyyy-MM-dd.");
             return;
         }
         LocalDate fechaFin = null;
         if (!finStr.isEmpty()) {
             try { fechaFin = LocalDate.parse(finStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")); }
             catch (DateTimeParseException ex) {
-                JOptionPane.showMessageDialog(vistaRegistro, "Formato de fecha fin inválido.", "Error", JOptionPane.WARNING_MESSAGE);
+                vistaRegistro.mostrarMensaje("advertencia", "Formato de fecha fin inválido.");
                 return;
             }
             if (fechaFin.isBefore(fechaInicio)) {
-                JOptionPane.showMessageDialog(vistaRegistro, "La fecha fin no puede ser anterior a la fecha de inicio.", "Error", JOptionPane.WARNING_MESSAGE);
+                vistaRegistro.mostrarMensaje("advertencia", "La fecha fin no puede ser anterior a la fecha de inicio.");
                 return;
             }
         }
@@ -70,7 +69,7 @@ public class RegistroContratoController implements ActionListener {
         if (!salarioStr.isEmpty()) {
             try { salarioBase = Double.parseDouble(salarioStr); if (salarioBase < 0) throw new NumberFormatException(); }
             catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(vistaRegistro, "Salario inválido.", "Error", JOptionPane.WARNING_MESSAGE);
+                vistaRegistro.mostrarMensaje("advertencia", "Salario inválido.");
                 return;
             }
         }
@@ -80,13 +79,13 @@ public class RegistroContratoController implements ActionListener {
         c.setVigente(true);
         try {
             contratacionDAO.create(c);
-            JOptionPane.showMessageDialog(vistaRegistro, "Contratación registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            vistaRegistro.mostrarMensaje("exito", "Contratación registrada exitosamente.");
             DefaultTableModel modelo = (DefaultTableModel) vistaPrincipal.getTablaContratos().getModel();
             modelo.addRow(new Object[]{c.getIdContratacion(), vistaRegistro.getCmbEmpleado().getSelectedItem(),
                 vistaRegistro.getCmbTipo().getSelectedItem(), inicioStr, finStr.isEmpty() ? "Indefinido" : finStr, salarioStr, "Vigente"});
             vistaRegistro.dispose();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(vistaRegistro, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            vistaRegistro.mostrarMensaje("error", "Error al guardar: " + ex.getMessage());
         }
     }
 }
