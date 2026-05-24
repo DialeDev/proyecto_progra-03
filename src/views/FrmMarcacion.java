@@ -5,6 +5,7 @@ import models.Empleado;
 import models.RegistroAsistencia;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.DefaultComboBoxModel;
 // [PRODUCCIÓN] import javax.swing.Timer;
 import javax.swing.SpinnerDateModel;
 import java.awt.Font;
@@ -20,6 +21,8 @@ public class FrmMarcacion extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmMarcacion.class.getName());
     private final AsistenciaController asistenciaController;
     private DefaultListModel<String> modeloLista;
+    private DefaultComboBoxModel<String> modeloCombo;
+    private List<Empleado> empleadosActivos;
     // [PRODUCCIÓN] private javax.swing.JLabel lblReloj;
     // private javax.swing.JComboBox<String> cmbEmpleado;
     // private javax.swing.JLabel lblSeleccionEmpleado;
@@ -44,6 +47,9 @@ public class FrmMarcacion extends javax.swing.JFrame {
         jList1.setModel(modeloLista);
         jList1.setFont(new Font("Monospaced", Font.PLAIN, 12));
 
+        // Cargar empleados activos en combobox
+        cargarEmpleados();
+
         // Configurar spinner de fecha
         SpinnerDateModel fechaModel = new SpinnerDateModel();
         spnFecha.setModel(fechaModel);
@@ -56,8 +62,8 @@ public class FrmMarcacion extends javax.swing.JFrame {
         spnHora.setEditor(new javax.swing.JSpinner.DateEditor(spnHora, "HH:mm"));
         spnHora.setValue(new Date());
 
-        // Configurar boton Verificar
-        btnVerificar.addActionListener(e -> verificarEmpleado());
+        // Configurar boton Verificar (ahora es seleccionar del combo)
+        btnVerificar.addActionListener(e -> verificarEmpleadoDelCombo());
 
         jButton1.addActionListener(e -> marcarEntrada());
         jButton2.addActionListener(e -> marcarSalida());
@@ -65,29 +71,36 @@ public class FrmMarcacion extends javax.swing.JFrame {
         jButton4.addActionListener(e -> eliminarMarcacionSeleccionada());
     }
 
-    private void verificarEmpleado() {
-        String texto = txtIdEmpleado.getText().trim();
-        if (texto.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID de empleado.", "Error", JOptionPane.WARNING_MESSAGE);
+    private void cargarEmpleados() {
+        try {
+            empleadosActivos = asistenciaController.listarEmpleadosActivos();
+            modeloCombo = new DefaultComboBoxModel<>();
+            
+            for (Empleado emp : empleadosActivos) {
+                String nombreCompleto = emp.getNombres() + " " + emp.getApellidos();
+                modeloCombo.addElement(nombreCompleto);
+            }
+            
+            cmbEmpleado.setModel(modeloCombo);
+            cmbEmpleado.setSelectedIndex(-1); // Sin selección inicial
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar empleados: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void verificarEmpleadoDelCombo() {
+        int idx = cmbEmpleado.getSelectedIndex();
+        if (idx < 0 || idx >= empleadosActivos.size()) {
+            JOptionPane.showMessageDialog(this, "Seleccione un empleado del listado.", "Error", JOptionPane.WARNING_MESSAGE);
+            idEmpleadoVerificado = -1;
+            lblNombreEmpleado.setText("");
             return;
         }
-        try {
-            int id = Integer.parseInt(texto);
-            Empleado emp = asistenciaController.buscarEmpleadoPorId(id);
-            if (emp == null) {
-                JOptionPane.showMessageDialog(this, "Empleado no encontrado con ID: " + id, "Error", JOptionPane.WARNING_MESSAGE);
-                lblNombreEmpleado.setText("");
-                idEmpleadoVerificado = -1;
-            } else {
-                lblNombreEmpleado.setText("Nombre: " + emp.getNombres() + " " + emp.getApellidos());
-                idEmpleadoVerificado = id;
-                cargarMarcacionesDelDia();
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El ID debe ser un numero valido.", "Error", JOptionPane.WARNING_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al verificar empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        
+        Empleado empSeleccionado = empleadosActivos.get(idx);
+        lblNombreEmpleado.setText("Nombre: " + empSeleccionado.getNombres() + " " + empSeleccionado.getApellidos());
+        idEmpleadoVerificado = empSeleccionado.getIdEmpleado();
+        cargarMarcacionesDelDia();
     }
 
     // [PRODUCCIÓN] private void cargarEmpleados() {
@@ -216,9 +229,9 @@ public class FrmMarcacion extends javax.swing.JFrame {
         spnHora = new javax.swing.JSpinner();
         lblFechaHora = new javax.swing.JLabel();
         lblIdEmpleado = new javax.swing.JLabel();
-        txtIdEmpleado = new javax.swing.JTextField();
         btnVerificar = new javax.swing.JButton();
         lblNombreEmpleado = new javax.swing.JLabel();
+        cmbEmpleado = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Marcacion");
@@ -236,11 +249,11 @@ public class FrmMarcacion extends javax.swing.JFrame {
 
         lblFechaHora.setText("Fecha y Hora:");
 
-        lblIdEmpleado.setText("ID Empleado:");
-
-        txtIdEmpleado.setPreferredSize(new java.awt.Dimension(80, 30));
+        lblIdEmpleado.setText("Seleccionar Empleado");
 
         btnVerificar.setText("Verificar");
+
+        cmbEmpleado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -257,9 +270,9 @@ public class FrmMarcacion extends javax.swing.JFrame {
                         .addComponent(spnHora, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblIdEmpleado)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnVerificar))
                     .addComponent(lblNombreEmpleado)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -278,12 +291,12 @@ public class FrmMarcacion extends javax.swing.JFrame {
                     .addComponent(lblFechaHora)
                     .addComponent(spnFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spnHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIdEmpleado)
-                    .addComponent(txtIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVerificar))
-                .addGap(18, 18, 18)
+                    .addComponent(btnVerificar)
+                    .addComponent(cmbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addComponent(lblNombreEmpleado)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -305,6 +318,7 @@ public class FrmMarcacion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVerificar;
+    private javax.swing.JComboBox<String> cmbEmpleado;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -316,6 +330,5 @@ public class FrmMarcacion extends javax.swing.JFrame {
     private javax.swing.JLabel lblNombreEmpleado;
     private javax.swing.JSpinner spnFecha;
     private javax.swing.JSpinner spnHora;
-    private javax.swing.JTextField txtIdEmpleado;
     // End of variables declaration//GEN-END:variables
 }
