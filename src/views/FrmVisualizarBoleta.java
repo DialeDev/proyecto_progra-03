@@ -33,6 +33,7 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         jLabelTitulo = new javax.swing.JLabel();
         jLabelEmpleado = new javax.swing.JLabel();
@@ -164,7 +165,8 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         pack();
-    }
+    }//GEN-END:initComponents
+    // </editor-fold>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelTitulo;

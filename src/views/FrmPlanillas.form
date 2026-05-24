@@ -148,14 +148,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="spnAnio">
-      <Properties>
-        <Property name="model" type="javax.swing.SpinnerNumberModel" editor="org.netbeans.modules.form.editors2.SpinnerNumberModelEditor">
-          <Property name="value" type="java.lang.Integer" value="2025"/>
-          <Property name="minimum" type="java.lang.Integer" value="2020"/>
-          <Property name="maximum" type="java.lang.Integer" value="2035"/>
-          <Property name="stepSize" type="java.lang.Integer" value="1"/>
-        </Property>
-      </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
