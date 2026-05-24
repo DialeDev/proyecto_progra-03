@@ -61,7 +61,9 @@ public class RepositorioUsuario {
     }
 
     private Usuario mapResultSet(ResultSet rs) throws SQLException {
-        return new Usuario(rs.getInt("IdUsuario"), rs.getInt("IdEmpleado"),
+        Usuario u = new Usuario(rs.getInt("IdUsuario"), rs.getInt("IdEmpleado"),
             rs.getString("Username"), rs.getString("PasswordHash"), rs.getString("Rol"));
+        u.setActivo(rs.getBoolean("Activo"));
+        return u;
     }
 }

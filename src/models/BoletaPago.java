@@ -18,8 +18,16 @@ public record BoletaPago(
     List<BoletaDetalle> detalles
 ) {
     public BoletaPago {
+        if (sueldoBaseAplicado == null) sueldoBaseAplicado = BigDecimal.ZERO;
+        if (horasOrdinariasCalculadas == null) horasOrdinariasCalculadas = BigDecimal.ZERO;
+        if (horasExtraDiurnas == null) horasExtraDiurnas = BigDecimal.ZERO;
+        if (horasExtraNocturnas == null) horasExtraNocturnas = BigDecimal.ZERO;
+        if (totalIngresos == null) totalIngresos = BigDecimal.ZERO;
+        if (totalDeducciones == null) totalDeducciones = BigDecimal.ZERO;
+        if (liquidoAPagar == null) liquidoAPagar = BigDecimal.ZERO;
+
         if (liquidoAPagar.compareTo(BigDecimal.ZERO) < 0)
             throw new IllegalArgumentException("El líquido a pagar no puede ser negativo");
-        detalles = List.copyOf(detalles);
+        detalles = detalles == null ? List.of() : List.copyOf(detalles);
     }
 }

@@ -1,120 +1,51 @@
 package views;
 
 import controllers.HorarioController;
-import models.Jornada;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 // @author DialeMRZ
 public class FrmGestionHorarios extends javax.swing.JFrame {
     private HorarioController controller;
-    private boolean editando = false;
 
     public FrmGestionHorarios() {
-        this.controller = new HorarioController();
         initComponents();
+        this.controller = new HorarioController(this);
         configurarComponentes();
     }
 
-    private void guardarJornada() {
-        try {
-            String nombre = txtNombre.getText().trim();
-            String entradaTxt = txtEntrada.getText().trim();
-            String salidaTxt = txtSalida.getText().trim();
-            String toleranciaTxt = txtTolerancia.getText().trim();
-            if (nombre.isEmpty() || entradaTxt.isEmpty() || salidaTxt.isEmpty() || toleranciaTxt.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Complete todos los campos.");
-                return;
-            }
-            LocalTime entrada = LocalTime.parse(entradaTxt);
-            LocalTime salida = LocalTime.parse(salidaTxt);
-            int tolerancia = Integer.parseInt(toleranciaTxt);
-            if (tolerancia < 0) {
-                JOptionPane.showMessageDialog(this, "La tolerancia no puede ser negativa.");
-                return;
-            }
-            if (salida.isBefore(entrada)) {
-                JOptionPane.showMessageDialog(this, "La salida debe ser después de la entrada.");
-                return;
-            }
-            if (editando) {
-                int fila = tblHorarios.getSelectedRow();
-                if (fila == -1) { editando = false; btnGuardar.setText("Guardar"); return; }
-                DefaultTableModel model = (DefaultTableModel) tblHorarios.getModel();
-                int id = ((Number) model.getValueAt(fila, 0)).intValue();
-                // Verificar duplicado excluyendo el registro actual
-                if (controller.existeHorario(nombre)) {
-                    boolean esOtro = controller.listar().stream()
-                        .anyMatch(j -> j.getNombre().equalsIgnoreCase(nombre) && j.getIdJornada() != id);
-                    if (esOtro) {
-                        JOptionPane.showMessageDialog(this, "Ya existe otra jornada con el nombre '" + nombre + "'.");
-                        return;
-                    }
-                }
-                if (JOptionPane.showConfirmDialog(this, "¿Actualizar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(this, controller.actualizar(new Jornada(id, nombre, entrada, salida, tolerancia)));
-                }
-            } else {
-                if (controller.existeHorario(nombre)) {
-                    JOptionPane.showMessageDialog(this, "Ya existe una jornada '" + nombre + "'.");
-                    return;
-                }
-                JOptionPane.showMessageDialog(this, controller.guardar(new Jornada(0, nombre, entrada, salida, tolerancia)));
-            }
-            cargarTabla();
-            limpiar();
-        } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(this, "Use formato HH:mm (ej: 08:00)");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La tolerancia debe ser un número entero.");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    // -- MVC Messaging Methods --
+    public void mostrarMensaje(String tipo, String mensaje) {
+        switch (tipo) {
+            case "exito" -> JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            case "error" -> JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+            case "advertencia" -> JOptionPane.showMessageDialog(this, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+            case "info" -> JOptionPane.showMessageDialog(this, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    private void eliminarJornada() {
-        try {
-            int fila = tblHorarios.getSelectedRow();
-            if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione una jornada."); return; }
-            DefaultTableModel model = (DefaultTableModel) tblHorarios.getModel();
-            int id = ((Number) model.getValueAt(fila, 0)).intValue();
-            String nombre = (String) model.getValueAt(fila, 1);
-            if (JOptionPane.showConfirmDialog(this, "¿Eliminar '" + nombre + "'?", "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                JOptionPane.showMessageDialog(this, controller.eliminar(id));
-                cargarTabla();
-                limpiar();
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al eliminar jornada: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    public boolean mostrarConfirmacion(String mensaje) {
+        return JOptionPane.showConfirmDialog(this, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
-    private void seleccionarJornada() {
-        if (tblHorarios.getSelectedRow() == -1) return;
-        DefaultTableModel model = (DefaultTableModel) tblHorarios.getModel();
-        int fila = tblHorarios.getSelectedRow();
-        txtNombre.setText(String.valueOf(model.getValueAt(fila, 1)));
-        txtEntrada.setText(String.valueOf(model.getValueAt(fila, 2)));
-        txtSalida.setText(String.valueOf(model.getValueAt(fila, 3)));
-        txtTolerancia.setText(String.valueOf(model.getValueAt(fila, 4)));
-        editando = true;
-        btnGuardar.setText("Actualizar");
-    }
+    // -- Getters para el Controller --
+    public JTextField getTxtNombre() { return txtNombre; }
+    public JTextField getTxtEntrada() { return txtEntrada; }
+    public JTextField getTxtSalida() { return txtSalida; }
+    public JTextField getTxtTolerancia() { return txtTolerancia; }
+    public JTable getTblHorarios() { return tblHorarios; }
+    public javax.swing.JButton getBtnGuardar() { return btnGuardar; }
 
-    private void cargarTabla() {
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID"); modelo.addColumn("Nombre"); modelo.addColumn("Entrada");
-        modelo.addColumn("Salida"); modelo.addColumn("Tolerancia");
-        controller.listar().forEach(j -> modelo.addRow(new Object[]{
-            j.getIdJornada(), j.getNombre(), j.getHoraEntradaEsperada(), j.getHoraSalidaEsperada(), j.getMargenToleranciaMinutos()}));
-        tblHorarios.setModel(modelo);
-    }
-
-    private void limpiar() {
-        txtNombre.setText(""); txtEntrada.setText(""); txtSalida.setText(""); txtTolerancia.setText("");
-        tblHorarios.clearSelection(); editando = false; btnGuardar.setText("Guardar"); txtNombre.requestFocus();
+    private void configurarComponentes() {
+        tblHorarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) { controller.seleccionarJornada(); }
+        });
+        controller.cargarTabla();
     }
 
     @SuppressWarnings("unchecked")
@@ -292,33 +223,9 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        guardarJornada();
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        eliminarJornada();
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        limpiar();
-    }//GEN-LAST:event_btnNuevoActionPerformed
-    // </editor-fold>
-
-    private void configurarComponentes() {
-        tblHorarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) { seleccionarJornada(); }
-        });
-        cargarTabla();
-    }
-
-    //private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) { guardarJornada(); }
-    //private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) { limpiar(); }
-    //private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) { dispose(); }
-    //private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) { eliminarJornada(); }
-
-    
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) { controller.guardarJornada(); }
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) { controller.eliminarJornada(); }
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) { controller.limpiar(); }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;
