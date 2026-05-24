@@ -20,10 +20,85 @@ public class FrmDashboard extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         this.controller = new controllers.DashboardController(this);
+        styleModernUI();
         if (utils.SesionGlobal.haySesionActiva()) {
             lblBienvenida.setText("Bienvenido al Sistema");
             lblUsuario.setText(utils.SesionGlobal.getUsuarioActivo().getUsername());
         }
+    }
+    
+    private void styleModernUI() {
+        // Colores modernos
+        final java.awt.Color headerColor = new java.awt.Color(26, 35, 126);  // Azul profundo
+        final java.awt.Color accentColor = new java.awt.Color(52, 73, 94);   // Gris azulado
+        final java.awt.Color hoverColor = new java.awt.Color(41, 128, 185);  // Azul brillante
+        final java.awt.Color textColor = new java.awt.Color(44, 62, 80);     // Gris oscuro
+        
+        // Header styling
+        jPanel2.setBackground(headerColor);
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        jLabel4.setForeground(java.awt.Color.WHITE);
+        
+        // Button styling - todos los botones
+        java.awt.Font buttonFont = new java.awt.Font("Segoe UI", 1, 11);
+        
+        javax.swing.JButton[] buttons = {btnPlanilla, btnContratos, btnHorarios, 
+                                          btnReportes, btnDepartamentos, btnAsignacion, 
+                                          btnEmpleados, btnMarcacion};
+        
+        for (javax.swing.JButton btn : buttons) {
+            btn.setFont(buttonFont);
+            btn.setForeground(java.awt.Color.WHITE);
+            btn.setBackground(accentColor);
+            btn.setFocusPainted(false);
+            btn.setBorderPainted(false);
+            btn.setOpaque(true);
+            btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            
+            // Efecto hover
+            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(hoverColor);
+                }
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(accentColor);
+                }
+            });
+        }
+        
+        // Logout button styling
+        btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 11));
+        btnSalir.setForeground(java.awt.Color.WHITE);
+        btnSalir.setBackground(new java.awt.Color(192, 57, 43));
+        btnSalir.setFocusPainted(false);
+        btnSalir.setBorderPainted(false);
+        btnSalir.setOpaque(true);
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnSalir.setBackground(new java.awt.Color(231, 76, 60));
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnSalir.setBackground(new java.awt.Color(192, 57, 43));
+            }
+        });
+        
+        // Text styling
+        lblBienvenida.setForeground(headerColor);
+        lblBienvenida.setFont(new java.awt.Font("Segoe UI", 1, 28));
+        
+        lblUsuario.setForeground(new java.awt.Color(155, 89, 182));
+        lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        
+        jLabel3.setForeground(textColor);
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        
+        // Panel background
+        jPanel3.setBackground(new java.awt.Color(236, 240, 241));
     }
     
     
@@ -43,7 +118,6 @@ public class FrmDashboard extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lblBienvenida = new javax.swing.JLabel();
-        lblUsuario = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnPlanilla = new javax.swing.JButton();
@@ -54,6 +128,8 @@ public class FrmDashboard extends javax.swing.JFrame {
         btnAsignacion = new javax.swing.JButton();
         btnEmpleados = new javax.swing.JButton();
         btnMarcacion = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Planillas");
@@ -75,8 +151,7 @@ public class FrmDashboard extends javax.swing.JFrame {
         lblBienvenida.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblBienvenida.setText("Bienvenid@ Al Sistema De Planilla");
 
-        lblUsuario.setText("Usuario");
-
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Seleccione un módulo para comenzar");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -179,24 +254,28 @@ public class FrmDashboard extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblBienvenida)
-                    .addComponent(lblUsuario)
                     .addComponent(jLabel3)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(lblBienvenida)
-                .addGap(18, 18, 18)
-                .addComponent(lblUsuario)
-                .addGap(23, 23, 23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addGap(69, 69, 69)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
         );
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Has iniciado sesión como:");
+
+        lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        lblUsuario.setText("Usuario");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -205,7 +284,11 @@ public class FrmDashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 460, Short.MAX_VALUE)
+                .addGap(112, 112, 112)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSalir)
                 .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -216,7 +299,9 @@ public class FrmDashboard extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel4)
-                    .addComponent(btnSalir))
+                    .addComponent(btnSalir)
+                    .addComponent(jLabel1)
+                    .addComponent(lblUsuario))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -283,6 +368,7 @@ public class FrmDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnPlanilla;
     private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

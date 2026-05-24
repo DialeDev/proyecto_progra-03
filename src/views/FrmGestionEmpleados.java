@@ -16,6 +16,7 @@ public class FrmGestionEmpleados extends javax.swing.JFrame {
 
     public FrmGestionEmpleados() {
         initComponents();
+        utils.UIStyles.applyModernStyle(this);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         this.controller = new EmpleadoController(this);
         configurarComponentes();

@@ -14,6 +14,7 @@ public class FrmGestionHorarios extends javax.swing.JFrame {
 
     public FrmGestionHorarios() {
         initComponents();
+        utils.UIStyles.applyModernStyle(this);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         this.controller = new HorarioController(this);
         configurarComponentes();

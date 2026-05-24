@@ -13,6 +13,7 @@ public class FrmGestionDepartamentos extends javax.swing.JFrame {
     public FrmGestionDepartamentos() {
         this.controller = new DepartamentoController();
         initComponents();
+        utils.UIStyles.applyModernStyle(this);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
         configurarComponentes();
     }

@@ -20,22 +20,92 @@ public class FrmLogin extends javax.swing.JFrame {
     }
 
     private void configurarComponentes() {
-        
+        // Toggle password visibility
         btnMostrarPassword.addActionListener(e -> {
-            
             if (btnMostrarPassword.isSelected()) {
-                
                 txtPassword.setEchoChar((char) 0);
-                btnMostrarPassword.setIcon(new ImageIcon("src\\img\\ojo-cruzado.png"));
-                
+                try {
+                    btnMostrarPassword.setIcon(new ImageIcon(getClass().getResource("/img/ojo-cruzado.png")));
+                } catch (Exception ex) {
+                    // fallback: keep existing icon
+                }
             } else {
-                
                 txtPassword.setEchoChar('*');
-                btnMostrarPassword.setIcon(new ImageIcon("src\\img\\ojo.png"));
-                
+                try {
+                    btnMostrarPassword.setIcon(new ImageIcon(getClass().getResource("/img/ojo.png")));
+                } catch (Exception ex) {
+                }
             }
         });
-        
+
+        // --- Visual styling (modern theme) ---
+        java.awt.Color bg = new java.awt.Color(245, 247, 250);
+        java.awt.Color accent = new java.awt.Color(41, 128, 185);
+        java.awt.Color accentDark = new java.awt.Color(31, 97, 143);
+        java.awt.Color neutral = new java.awt.Color(200, 200, 200);
+
+        // Background
+        getContentPane().setBackground(bg);
+
+        // Title
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24));
+        jLabel3.setForeground(accentDark);
+
+        // Inputs
+        txtUsuario.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        txtUsuario.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(neutral),
+                javax.swing.BorderFactory.createEmptyBorder(6, 8, 6, 8)));
+
+        txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        txtPassword.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(neutral),
+                javax.swing.BorderFactory.createEmptyBorder(6, 8, 6, 8)));
+
+        // Primary button
+        btnIngresar.setBackground(accent);
+        btnIngresar.setForeground(java.awt.Color.WHITE);
+        btnIngresar.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnIngresar.setFocusPainted(false);
+        btnIngresar.setBorderPainted(false);
+        btnIngresar.setOpaque(true);
+        btnIngresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnIngresar.setBackground(accentDark);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnIngresar.setBackground(accent);
+            }
+        });
+
+        // Secondary button
+        btnLimpiar.setBackground(new java.awt.Color(149, 165, 166));
+        btnLimpiar.setForeground(java.awt.Color.WHITE);
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnLimpiar.setFocusPainted(false);
+        btnLimpiar.setBorderPainted(false);
+        btnLimpiar.setOpaque(true);
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnLimpiar.setBackground(new java.awt.Color(127, 140, 141));
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnLimpiar.setBackground(new java.awt.Color(149, 165, 166));
+            }
+        });
+
+        // Show-password button minimal chrome
+        btnMostrarPassword.setBorderPainted(false);
+        btnMostrarPassword.setContentAreaFilled(false);
+
+        // Force a pack to adjust sizes after style changes
+        pack();
     }
 
     // -- MVC Messaging Methods --
