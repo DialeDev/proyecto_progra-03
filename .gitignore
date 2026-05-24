@@ -42,4 +42,7 @@ replay_pid*
 *.log
 *.swp
 
+# Backups generados por herramientas
+assets/backups/
+
 desktop.iniSESSION_CONTEXT.md
