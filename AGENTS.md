@@ -2,7 +2,7 @@
 
 ## How to Use This Guide
 
-Java Swing application for employee attendance tracking and payroll generation. This file defines AI agent conventions, project-specific skills, and development patterns for the **proyecto_progra-03** repository.
+Java Swing desktop application for employee attendance tracking, contract management, and payroll generation with role-based access control (RBAC). This file defines AI agent conventions, project architecture, and development patterns for the **proyecto_progra-03** repository.
 
 ---
 
@@ -32,7 +32,7 @@ Java Swing application for employee attendance tracking and payroll generation. 
 
 | Technology | Purpose |
 |------------|---------|
-| Java | Core programming language (**JDK 21**) |
+| Java | Core programming language |
 | Swing | Desktop UI framework for Java |
 | SQL Server | Relational database for data persistence |
 | JDBC | Java Database Connectivity for SQL Server |
@@ -58,63 +58,110 @@ Java Swing application for employee attendance tracking and payroll generation. 
 proyecto_progra-03/
 ├── src/
 │   ├── main/
-│   │   └── App.java                # Punto de entrada único
+│   │   ├── App.java                    # Single entry point
+│   │   └── PruebaConexion.java         # Connection test harness
 │   │
-│   ├── models/                   # Clases de datos (POJOs)
+│   ├── models/                         # POJOs (data only, no logic)
 │   │   ├── Empleado.java
 │   │   ├── Usuario.java
 │   │   ├── Contrato.java
 │   │   ├── Contratacion.java
 │   │   ├── Jornada.java
+│   │   ├── Departamento.java
+│   │   ├── AsignacionJornada.java
 │   │   ├── RegistroAsistencia.java
 │   │   ├── Planilla.java
 │   │   ├── BoletaPago.java
-│   │   └── BoletaDetalle.java
+│   │   ├── BoletaDetalle.java
+│   │   └── Permiso.java                # RBAC: rol, modulo, depto scope, flags
 │   │
-│   ├── utils/                    # Utilidades globales
-│   │   └── SesionGlobal.java
+│   ├── utils/                          # Global utilities
+│   │   ├── SesionGlobal.java           # Active user session
+│   │   ├── UIStyles.java               # Centralized UI theming
+│   │   └── ExportadorCSV.java          # CSV export utility
 │   │
-│   ├── dao/                      # Capa de acceso a datos
-│   │   ├── Conexion.java
+│   ├── dao/                            # Data access (SQL only, no business logic)
+│   │   ├── Conexion.java               # SQL Server connection
 │   │   ├── RepositorioEmpleado.java
 │   │   ├── RepositorioUsuario.java
+│   │   ├── RepositorioContrato.java
 │   │   ├── RepositorioContratacion.java
+│   │   ├── RepositorioJornada.java
+│   │   ├── RepositorioDepartamento.java
+│   │   ├── RepositorioAsignacionJornada.java
 │   │   ├── RepositorioAsistencia.java
-│   │   └── RepositorioPlanilla.java
+│   │   ├── RepositorioPlanilla.java
+│   │   ├── RepositorioBoletaPago.java
+│   │   ├── RepositorioBoletaDetalle.java
+│   │   └── RepositorioPermiso.java     # RBAC queries
 │   │
-│   ├── controllers/              # Lógica de negocio
+│   ├── services/                       # Business logic layer (stateless)
+│   │   ├── PermisoService.java         # RBAC cache + tieneAcceso() + Admin bypass
+│   │   ├── GeneradorBoletas.java       # Payroll slip generation
+│   │   ├── CalculadoraHorasExtras.java # Overtime calculation
+│   │   ├── CalculadoraDeduccionesLey.java # Legal deductions
+│   │   └── ExportadorCSV.java          # Data export
+│   │
+│   ├── controllers/                    # Orchestrators (validate + delegate)
 │   │   ├── AuthController.java
-│   │   ├── DashboardController.java
+│   │   ├── DashboardController.java    # Module navigation + RBAC guard
 │   │   ├── EmpleadoController.java
-│   │   ├── PlanillaController.java
 │   │   ├── ContratoController.java
 │   │   ├── RegistroContratoController.java
 │   │   ├── HorarioController.java
-│   │   └── AsistenciaController.java
+│   │   ├── DepartamentoController.java
+│   │   ├── AsignacionJornadaController.java
+│   │   ├── AsistenciaController.java
+│   │   ├── PlanillaController.java
+│   │   ├── ReporteController.java
+│   │   └── PermisoController.java      # Permission CRUD
 │   │
-│   └── views/                    # Interfaces visuales (JFrames)
+│   └── views/                          # JFrames (UI only, no logic)
 │       ├── FrmLogin.java
-│       ├── FrmDashboard.java
+│       ├── FrmDashboard.java           # Main menu with role-filtered buttons
 │       ├── FrmGestionEmpleados.java
 │       ├── FrmGestionContratos.java
 │       ├── FrmRegistroContratos.java
 │       ├── FrmGestionHorarios.java
 │       ├── FrmMarcacion.java
-│       └── FrmPlanillas.java
+│       ├── FrmPlanillas.java
+│       ├── FrmGestionDepartamentos.java
+│       ├── FrmAsignacionJornada.java
+│       ├── FrmReportes.java
+│       ├── FrmVisualizarBoleta.java
+│       └── FrmGestionPermisos.java     # Permission management UI
 │
-├── lib/                          # Dependencias externas
+├── lib/                                # External dependencies
 │   ├── mssql-jdbc-13.4.0.jre11.jar
 │   └── mssql-jdbc_auth-13.4.0.x64.dll
 │
-├── docs/                         # Documentación adicional
-├── nbproject/                    # Configuración de NetBeans y Ant
-├── .git/                         # Repositorio Git
-├── .opencode/                    # Configuración de OpenCode
-├── build.xml                     # Script de construcción (Ant)
-├── manifest.mf                   # Manifiesto de la aplicación
-├── scriptBD.sql                  # Script de inicialización de la base de datos
-└── README.md                     # Documentación principal
+├── openspec/                           # SDD artifacts (archive + specs)
+│   ├── specs/
+│   │   └── access-control/
+│   │       └── spec.md                # RBAC source-of-truth spec
+│   └── changes/
+│       └── archive/                   # Completed change folders
+│
+├── docs/
+├── nbproject/
+├── .git/
+├── .opencode/
+├── build.xml
+├── manifest.mf
+├── scriptBD.sql                       # DB schema + seed data
+└── README.md
 ```
+
+---
+
+## Commands
+
+| Command | Scope | Description |
+|---------|-------|-------------|
+| `ant run` | Project | Build and run via NetBeans Ant |
+| `ant clean` | Project | Clean build artifacts |
+| `ant jar` | Project | Package distributable JAR |
+| App.java | Entry point | Run via NetBeans (right-click → Run File) |
 
 ---
 
@@ -122,31 +169,61 @@ proyecto_progra-03/
 
 ### Architecture
 
-The project follows the **MVC (Model-View-Controller)** pattern with a **Repository layer** for data access:
+The project uses **MVC (Model-View-Controller)** with a **Repository** layer and a dedicated **Service** layer for RBAC:
 
-1. **View (JFrames)**: Captures user events and delegates to Controllers. **Must not** contain business logic, validations, or data persistence.
-2. **Controller**: Validates data, creates Model objects, and orchestrates calls to Repositories. **Must not** interact directly with the database.
-3. **Repository**: Handles SQL queries and database interactions. **Must not** contain business logic or show error messages.
-4. **Model (POJOs)**: Plain Old Java Objects for data representation. **Must not** contain logic.
+```
+View (JFrame) → Controller (validate + orchestrate) → Repository (SQL)
+                                  ↓
+                          Service (RBAC, calculations)
+                                  ↓
+                          Model (POJO)
+```
 
-### Rules
+### MVC Layering Rules
 
-1. **Single Entry Point**: Always run the application via `src/main/App.java`. **Never** run JFrames individually.
-2. **Separation of Concerns**: Each class has **one responsibility**. Controllers handle logic, Views handle UI, Repositories handle data.
-3. **No Direct Database Access**: Views and Controllers **must not** interact directly with the database. Use Repositories.
-4. **Error Handling**: Repositories **must not** show error messages. Controllers handle errors and update Views.
-5. **Session Management**: Use `utils/SesionGlobal.java` for global session state.
-6. **Database Connection**: Configured in `dao/Conexion.java`. Use integrated security for SQL Server.
+1. **View (JFrames)**: Capture user events and delegate to Controllers. **Must not** contain business logic, validations, or data persistence.
+2. **Controller**: Validate data, create Model objects, orchestrate Repositories and Services. **Must not** interact directly with the database.
+3. **Repository**: Execute SQL queries only. **Must not** contain business logic or display UI messages.
+4. **Service**: Stateless business logic (permission checks, calculations). **Must not** interact with the database directly.
+5. **Model (POJOs)**: Plain data containers. **Must not** contain logic.
 
-### NetBeans Form Files (`.form`)
+### RBAC (Role-Based Access Control)
 
-- **Never** edit `.form` files manually. Use the NetBeans designer.
-- **Never** mix hand-written code with NetBeans-generated code in `.java` files linked to `.form` files.
-- Use the **netbeans-form-safe-edit** skill when modifying Swing UI components.
+The system has **3 roles** with department-scoped permissions:
+
+| Role | Access Level |
+|------|-------------|
+| **Admin** | Bypasses all permission checks (hardcoded in PermisoService). Full access to all 9 modules + Permission management. |
+| **RRHH** | Restricted by Permiso table. Has visibility into 4 modules by default. |
+| **Empleado** | Restricted by Permiso table. Only sees own Marcacion by default. |
+
+**Implementation:**
+
+- `Permiso` table with nullable `IdDepartamento` (NULL = global permission, value = department-scoped).
+- `PermisoService` loads all permissions into a `Map` cache at Dashboard init.
+- `DashboardController` calls `tieneAcceso(usuario, modulo, accion)` before each `abrirXxx()` — prevents URL/button bypass.
+- Admin bypass is hardcoded in `PermisoService.tieneAcceso()` to avoid a DB query.
+- **Dual-layer enforcement**: UI hiding (buttons hidden in FrmDashboard) + controller guard (abrirXxx checks).
+
+### Database
+
+- **Server**: SQL Server via Windows Integrated Security.
+- **Connection**: `src/dao/Conexion.java` — JDBC URL with `integratedSecurity=true`.
+- **Schema**: `scriptBD.sql` — creates `AsistenciaPlanillasDB`, all tables, and seed data (idempotent).
+- **Seed users**: `admin/admin123` (Admin), `mgarcia/123456` (RRHH), `cmartinez/123456` (Empleado, Ingeniería), `plopez/123456` (Empleado, Administración).
+
+### Critical Rules
+
+1. **Single Entry Point**: Always run via `src/main/App.java`. **Never** run JFrames individually.
+2. **No Direct DB Access**: Views and Controllers **must not** use JDBC directly. Use Repositories.
+3. **Error Handling**: Repositories **must not** show error messages. Controllers handle errors and update Views.
+4. **NetBeans Form Files (`.form`)**: **Never** edit `.form` files manually. Use the NetBeans designer.
+5. **Post-Init Pattern**: Custom table models, combo box population, and renderers MUST live in a separate method called **after** `initComponents()` (e.g., `inicializarPersonalizaciones()`). NetBeans regenerates `initComponents()` on each designer save; the post-init method survives untouched.
 
 ---
 
 ## References
 
 - [README.md](./README.md)
+- [openspec/specs/access-control/spec.md](./openspec/specs/access-control/spec.md)
 - [.opencode/skills/netbeans-form-safe-edit/SKILL.md](./.opencode/skills/netbeans-form-safe-edit/SKILL.md)

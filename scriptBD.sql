@@ -243,6 +243,55 @@ BEGIN
 END
 GO
 
+-- 6.4 Permisos por Rol
+IF OBJECT_ID('dbo.Permiso', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Permiso (
+        IdPermiso INT IDENTITY(1,1) PRIMARY KEY,
+        Rol VARCHAR(50) NOT NULL,
+        IdDepartamento INT NULL,
+        Modulo VARCHAR(50) NOT NULL,
+        PuedeVer BIT NOT NULL DEFAULT 0,
+        PuedeOperar BIT NOT NULL DEFAULT 0
+    );
+END
+GO
+
+-- Seed data: Admin — all 8 modules, all departments (IdDepartamento = NULL = global)
+IF NOT EXISTS (SELECT 1 FROM dbo.Permiso WHERE Rol = 'Admin' AND Modulo = 'Empleados')
+BEGIN
+    INSERT INTO dbo.Permiso (Rol, IdDepartamento, Modulo, PuedeVer, PuedeOperar) VALUES
+        ('Admin', NULL, 'Empleados', 1, 1),
+        ('Admin', NULL, 'Marcacion', 1, 1),
+        ('Admin', NULL, 'Planillas', 1, 1),
+        ('Admin', NULL, 'Contratos', 1, 1),
+        ('Admin', NULL, 'Horarios', 1, 1),
+        ('Admin', NULL, 'Reportes', 1, 1),
+        ('Admin', NULL, 'Departamentos', 1, 1),
+        ('Admin', NULL, 'AsignacionJornada', 1, 1),
+        ('Admin', NULL, 'Permisos', 1, 1);
+END
+GO
+
+-- Seed data: RRHH — employee management modules
+IF NOT EXISTS (SELECT 1 FROM dbo.Permiso WHERE Rol = 'RRHH' AND Modulo = 'Empleados')
+BEGIN
+    INSERT INTO dbo.Permiso (Rol, IdDepartamento, Modulo, PuedeVer, PuedeOperar) VALUES
+        ('RRHH', NULL, 'Empleados', 1, 1),
+        ('RRHH', NULL, 'Contratos', 1, 1),
+        ('RRHH', NULL, 'Planillas', 1, 1),
+        ('RRHH', NULL, 'Reportes', 1, 1);
+END
+GO
+
+-- Seed data: Empleado — only marcacion (time tracking), view-only
+IF NOT EXISTS (SELECT 1 FROM dbo.Permiso WHERE Rol = 'Empleado' AND Modulo = 'Marcacion')
+BEGIN
+    INSERT INTO dbo.Permiso (Rol, IdDepartamento, Modulo, PuedeVer, PuedeOperar) VALUES
+        ('Empleado', NULL, 'Marcacion', 1, 1);
+END
+GO
+
 -- ========================================================================
 -- 7. USUARIO DE PRUEBA / ADMIN
 -- ========================================================================
@@ -309,14 +358,31 @@ IF @IdEmpleadoCarlos IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Usuario WHERE
     INSERT INTO dbo.Usuario (IdEmpleado, Username, PasswordHash, Rol, Activo) VALUES (@IdEmpleadoCarlos, 'cmartinez', '123456', 'Empleado', 1);
 GO
 
+-- Empleado de prueba en Administración (rol Empleado, solo marcación)
+IF NOT EXISTS (SELECT 1 FROM dbo.Empleado WHERE DUI = '55555555-5')
+BEGIN
+    DECLARE @IdDeptoAdmin INT;
+    SELECT @IdDeptoAdmin = IdDepartamento FROM dbo.Departamento WHERE Nombre = 'Administración';
+    INSERT INTO dbo.Empleado (IdDepartamento, Nombres, Apellidos, DUI, Activo) VALUES (@IdDeptoAdmin, 'Pedro', 'López', '55555555-5', 1);
+END
+GO
+
+DECLARE @IdEmpleadoPedro INT;
+SELECT @IdEmpleadoPedro = IdEmpleado FROM dbo.Empleado WHERE DUI = '55555555-5';
+
+IF @IdEmpleadoPedro IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Usuario WHERE Username = 'plopez')
+    INSERT INTO dbo.Usuario (IdEmpleado, Username, PasswordHash, Rol, Activo) VALUES (@IdEmpleadoPedro, 'plopez', '123456', 'Empleado', 1);
+GO
+
 -- Contrataciones de prueba
 DECLARE @IdContratoIndef INT, @IdContratoFijo INT;
 SELECT @IdContratoIndef = IdContrato FROM dbo.Contrato WHERE Nombre = 'Indefinido';
 SELECT @IdContratoFijo = IdContrato FROM dbo.Contrato WHERE Nombre = 'Fijo';
 
-DECLARE @IdEmpMaria INT, @IdEmpCarlos INT;
+DECLARE @IdEmpMaria INT, @IdEmpCarlos INT, @IdEmpPedro INT;
 SELECT @IdEmpMaria = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
 SELECT @IdEmpCarlos = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+SELECT @IdEmpPedro = IdEmpleado FROM dbo.Empleado WHERE DUI = '55555555-5';
 
 IF @IdEmpMaria IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpMaria)
     INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
@@ -324,6 +390,9 @@ IF @IdEmpMaria IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE 
 IF @IdEmpCarlos IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpCarlos)
     INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
     VALUES (@IdEmpCarlos, @IdContratoFijo, '2024-03-01', 1500.00, 9.38, 1);
+IF @IdEmpPedro IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpPedro)
+    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
+    VALUES (@IdEmpPedro, @IdContratoFijo, '2025-01-01', 800.00, 5.00, 1);
 GO
 
 -- Asignaciones de jornada de prueba
@@ -331,14 +400,17 @@ DECLARE @IdJornMat INT, @IdJornVesp INT;
 SELECT @IdJornMat = IdJornada FROM dbo.Jornada WHERE Nombre = 'Matutina';
 SELECT @IdJornVesp = IdJornada FROM dbo.Jornada WHERE Nombre = 'Vespertina';
 
-DECLARE @IdEmpM INT, @IdEmpC INT;
+DECLARE @IdEmpM INT, @IdEmpC INT, @IdEmpP INT;
 SELECT @IdEmpM = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
 SELECT @IdEmpC = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+SELECT @IdEmpP = IdEmpleado FROM dbo.Empleado WHERE DUI = '55555555-5';
 
 IF @IdEmpM IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.AsignacionJornada WHERE IdEmpleado = @IdEmpM)
     INSERT INTO dbo.AsignacionJornada (IdEmpleado, IdJornada, FechaAsignacion, Activa) VALUES (@IdEmpM, @IdJornMat, GETDATE(), 1);
 IF @IdEmpC IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.AsignacionJornada WHERE IdEmpleado = @IdEmpC)
     INSERT INTO dbo.AsignacionJornada (IdEmpleado, IdJornada, FechaAsignacion, Activa) VALUES (@IdEmpC, @IdJornVesp, GETDATE(), 1);
+IF @IdEmpP IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.AsignacionJornada WHERE IdEmpleado = @IdEmpP)
+    INSERT INTO dbo.AsignacionJornada (IdEmpleado, IdJornada, FechaAsignacion, Activa) VALUES (@IdEmpP, @IdJornMat, GETDATE(), 1);
 GO
 
 -- Registros de asistencia de prueba

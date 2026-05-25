@@ -25,6 +25,7 @@ public class FrmDashboard extends javax.swing.JFrame {
             lblBienvenida.setText("Bienvenido al Sistema");
             lblUsuario.setText(utils.SesionGlobal.getUsuarioActivo().getUsername());
         }
+        this.controller.cargarPermisos();
     }
     
     private void styleModernUI() {
@@ -44,7 +45,7 @@ public class FrmDashboard extends javax.swing.JFrame {
         
         javax.swing.JButton[] buttons = {btnPlanilla, btnContratos, btnHorarios, 
                                           btnReportes, btnDepartamentos, btnAsignacion, 
-                                          btnEmpleados, btnMarcacion};
+                                          btnEmpleados, btnMarcacion, btnPermisos};
         
         for (javax.swing.JButton btn : buttons) {
             btn.setFont(buttonFont);
@@ -130,6 +131,7 @@ public class FrmDashboard extends javax.swing.JFrame {
         btnMarcacion = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
+        btnPermisos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Planillas");
@@ -253,9 +255,9 @@ public class FrmDashboard extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lblBienvenida)
                     .addComponent(jLabel3)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBienvenida))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -277,6 +279,9 @@ public class FrmDashboard extends javax.swing.JFrame {
         lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
         lblUsuario.setText("Usuario");
 
+        btnPermisos.setText("Permisos");
+        btnPermisos.addActionListener(this::btnPermisosActionPerformed);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -289,6 +294,8 @@ public class FrmDashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblUsuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnPermisos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalir)
                 .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -301,7 +308,8 @@ public class FrmDashboard extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(btnSalir)
                     .addComponent(jLabel1)
-                    .addComponent(lblUsuario))
+                    .addComponent(lblUsuario)
+                    .addComponent(btnPermisos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -358,6 +366,60 @@ public class FrmDashboard extends javax.swing.JFrame {
         controller.cerrarSesion();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btnPermisosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPermisosActionPerformed
+        controller.abrirGestionPermisos();
+    }//GEN-LAST:event_btnPermisosActionPerformed
+
+    // ──────────────────────────────────────────────────────────────
+    // Safe getters for permission filtering — added manually
+    // ──────────────────────────────────────────────────────────────
+    public javax.swing.JButton getBtnEmpleados() { return btnEmpleados; }
+    public javax.swing.JButton getBtnMarcacion() { return btnMarcacion; }
+    public javax.swing.JButton getBtnPlanilla() { return btnPlanilla; }
+    public javax.swing.JButton getBtnContratos() { return btnContratos; }
+    public javax.swing.JButton getBtnHorarios() { return btnHorarios; }
+    public javax.swing.JButton getBtnReportes() { return btnReportes; }
+    public javax.swing.JButton getBtnDepartamentos() { return btnDepartamentos; }
+    public javax.swing.JButton getBtnAsignacion() { return btnAsignacion; }
+    public javax.swing.JButton getBtnPermisos() { return btnPermisos; }
+
+    /**
+     * Shows a message dialog to the user.
+     * @param tipo "exito" | "error" | "advertencia" | "info"
+     * @param mensaje the message text
+     */
+    public void mostrarMensaje(String tipo, String mensaje) {
+        int type;
+        String title;
+        switch (tipo) {
+            case "exito":
+                type = javax.swing.JOptionPane.INFORMATION_MESSAGE;
+                title = "Éxito";
+                break;
+            case "error":
+                type = javax.swing.JOptionPane.ERROR_MESSAGE;
+                title = "Error";
+                break;
+            case "advertencia":
+                type = javax.swing.JOptionPane.WARNING_MESSAGE;
+                title = "Advertencia";
+                break;
+            default:
+                type = javax.swing.JOptionPane.INFORMATION_MESSAGE;
+                title = "Información";
+        }
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, title, type);
+    }
+
+    /**
+     * Shows a confirmation dialog.
+     * @return true if user confirms
+     */
+    public boolean mostrarConfirmacion(String mensaje) {
+        return javax.swing.JOptionPane.showConfirmDialog(this, mensaje, "Confirmar",
+            javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignacion;
     private javax.swing.JButton btnContratos;
@@ -365,6 +427,7 @@ public class FrmDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnEmpleados;
     private javax.swing.JButton btnHorarios;
     private javax.swing.JButton btnMarcacion;
+    private javax.swing.JButton btnPermisos;
     private javax.swing.JButton btnPlanilla;
     private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnSalir;
