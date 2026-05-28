@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.*;
 
 public class RepositorioDepartamento {
-    private static final String SQL_SELECT_ALL = "SELECT * FROM Departamento WHERE Activo = 1";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM Departamento";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM Departamento WHERE IdDepartamento = ?";
     private static final String SQL_EXISTS_NOMBRE = "SELECT COUNT(*) FROM Departamento WHERE Nombre = ? AND Activo = 1";
     private static final String SQL_INSERT = "INSERT INTO Departamento (Nombre, Activo) VALUES (?, ?)";
@@ -20,6 +20,19 @@ public class RepositorioDepartamento {
             while (rs.next()) lista.add(map(rs));
         } catch (SQLException e) {
             throw new RuntimeException("Error al listar departamentos: " + e.getMessage(), e);
+        }
+        return lista;
+    }
+
+    public List<Departamento> findActive() {
+        List<Departamento> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Departamento WHERE Activo = 1";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) lista.add(map(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar departamentos activos: " + e.getMessage(), e);
         }
         return lista;
     }

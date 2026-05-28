@@ -66,16 +66,22 @@ public class FrmGestionDepartamentos extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblDepartamentos.getModel();
         int fila = tblDepartamentos.getSelectedRow();
         txtNombre.setText(String.valueOf(model.getValueAt(fila, 1)));
-        chkActivo.setSelected(Boolean.parseBoolean(String.valueOf(model.getValueAt(fila, 2))));
+        String estadoStr = String.valueOf(model.getValueAt(fila, 2));
+        chkActivo.setSelected("Activo".equalsIgnoreCase(estadoStr));
         editando = true;
         btnGuardar.setText("Actualizar");
     }
 
     private void cargarTabla() {
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID"); modelo.addColumn("Nombre"); modelo.addColumn("Activo");
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        modelo.addColumn("ID"); modelo.addColumn("Nombre"); modelo.addColumn("Estado");
         controller.listar().forEach(d -> modelo.addRow(new Object[]{
-            d.getIdDepartamento(), d.getNombre(), d.isActivo()}));
+            d.getIdDepartamento(), d.getNombre(), d.isActivo() ? "Activo" : "Inactivo"}));
         tblDepartamentos.setModel(modelo);
     }
 
