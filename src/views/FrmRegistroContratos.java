@@ -65,7 +65,7 @@ public class FrmRegistroContratos extends javax.swing.JFrame {
     private void cargarTiposContrato() {
         cmbTipo.removeAllItems();
         try {
-            List<Contrato> contratos = contratoDAO.findAll();
+            List<Contrato> contratos = contratoDAO.findActive();
             idsContratos = new int[contratos.size()];
             int idx = 0;
             for (Contrato c : contratos) {

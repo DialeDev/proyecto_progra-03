@@ -15,19 +15,6 @@ public class FrmGestionContratos extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmGestionContratos.class.getName());
     private ContratoController controller;
 
-    // Componentes para CRUD de Tipos de Contrato
-    private javax.swing.JPanel panelTipoContrato;
-    private javax.swing.JLabel lblNombreTipo;
-    private javax.swing.JTextField txtNombreTipo;
-    private javax.swing.JLabel lblTipoContrato;
-    private javax.swing.JComboBox<String> cmbTipoContrato;
-    private javax.swing.JLabel lblDescripcion;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JButton btnGuardarTipo;
-    private javax.swing.JButton btnActualizarTipo;
-    private javax.swing.JButton btnEliminarTipo;
-    private javax.swing.JButton btnLimpiarTipo;
-
     // -- MVC Messaging Methods --
     public void mostrarMensaje(String tipo, String mensaje) {
         switch (tipo) {
@@ -46,7 +33,6 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         initComponents();
         utils.UIStyles.applyModernStyle(this);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icono.png")).getImage());
-        inicializarPanelTiposContrato();
         configurarComponentes();
         this.controller = new ContratoController(this);
     }
@@ -81,75 +67,6 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         });
     }
 
-    private void inicializarPanelTiposContrato() {
-        panelTipoContrato = new javax.swing.JPanel();
-        panelTipoContrato.setBorder(javax.swing.BorderFactory.createTitledBorder(
-            javax.swing.BorderFactory.createEtchedBorder(), "Gestión de Tipos de Contrato",
-            javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
-            new java.awt.Font("Segoe UI", 1, 14)));
-        lblNombreTipo = new javax.swing.JLabel("Nombre:");
-        txtNombreTipo = new javax.swing.JTextField(20);
-        lblTipoContrato = new javax.swing.JLabel("Tipo:");
-        cmbTipoContrato = new javax.swing.JComboBox<>(new String[]{"FIJO", "POR_HORA"});
-        lblDescripcion = new javax.swing.JLabel("Descripción:");
-        txtDescripcion = new javax.swing.JTextField(20);
-        btnGuardarTipo = new javax.swing.JButton("Guardar");
-        btnActualizarTipo = new javax.swing.JButton("Actualizar");
-        btnEliminarTipo = new javax.swing.JButton("Eliminar");
-        btnLimpiarTipo = new javax.swing.JButton("Limpiar");
-        btnGuardarTipo.setBackground(new java.awt.Color(204, 255, 204));
-        btnGuardarTipo.setFont(new java.awt.Font("Segoe UI", 1, 12));
-        btnActualizarTipo.setBackground(new java.awt.Color(255, 255, 204));
-        btnActualizarTipo.setFont(new java.awt.Font("Segoe UI", 1, 12));
-        btnEliminarTipo.setBackground(new java.awt.Color(255, 153, 153));
-        btnEliminarTipo.setFont(new java.awt.Font("Segoe UI", 1, 12));
-        btnLimpiarTipo.setBackground(new java.awt.Color(153, 153, 153));
-        btnLimpiarTipo.setFont(new java.awt.Font("Segoe UI", 1, 12));
-        java.awt.GridBagLayout gbl = new java.awt.GridBagLayout();
-        panelTipoContrato.setLayout(gbl);
-        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-        gbc.insets = new java.awt.Insets(3, 5, 3, 5);
-        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0; gbc.gridy = 0;
-        panelTipoContrato.add(lblNombreTipo, gbc);
-        gbc.gridx = 1;
-        panelTipoContrato.add(txtNombreTipo, gbc);
-        gbc.gridx = 2;
-        panelTipoContrato.add(lblTipoContrato, gbc);
-        gbc.gridx = 3;
-        panelTipoContrato.add(cmbTipoContrato, gbc);
-        gbc.gridx = 0; gbc.gridy = 1;
-        panelTipoContrato.add(lblDescripcion, gbc);
-        gbc.gridx = 1; gbc.gridwidth = 3;
-        panelTipoContrato.add(txtDescripcion, gbc);
-        gbc.gridwidth = 1;
-        javax.swing.JPanel panelBotones = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
-        panelBotones.add(btnGuardarTipo);
-        panelBotones.add(btnActualizarTipo);
-        panelBotones.add(btnEliminarTipo);
-        panelBotones.add(btnLimpiarTipo);
-        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 4;
-        panelTipoContrato.add(panelBotones, gbc);
-        gbc.gridwidth = 1;
-        javax.swing.GroupLayout layout = (javax.swing.GroupLayout) getContentPane().getLayout();
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup().addGap(111, 111, 111).addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup().addGap(47, 47, 47).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup().addGap(47, 47, 47).addComponent(panelTipoContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(71, Short.MAX_VALUE)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(panelTipoContrato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE)));
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -161,49 +78,39 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaContratos = new javax.swing.JTable();
+        panelTipoContrato = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtNombreTipo = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        cmbTipoContrato = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtDescripcion = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        btnGuardarTipo = new javax.swing.JButton();
+        btnActualizarTipo = new javax.swing.JButton();
+        btnEliminarTipo = new javax.swing.JButton();
+        btnLimpiarTipo = new javax.swing.JButton();
+        chkActivo = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion de contratos");
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("GESTION CONTRATOS");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 770, 63));
 
         btnNuevo.setText("NUEVO");
         btnNuevo.setName("btnNuevo"); // NOI18N
+        jPanel1.add(btnNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, -1, -1));
 
         btnEliminar.setText("ELIMINAR");
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, -1));
 
         btnCerrar.setText("CERRAR");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(btnNuevo)
-                .addGap(116, 116, 116)
-                .addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
-                .addComponent(btnCerrar)
-                .addGap(62, 62, 62))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNuevo)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnCerrar))
-                .addGap(38, 38, 38))
-        );
+        jPanel1.add(btnCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 100, -1, -1));
 
         tablaContratos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -218,19 +125,63 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaContratos);
 
+        panelTipoContrato.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gestión de Tipos de Contrato", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        panelTipoContrato.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setText("Nombre");
+        panelTipoContrato.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+
+        txtNombreTipo.setColumns(20);
+        panelTipoContrato.add(txtNombreTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, -1, -1));
+
+        jLabel3.setText("Tipo");
+        panelTipoContrato.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
+
+        cmbTipoContrato.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fijo", "Por Hora" }));
+        cmbTipoContrato.addActionListener(this::cmbTipoContratoActionPerformed);
+        panelTipoContrato.add(cmbTipoContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, -1, -1));
+
+        jLabel4.setText("Descripcion");
+        panelTipoContrato.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
+
+        txtDescripcion.setColumns(20);
+        panelTipoContrato.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, -1, 50));
+
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 7, 7));
+
+        btnGuardarTipo.setBackground(new java.awt.Color(204, 255, 204));
+        btnGuardarTipo.setText("Guardar");
+        jPanel2.add(btnGuardarTipo);
+
+        btnActualizarTipo.setBackground(new java.awt.Color(255, 255, 204));
+        btnActualizarTipo.setText("Actualizar");
+        jPanel2.add(btnActualizarTipo);
+
+        btnEliminarTipo.setBackground(new java.awt.Color(255, 153, 153));
+        btnEliminarTipo.setText("Eliminar");
+        jPanel2.add(btnEliminarTipo);
+
+        btnLimpiarTipo.setBackground(new java.awt.Color(153, 153, 153));
+        btnLimpiarTipo.setText("Limpiar");
+        jPanel2.add(btnLimpiarTipo);
+
+        panelTipoContrato.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 580, 60));
+
+        chkActivo.setText("Activo");
+        panelTipoContrato.add(chkActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+                    .addComponent(panelTipoContrato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,12 +190,17 @@ public class FrmGestionContratos extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(panelTipoContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    // </editor-fold>
+
+    private void cmbTipoContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoContratoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTipoContratoActionPerformed
 
     private void seleccionarTipoContrato() {
         int fila = tablaContratos.getSelectedRow();
@@ -253,30 +209,44 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         txtNombreTipo.setText(model.getValueAt(fila, 1).toString());
         cmbTipoContrato.setSelectedItem(model.getValueAt(fila, 2).toString());
         txtDescripcion.setText(model.getValueAt(fila, 3) != null ? model.getValueAt(fila, 3).toString() : "");
+        chkActivo.setSelected("Activo".equals(model.getValueAt(fila, 4)));
     }
 
     private void limpiarFormularioTipo() {
         txtNombreTipo.setText("");
         cmbTipoContrato.setSelectedIndex(0);
         txtDescripcion.setText("");
+        chkActivo.setSelected(true);
         tablaContratos.clearSelection();
         txtNombreTipo.requestFocus();
     }
 
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarTipo;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminarTipo;
+    private javax.swing.JButton btnGuardarTipo;
+    private javax.swing.JButton btnLimpiarTipo;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JCheckBox chkActivo;
+    private javax.swing.JComboBox<String> cmbTipoContrato;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel panelTipoContrato;
     private javax.swing.JTable tablaContratos;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtNombreTipo;
     // End of variables declaration//GEN-END:variables
 
     public JButton getBtnCerrar() { return btnCerrar; }
     public JButton getBtnEliminar() { return btnEliminar; }
     public JButton getBtnNuevo() { return btnNuevo; }
     public JTable getTablaContratos() { return tablaContratos; }
+    public javax.swing.JCheckBox getChkActivo() { return chkActivo; }
 }

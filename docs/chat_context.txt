@@ -1,0 +1,18 @@
+Resumen de la sesión y cambios realizados (FrmGestionContratos):
+
+1. Refactor Arquitectónico de FrmGestionContratos:
+   - Se eliminó el método manual `inicializarPanelTiposContrato()` que interceptaba y rompía el `GroupLayout` del contenedor principal.
+   - Todo el panel CRUD de contratos se trasladó de forma nativa al diseñador visual de NetBeans (`.form`).
+   - El código en `.java` ahora está limpio y NetBeans maneja el layout sin errores de `ClassCastException`.
+   - Se hicieron respaldos en `assets/backups/`.
+
+2. Lógica de Contratos Activos/Inactivos:
+   - RepositorioContrato.java: `findAll()` ahora trae todos los contratos (activos e inactivos) para la tabla de gestión. Se creó `findActive()` para uso exclusivo de comboboxes. Además, `update()` ahora persiste la propiedad `Activo`.
+   - FrmRegistroContratos.java: Se modificó para cargar su combobox usando `findActive()`, evitando que se puedan asignar contratos inactivos.
+   - FrmGestionContratos.java: Se agregó un getter para `chkActivo` y se sincronizó con el modelo de la tabla.
+   - ContratoController.java: Se conectó para que los métodos de guardar y actualizar lean el valor de `chkActivo` desde la vista y lo envíen al DAO.
+
+Pasos a seguir en la otra máquina:
+1. Hacer un `git pull` de la rama `feat/inactive-departments`.
+2. Verificar el funcionamiento del CRUD de Contratos visualmente en NetBeans.
+3. Ejecutar las pruebas completas usando `test_datos_crudos.sql` (agregado en la sesión anterior) para validar planillas.
