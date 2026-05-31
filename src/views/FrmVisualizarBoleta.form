@@ -4,6 +4,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="Boleta de Pago"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -24,94 +25,90 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-        <Group type="102" alignment="0" attributes="0">
-          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="0" attributes="0">
-            <Group type="102" alignment="0" attributes="0">
-              <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-            </Group>
-            <Group type="102" alignment="0" attributes="0">
-              <Component id="jLabelEmpleado" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="txtEmpleado" min="-2" pref="250" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-            </Group>
-            <Group type="102" alignment="0" attributes="0">
-              <Component id="jLabelSueldo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="txtSueldoBase" min="-2" pref="150" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="jLabelHorasOrd" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="txtHorasOrd" min="-2" pref="100" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="jLabelHorasExtra" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="txtHorasExtra" min="-2" pref="100" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-            </Group>
-            <Group type="102" alignment="0" attributes="0">
-              <Component id="jLabelTotalIngresos" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="txtTotalIngresos" min="-2" pref="150" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="jLabelTotalDeducciones" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="txtTotalDeducciones" min="-2" pref="150" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="jLabelLiquido" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="txtLiquidoPagar" min="-2" pref="150" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-            </Group>
-            <Group type="102" alignment="0" attributes="0">
-              <Component id="jScrollPaneDetalles" min="-2" pref="534" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-            </Group>
-            <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
-            </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelTitulo" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelEmpleado" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="txtEmpleado" min="-2" pref="250" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelSueldo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="txtSueldoBase" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="jLabelHorasOrd" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="txtHorasOrd" min="-2" pref="100" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="jLabelHorasExtra" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="txtHorasExtra" min="-2" pref="100" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelTotalIngresos" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="txtTotalIngresos" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="jLabelTotalDeducciones" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="txtTotalDeducciones" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="jLabelLiquido" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="txtLiquidoPagar" min="-2" pref="150" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jScrollPaneDetalles" alignment="0" min="-2" pref="534" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
           </Group>
-          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-        <Group type="102" alignment="0" attributes="0">
-          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-          <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="3" attributes="0">
-            <Component id="jLabelEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelSueldo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtSueldoBase" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelHorasOrd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtHorasOrd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelHorasExtra" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtHorasExtra" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelTotalIngresos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtTotalIngresos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelTotalDeducciones" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtTotalDeducciones" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelLiquido" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLiquidoPagar" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Component id="jScrollPaneDetalles" min="-2" pref="180" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="32767" attributes="0"/>
           </Group>
-          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="3" attributes="0">
-            <Component id="jLabelSueldo" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtSueldoBase" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="jLabelHorasOrd" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtHorasOrd" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="jLabelHorasExtra" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtHorasExtra" alignment="3" min="-2" max="-2" attributes="0"/>
-          </Group>
-          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="3" attributes="0">
-            <Component id="jLabelTotalIngresos" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtTotalIngresos" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="jLabelTotalDeducciones" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtTotalDeducciones" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="jLabelLiquido" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="txtLiquidoPagar" alignment="3" min="-2" max="-2" attributes="0"/>
-          </Group>
-          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-          <Component id="jScrollPaneDetalles" min="-2" pref="180" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-          <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="15" max="32767" attributes="0"/>
-        </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -202,7 +199,7 @@
           <Font name="Segoe UI" size="12" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="00" red="00" type="rgb"/>
+          <Color blue="ff" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
     </Component>
@@ -210,6 +207,7 @@
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
+
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JTable" name="jTableDetalles">

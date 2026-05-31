@@ -37,6 +37,7 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         jLabelTitulo = new javax.swing.JLabel();
         jLabelEmpleado = new javax.swing.JLabel();
         txtEmpleado = new javax.swing.JTextField();
@@ -58,37 +59,54 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Boleta de Pago");
+        setResizable(false);
 
-        jLabelTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18));
+        jLabelTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabelTitulo.setText("Detalle de Boleta de Pago");
 
         jLabelEmpleado.setText("Empleado:");
+
         txtEmpleado.setEditable(false);
 
         jLabelSueldo.setText("Sueldo Base:");
+
         txtSueldoBase.setEditable(false);
 
         jLabelHorasOrd.setText("Horas Ordinarias:");
+
         txtHorasOrd.setEditable(false);
 
         jLabelHorasExtra.setText("Horas Extra:");
+
         txtHorasExtra.setEditable(false);
 
         jLabelTotalIngresos.setText("Total Ingresos:");
+
         txtTotalIngresos.setEditable(false);
-        txtTotalIngresos.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        txtTotalIngresos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabelTotalDeducciones.setText("Total Deducciones:");
+
         txtTotalDeducciones.setEditable(false);
-        txtTotalDeducciones.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        txtTotalDeducciones.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabelLiquido.setText("Líquido a Pagar:");
+
         txtLiquidoPagar.setEditable(false);
-        txtLiquidoPagar.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        txtLiquidoPagar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtLiquidoPagar.setForeground(java.awt.Color.RED);
 
         jTableDetalles.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][]{}, new String[]{"Concepto", "Tipo", "Monto"}));
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Concepto", "Tipo", "Monto"
+            }
+        ));
         jScrollPaneDetalles.setViewportView(jTableDetalles);
 
         btnCerrar.setText("Cerrar");
@@ -100,40 +118,43 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelTitulo)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelEmpleado)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelSueldo)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtSueldoBase, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelHorasOrd)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtHorasOrd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelHorasExtra)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtHorasExtra, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelTotalIngresos)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtTotalIngresos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelTotalDeducciones)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtTotalDeducciones, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelLiquido)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtLiquidoPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPaneDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCerrar)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addComponent(btnCerrar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelTitulo)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelEmpleado)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelSueldo)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtSueldoBase, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelHorasOrd)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtHorasOrd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelHorasExtra)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtHorasExtra, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelTotalIngresos)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtTotalIngresos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelTotalDeducciones)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtTotalDeducciones, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelLiquido)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtLiquidoPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPaneDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,30 +185,31 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
                 .addComponent(jScrollPaneDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(btnCerrar)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(15, 15, Short.MAX_VALUE))
         );
+
         pack();
-    }//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     // </editor-fold>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabelTitulo;
+    private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabelEmpleado;
-    private javax.swing.JTextField txtEmpleado;
-    private javax.swing.JLabel jLabelSueldo;
-    private javax.swing.JTextField txtSueldoBase;
-    private javax.swing.JLabel jLabelHorasOrd;
-    private javax.swing.JTextField txtHorasOrd;
     private javax.swing.JLabel jLabelHorasExtra;
-    private javax.swing.JTextField txtHorasExtra;
-    private javax.swing.JLabel jLabelTotalIngresos;
-    private javax.swing.JTextField txtTotalIngresos;
-    private javax.swing.JLabel jLabelTotalDeducciones;
-    private javax.swing.JTextField txtTotalDeducciones;
+    private javax.swing.JLabel jLabelHorasOrd;
     private javax.swing.JLabel jLabelLiquido;
-    private javax.swing.JTextField txtLiquidoPagar;
+    private javax.swing.JLabel jLabelSueldo;
+    private javax.swing.JLabel jLabelTitulo;
+    private javax.swing.JLabel jLabelTotalDeducciones;
+    private javax.swing.JLabel jLabelTotalIngresos;
     private javax.swing.JScrollPane jScrollPaneDetalles;
     private javax.swing.JTable jTableDetalles;
-    private javax.swing.JButton btnCerrar;
+    private javax.swing.JTextField txtEmpleado;
+    private javax.swing.JTextField txtHorasExtra;
+    private javax.swing.JTextField txtHorasOrd;
+    private javax.swing.JTextField txtLiquidoPagar;
+    private javax.swing.JTextField txtSueldoBase;
+    private javax.swing.JTextField txtTotalDeducciones;
+    private javax.swing.JTextField txtTotalIngresos;
     // End of variables declaration//GEN-END:variables
 }

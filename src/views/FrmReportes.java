@@ -106,10 +106,11 @@ public class FrmReportes extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         jTabbedPane1 = new javax.swing.JTabbedPane();
         tabAsistencia = new javax.swing.JPanel();
         lblEmpleadoAsist = new javax.swing.JLabel();
-        cmbEmpleadoAsist = new javax.swing.JComboBox<>();
+        cmbEmpleadoAsist = new javax.swing.JComboBox();
         lblDesde = new javax.swing.JLabel();
         spnDesde = new javax.swing.JSpinner();
         lblHasta = new javax.swing.JLabel();
@@ -120,7 +121,7 @@ public class FrmReportes extends javax.swing.JFrame {
         jTableAsistencia = new javax.swing.JTable();
         tabPlanilla = new javax.swing.JPanel();
         jLabelPlanilla = new javax.swing.JLabel();
-        jComboBoxPlanilla = new javax.swing.JComboBox<>();
+        jComboBoxPlanilla = new javax.swing.JComboBox();
         btnCargarBoletas = new javax.swing.JButton();
         btnExportarPlanilla = new javax.swing.JButton();
         jScrollPanePlanilla = new javax.swing.JScrollPane();
@@ -128,88 +129,153 @@ public class FrmReportes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Reportes");
+        setResizable(false);
 
         lblEmpleadoAsist.setText("Empleado:");
+
         lblDesde.setText("Desde:");
+
         lblHasta.setText("Hasta:");
+
         btnGenerarAsistencia.setText("Generar Reporte");
+
         btnExportarAsistencia.setText("Exportar CSV");
+
         jTableAsistencia.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][] {}, new String[] {"ID", "Empleado", "Fecha", "Entrada", "Salida", "Horas"}));
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Empleado", "Fecha", "Entrada", "Salida", "Horas"
+            }
+        ));
         jScrollPaneAsistencia.setViewportView(jTableAsistencia);
 
         javax.swing.GroupLayout tabAsistenciaLayout = new javax.swing.GroupLayout(tabAsistencia);
         tabAsistencia.setLayout(tabAsistenciaLayout);
-        tabAsistenciaLayout.setHorizontalGroup(tabAsistenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabAsistenciaLayout.createSequentialGroup().addGap(23, 23, 23)
+        tabAsistenciaLayout.setHorizontalGroup(
+            tabAsistenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabAsistenciaLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(tabAsistenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabAsistenciaLayout.createSequentialGroup()
-                        .addComponent(lblEmpleadoAsist).addGap(6, 6, 6)
+                        .addComponent(lblEmpleadoAsist)
+                        .addGap(6, 6, 6)
                         .addComponent(cmbEmpleadoAsist, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18).addComponent(lblDesde).addGap(6, 6, 6)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblDesde)
+                        .addGap(6, 6, 6)
                         .addComponent(spnDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18).addComponent(lblHasta).addGap(6, 6, 6)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblHasta)
+                        .addGap(6, 6, 6)
                         .addComponent(spnHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(tabAsistenciaLayout.createSequentialGroup()
-                        .addComponent(btnGenerarAsistencia).addGap(18, 18, 18)
+                        .addComponent(btnGenerarAsistencia)
+                        .addGap(18, 18, 18)
                         .addComponent(btnExportarAsistencia))
                     .addComponent(jScrollPaneAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE)));
-        tabAsistenciaLayout.setVerticalGroup(tabAsistenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabAsistenciaLayout.createSequentialGroup().addGap(20, 20, 20)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        tabAsistenciaLayout.setVerticalGroup(
+            tabAsistenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabAsistenciaLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(tabAsistenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmpleadoAsist).addComponent(cmbEmpleadoAsist, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDesde).addComponent(spnDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblHasta).addComponent(spnHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblEmpleadoAsist)
+                    .addComponent(cmbEmpleadoAsist, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDesde)
+                    .addComponent(spnDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblHasta)
+                    .addComponent(spnHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(tabAsistenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGenerarAsistencia).addComponent(btnExportarAsistencia))
+                    .addComponent(btnGenerarAsistencia)
+                    .addComponent(btnExportarAsistencia))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPaneAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE)));
+                .addGap(15, 15, Short.MAX_VALUE))
+        );
+
         jTabbedPane1.addTab("Asistencia", tabAsistencia);
 
         jLabelPlanilla.setText("Planilla:");
+
         btnCargarBoletas.setText("Cargar Boletas");
+
         btnExportarPlanilla.setText("Exportar CSV");
+
         jTableBoletas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][] {}, new String[] {"ID", "Empleado", "Per\u00edodo", "Total Ingresos", "Total Deducciones", "L\u00edquido"}));
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Empleado", "Período", "Total Ingresos", "Total Deducciones", "Líquido"
+            }
+        ));
         jScrollPanePlanilla.setViewportView(jTableBoletas);
 
         javax.swing.GroupLayout tabPlanillaLayout = new javax.swing.GroupLayout(tabPlanilla);
         tabPlanilla.setLayout(tabPlanillaLayout);
-        tabPlanillaLayout.setHorizontalGroup(tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabPlanillaLayout.createSequentialGroup().addGap(23, 23, 23)
+        tabPlanillaLayout.setHorizontalGroup(
+            tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabPlanillaLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabPlanillaLayout.createSequentialGroup()
-                        .addComponent(jLabelPlanilla).addGap(6, 6, 6)
+                        .addComponent(jLabelPlanilla)
+                        .addGap(6, 6, 6)
                         .addComponent(jComboBoxPlanilla, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(tabPlanillaLayout.createSequentialGroup()
-                        .addComponent(btnCargarBoletas).addGap(18, 18, 18).addComponent(btnExportarPlanilla))
+                        .addComponent(btnCargarBoletas)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExportarPlanilla))
                     .addComponent(jScrollPanePlanilla, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE)));
-        tabPlanillaLayout.setVerticalGroup(tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabPlanillaLayout.createSequentialGroup().addGap(20, 20, 20)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        tabPlanillaLayout.setVerticalGroup(
+            tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabPlanillaLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelPlanilla).addComponent(jComboBoxPlanilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelPlanilla)
+                    .addComponent(jComboBoxPlanilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCargarBoletas).addComponent(btnExportarPlanilla))
+                    .addComponent(btnCargarBoletas)
+                    .addComponent(btnExportarPlanilla))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPanePlanilla, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE)));
+                .addGap(15, 15, Short.MAX_VALUE))
+        );
+
         jTabbedPane1.addTab("Planilla", tabPlanilla);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap().addComponent(jTabbedPane1).addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap().addComponent(jTabbedPane1).addContainerGap()));
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         pack();
-    }//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     // </editor-fold>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -217,8 +283,8 @@ public class FrmReportes extends javax.swing.JFrame {
     private javax.swing.JButton btnExportarAsistencia;
     private javax.swing.JButton btnExportarPlanilla;
     private javax.swing.JButton btnGenerarAsistencia;
-    private javax.swing.JComboBox<String> cmbEmpleadoAsist;
-    private javax.swing.JComboBox<String> jComboBoxPlanilla;
+    private javax.swing.JComboBox cmbEmpleadoAsist;
+    private javax.swing.JComboBox jComboBoxPlanilla;
     private javax.swing.JLabel jLabelPlanilla;
     private javax.swing.JScrollPane jScrollPaneAsistencia;
     private javax.swing.JScrollPane jScrollPanePlanilla;

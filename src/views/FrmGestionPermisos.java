@@ -51,40 +51,28 @@ public class FrmGestionPermisos extends javax.swing.JFrame {
         cmbDepartamento = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         tblPermisos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Rol", "Departamento", "Módulo", "Puede Ver", "Puede Operar"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ) {
-            Class<?>[] types = new Class<?>[] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class
-            };
-            boolean[] canEdit = new boolean[] { false, false, false, false, false, false };
-            @Override
-            public Class<?> getColumnClass(int columnIndex) { return types[columnIndex]; }
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) { return canEdit[columnIndex]; }
-        });
+        ));
         jScrollPane1.setViewportView(tblPermisos);
 
-        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "RRHH", "Empleado" }));
+        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cmbModulo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
-            "Empleados", "Marcacion", "Planillas", "Contratos",
-            "Horarios", "Reportes", "Departamentos", "AsignacionJornada"
-        }));
+        cmbModulo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        chbPuedeVer.setText("Puede Ver");
+        chbPuedeVer.setText("jCheckBox1");
 
-        chbPuedeOperar.setText("Puede Operar");
+        chbPuedeOperar.setText("jCheckBox2");
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
