@@ -264,15 +264,26 @@ public class FrmGestionPermisos extends javax.swing.JFrame {
     }
 
     private void configurarComponentes() {
-        tblPermisos.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) { seleccionarPermiso(); }
-        });
+        // Set checkbox texts (NetBeans designer only generates placeholders like "jCheckBox1")
+        chbPuedeVer.setText("Puede Ver");
+        chbPuedeOperar.setText("Puede Operar");
+        // Populate combos with real data (NetBeans designer only generates placeholders)
+        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Admin", "RRHH", "Empleado"}));
+        cmbModulo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{
+            "Empleados", "Marcacion", "Planillas", "Contratos",
+            "Horarios", "Reportes", "Departamentos", "AsignacionJornada",
+            "Permisos", "Usuarios"
+        }));
         // Load departments into combo: "Todos" = global, then each department
         cmbDepartamento.removeAllItems();
         cmbDepartamento.addItem("Todos");
         new controllers.DepartamentoController().listar()
             .forEach(d -> cmbDepartamento.addItem(d.getNombre()));
+        // Table row click → load for editing
+        tblPermisos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) { seleccionarPermiso(); }
+        });
         cargarTabla();
     }
 

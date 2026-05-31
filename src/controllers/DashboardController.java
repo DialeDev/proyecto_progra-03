@@ -36,6 +36,7 @@ public class DashboardController {
         vista.getBtnDepartamentos().setVisible(permisoService.tieneAcceso(user, "Departamentos", "ver"));
         vista.getBtnAsignacion().setVisible(permisoService.tieneAcceso(user, "AsignacionJornada", "ver"));
         vista.getBtnPermisos().setVisible(permisoService.tieneAcceso(user, "Permisos", "ver"));
+        vista.getBtnUsuarios().setVisible(permisoService.tieneAcceso(user, "Usuarios", "ver"));
     }
 
     /**
@@ -122,6 +123,17 @@ public class DashboardController {
     public void abrirReportes() {
         if (!verificarAcceso("Reportes")) return;
         FrmReportes frm = new FrmReportes();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);
+        ocultarDashboardAlAbrirForm(frm);
+    }
+
+    /**
+     * Opens the User Management form.
+     */
+    public void abrirGestionUsuarios() {
+        if (!verificarAcceso("Usuarios")) return;
+        FrmGestionUsuarios frm = new FrmGestionUsuarios();
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
         ocultarDashboardAlAbrirForm(frm);

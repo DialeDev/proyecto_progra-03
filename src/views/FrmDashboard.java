@@ -45,7 +45,8 @@ public class FrmDashboard extends javax.swing.JFrame {
         
         javax.swing.JButton[] buttons = {btnPlanilla, btnContratos, btnHorarios, 
                                           btnReportes, btnDepartamentos, btnAsignacion, 
-                                          btnEmpleados, btnMarcacion, btnPermisos};
+                                          btnEmpleados, btnMarcacion, btnPermisos, 
+                                          btnUsuarios};
         
         for (javax.swing.JButton btn : buttons) {
             btn.setFont(buttonFont);
@@ -132,6 +133,7 @@ public class FrmDashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         btnPermisos = new javax.swing.JButton();
+        btnUsuarios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Planillas");
@@ -281,6 +283,9 @@ public class FrmDashboard extends javax.swing.JFrame {
         btnPermisos.setText("Permisos");
         btnPermisos.addActionListener(this::btnPermisosActionPerformed);
 
+        btnUsuarios.setText("Usuarios");
+        btnUsuarios.addActionListener(this::btnUsuariosActionPerformed);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -288,13 +293,15 @@ public class FrmDashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addGap(112, 112, 112)
+                .addGap(49, 49, 49)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblUsuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnUsuarios)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnPermisos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalir)
                 .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -308,7 +315,8 @@ public class FrmDashboard extends javax.swing.JFrame {
                     .addComponent(btnSalir)
                     .addComponent(jLabel1)
                     .addComponent(lblUsuario)
-                    .addComponent(btnPermisos))
+                    .addComponent(btnPermisos)
+                    .addComponent(btnUsuarios))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -369,6 +377,10 @@ public class FrmDashboard extends javax.swing.JFrame {
         controller.abrirGestionPermisos();
     }//GEN-LAST:event_btnPermisosActionPerformed
 
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
+        controller.abrirGestionUsuarios();
+    }//GEN-LAST:event_btnUsuariosActionPerformed
+
     // ──────────────────────────────────────────────────────────────
     // Safe getters for permission filtering — added manually
     // ──────────────────────────────────────────────────────────────
@@ -381,6 +393,7 @@ public class FrmDashboard extends javax.swing.JFrame {
     public javax.swing.JButton getBtnDepartamentos() { return btnDepartamentos; }
     public javax.swing.JButton getBtnAsignacion() { return btnAsignacion; }
     public javax.swing.JButton getBtnPermisos() { return btnPermisos; }
+    public javax.swing.JButton getBtnUsuarios() { return btnUsuarios; }
 
     /**
      * Shows a message dialog to the user.
@@ -430,6 +443,7 @@ public class FrmDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnPlanilla;
     private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnUsuarios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Control access to 8 Dashboard modules by user `Rol` and `IdDepartamento`. Enforces at UI (button visibility) and Controller (direct access) levels.
+Control access to 9 Dashboard modules by user `Rol` and `IdDepartamento`. Enforces at UI (button visibility) and Controller (direct access) levels.
 
 ## Requirements
 
@@ -26,11 +26,11 @@ Stores permissions with: IdPermiso, Rol (VARCHAR), IdDepartamento (INT nullable)
 
 ### R2: Default Seed Permissions
 
-Seeds Permiso on initialization for all 3 roles and 8 modules.
+Seeds Permiso on initialization for all 3 roles and 9 modules.
 
 | Rol | Modules with PuedeVer = 1 |
 |-----|--------------------------|
-| Admin | All 8 modules |
+| Admin | All 9 modules |
 | RRHH | Empleados, Contratos, Planillas, Reportes |
 | Empleado | Marcacion only |
 
@@ -38,7 +38,7 @@ Seeds Permiso on initialization for all 3 roles and 8 modules.
 
 - GIVEN a freshly seeded database
 - WHEN an Admin user's permissions are queried
-- THEN all 8 modules have PuedeVer = 1 and PuedeOperar = 1
+- THEN all 9 modules have PuedeVer = 1 and PuedeOperar = 1
 
 #### Scenario: Empleado restricted access
 
@@ -84,7 +84,7 @@ Hides module buttons on `FrmDashboard` where user lacks PuedeVer.
 - GIVEN an RRHH user with PuedeVer = 1 for Empleados, Contratos, Planillas, Reportes
 - WHEN FrmDashboard loads
 - THEN those 4 buttons are visible
-- AND the remaining 4 buttons (Marcacion, Horarios, Departamentos, AsignacionJornada) are hidden
+- AND the remaining 5 buttons (Marcacion, Horarios, Departamentos, AsignacionJornada, Usuarios) are hidden
 
 #### Scenario: Empleado sees only marcacion
 
@@ -126,3 +126,20 @@ Provides `FrmGestionPermisos` to manage the Permiso table. Only Rol = "Admin" ca
 - WHEN they attempt to open FrmGestionPermisos
 - THEN access is denied with "Acceso denegado"
 - AND the permission management form is NOT opened
+
+### R7: User Management Module
+
+Provides `FrmGestionUsuarios` to manage the Usuario table. Only Admin has seed access via `PermisoService`.
+
+#### Scenario: Admin accesses user management
+
+- GIVEN an Admin user
+- WHEN the user opens FrmGestionUsuarios
+- THEN the user can view, create, edit, desactivate, and reactivate user accounts
+
+#### Scenario: RRHH cannot access user management
+
+- GIVEN an RRHH user
+- WHEN FrmDashboard loads
+- THEN the Usuarios button is hidden
+- AND attempting to open FrmGestionUsuarios via controller shows "Acceso denegado"

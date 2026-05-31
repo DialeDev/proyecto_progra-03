@@ -1,11 +1,13 @@
 package utils;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,6 +56,36 @@ public final class UIStyles {
 
     private UIStyles() {
         // utilidad — no instanciable
+    }
+
+    // ── SVG Icon helper ────────────────────────────────────────────────
+
+    /**
+     * Sets a white SVG icon on a button using FlatSVGIcon.
+     * The icon is loaded from {@code img/fa[name].svg} via ClassLoader and tinted
+     * white so it looks correct on any button background color.
+     * <p>If the SVG file does not exist the button is left unchanged.</p>
+     *
+     * @param btn  the button to apply the icon to
+     * @param name the icon base name (e.g. "User" → "img/faUser.svg")
+     */
+    public static void setSVGIcon(JButton btn, String name) {
+        try {
+            String path = "img/fa" + name + ".svg";
+            FlatSVGIcon icon = new FlatSVGIcon(path, UIStyles.class.getClassLoader());
+            icon = icon.derive(18, 18); // standard size
+            // White color filter — icons look correct on any button background
+            // NOTE: anonymous class required — lambda does not compile in FlatLaf 3.7.1
+            icon.setColorFilter(new FlatSVGIcon.ColorFilter() {
+                @Override
+                public Color filter(Color c) {
+                    return Color.WHITE;
+                }
+            });
+            btn.setIcon(icon);
+        } catch (Exception e) {
+            // SVG not available — button text only
+        }
     }
 
     // ── Método principal ───────────────────────────────────────────────
@@ -112,8 +144,10 @@ public final class UIStyles {
                 continue;
             }
 
-            // ── JToggleButton ───────────────────────────────────────
-            if (comp instanceof JToggleButton toggle) {
+            // ── JToggleButton (but NOT JCheckBox) ────────────────────
+            // JCheckBox extends JToggleButton; checkboxes must keep their native
+            // rendering (content area, text, etc.) and should NOT be styled here.
+            if (comp instanceof JToggleButton toggle && !(comp instanceof JCheckBox)) {
                 styleToggleButton(toggle);
                 continue;
             }
@@ -151,13 +185,15 @@ public final class UIStyles {
         } else {
             String t = text.toLowerCase().trim();
             if (t.contains("eliminar") || t.contains("borrar") || t.contains("cerrar sesión")
-                    || t.contains("salir") || t.contains("cancelar")) {
+                    || t.contains("salir") || t.contains("cancelar")
+                    || t.contains("desactivar")) {
                 btnColor = BTN_DANGER;
                 btnHover = darken(BTN_DANGER);
             } else if (t.contains("guardar") || t.contains("registrar") || t.contains("crear")) {
                 btnColor = BTN_SUCCESS;
                 btnHover = darken(BTN_SUCCESS);
-            } else if (t.contains("limpiar") || t.contains("buscar") || t.contains("volver")) {
+            } else if (t.contains("limpiar") || t.contains("buscar") || t.contains("volver")
+                    || t.contains("reactivar")) {
                 btnColor = BTN_SECONDARY;
                 btnHover = BTN_SECONDARY_DK;
             } else {

@@ -8,6 +8,7 @@ public class Usuario {
     private String passwordHash;
     private String rol;
     private boolean activo;
+    private String nombreEmpleado; // transient — populated via JOIN with Empleado
 
     public Usuario(int idUsuario, int idEmpleado, String username, String passwordHash, String rol) {
         this.idUsuario = idUsuario;
@@ -30,4 +31,6 @@ public class Usuario {
     public void setRol(String rol) { this.rol = rol; }
     public boolean isActivo() { return activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
+    public String getNombreEmpleado() { return nombreEmpleado; }
+    public void setNombreEmpleado(String nombreEmpleado) { this.nombreEmpleado = nombreEmpleado; }
 }

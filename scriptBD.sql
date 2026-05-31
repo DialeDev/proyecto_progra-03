@@ -269,7 +269,8 @@ BEGIN
         ('Admin', NULL, 'Reportes', 1, 1),
         ('Admin', NULL, 'Departamentos', 1, 1),
         ('Admin', NULL, 'AsignacionJornada', 1, 1),
-        ('Admin', NULL, 'Permisos', 1, 1);
+        ('Admin', NULL, 'Permisos', 1, 1),
+        ('Admin', NULL, 'Usuarios', 1, 1);
 END
 GO
 
