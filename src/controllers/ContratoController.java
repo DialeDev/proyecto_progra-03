@@ -39,10 +39,18 @@ public class ContratoController implements ActionListener {
     }
 
     private void cargarTabla() {
-        modeloTabla.setRowCount(0);
         try {
-            contratoDAO.findAll().forEach(c -> modeloTabla.addRow(new Object[]{
+            java.util.List<Contrato> contratos = contratoDAO.findAll();
+            DefaultTableModel nuevoModelo = new DefaultTableModel();
+            nuevoModelo.addColumn("ID");
+            nuevoModelo.addColumn("Nombre");
+            nuevoModelo.addColumn("Tipo");
+            nuevoModelo.addColumn("Descripción");
+            nuevoModelo.addColumn("Activo");
+            contratos.forEach(c -> nuevoModelo.addRow(new Object[]{
                 c.getIdContrato(), c.getNombre(), c.getTipo().name(), c.getDescripcion(), c.isActivo() ? "Activo" : "Inactivo"}));
+            modeloTabla = nuevoModelo;
+            vista.getTablaContratos().setModel(nuevoModelo);
         } catch (Exception e) {
             vista.mostrarMensaje("error", "Error al cargar: " + e.getMessage());
         }
@@ -67,9 +75,8 @@ public class ContratoController implements ActionListener {
             vista.mostrarMensaje("advertencia", "El nombre es obligatorio.");
             return;
         }
-        TipoContrato tipo;
-        try { tipo = TipoContrato.valueOf(tipoStr); }
-        catch (IllegalArgumentException e) {
+        TipoContrato tipo = parsearTipo(tipoStr);
+        if (tipo == null) {
             vista.mostrarMensaje("advertencia", "Tipo no válido.");
             return;
         }
@@ -93,9 +100,8 @@ public class ContratoController implements ActionListener {
             vista.mostrarMensaje("advertencia", "El nombre es obligatorio.");
             return;
         }
-        TipoContrato tipo;
-        try { tipo = TipoContrato.valueOf(tipoStr); }
-        catch (IllegalArgumentException e) {
+        TipoContrato tipo = parsearTipo(tipoStr);
+        if (tipo == null) {
             vista.mostrarMensaje("advertencia", "Tipo no válido.");
             return;
         }
@@ -122,6 +128,12 @@ public class ContratoController implements ActionListener {
                 vista.mostrarMensaje("error", "Error: " + ex.getMessage());
             }
         }
+    }
+
+    private TipoContrato parsearTipo(String tipoStr) {
+        if ("Fijo".equalsIgnoreCase(tipoStr) || "FIJO".equals(tipoStr)) return TipoContrato.FIJO;
+        if ("Por Hora".equalsIgnoreCase(tipoStr) || "POR_HORA".equals(tipoStr)) return TipoContrato.POR_HORA;
+        return null;
     }
 
     private void eliminarContrato() {

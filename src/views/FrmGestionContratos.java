@@ -91,6 +91,7 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         btnEliminarTipo = new javax.swing.JButton();
         btnLimpiarTipo = new javax.swing.JButton();
         chkActivo = new javax.swing.JCheckBox();
+        chkActivo.setSelected(true);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion de contratos");

@@ -12,8 +12,8 @@ public class RepositorioJornada {
     private static final String SQL_SELECT_ALL = "SELECT * FROM Jornada WHERE Activa = 1";
     private static final String SQL_UPDATE = "UPDATE Jornada SET Nombre = ?, HoraEntradaEsperada = ?, HoraSalidaEsperada = ?, MargenToleranciaMinutos = ? WHERE IdJornada = ?";
     private static final String SQL_DELETE = "UPDATE Jornada SET Activa = 0 WHERE IdJornada = ?";
-    private static final String SQL_EXISTE_TRASLAPE = "SELECT COUNT(*) FROM Jornada WHERE HoraEntradaEsperada < ? AND HoraSalidaEsperada > ? AND Activa = 1";
-    private static final String SQL_EXISTE_TRASLAPE_EXCLUYENDO = "SELECT COUNT(*) FROM Jornada WHERE HoraEntradaEsperada < ? AND HoraSalidaEsperada > ? AND Activa = 1 AND IdJornada != ?";
+    private static final String SQL_EXISTE_TRASLAPE = "SELECT COUNT(*) FROM Jornada WHERE HoraEntradaEsperada < CAST(? AS TIME) AND HoraSalidaEsperada > CAST(? AS TIME) AND Activa = 1";
+    private static final String SQL_EXISTE_TRASLAPE_EXCLUYENDO = "SELECT COUNT(*) FROM Jornada WHERE HoraEntradaEsperada < CAST(? AS TIME) AND HoraSalidaEsperada > CAST(? AS TIME) AND Activa = 1 AND IdJornada != ?";
 
     public boolean existeTraslape(LocalTime entrada, LocalTime salida) {
         try (Connection conn = Conexion.getConnection();
