@@ -26,7 +26,7 @@ public class EmpleadoController {
     }
 
     public List<Departamento> obtenerDepartamentos() {
-        return departamentoDAO.findAll();
+        return departamentoDAO.findActive();
     }
 
     public void setEditando(boolean editando) { this.editando = editando; }

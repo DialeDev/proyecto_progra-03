@@ -32,22 +32,31 @@ public class PlanillaController {
         if (planillaDAO.existePorMesYAnio(mes, anio))
             return "Ya existe una planilla para " + mes + "/" + anio + ". No se puede crear duplicado.";
 
-        // Pre-validar contratos activos
-        List<String> errores = new ArrayList<>();
+        // Separar empleados CON contrato activo de los que no tienen
+        List<Empleado> conContrato = new ArrayList<>();
+        List<String> omitidos = new ArrayList<>();
         activos.forEach(e -> {
-            if (contratacionDAO.findContratoActivoByEmpleado(e.getIdEmpleado()).isEmpty()) {
-                errores.add("- " + e.getNombres() + " " + e.getApellidos() + " (ID: " + e.getIdEmpleado() + ")");
+            if (contratacionDAO.findContratoActivoByEmpleado(e.getIdEmpleado()).isPresent()) {
+                conContrato.add(e);
+            } else {
+                omitidos.add("- " + e.getNombres() + " " + e.getApellidos() + " (ID: " + e.getIdEmpleado() + ")");
             }
         });
-        if (!errores.isEmpty()) {
-            return "No se pudo generar la planilla. Los siguientes empleados no tienen contratación activa:\n"
-                + String.join("\n", errores);
-        }
 
-        // Todos tienen contrato, delegar transacción al repositorio
-        return planillaDAO.crearPlanillaConBoletas(
+        if (conContrato.isEmpty())
+            return "Ningún empleado activo tiene contratación vigente. No se generó la planilla.";
+
+        // Generar planilla solo con los empleados que tienen contrato
+        String resultado = planillaDAO.crearPlanillaConBoletas(
             new Planilla(0, mes, anio, LocalDate.now(), EstadoPlanilla.BORRADOR),
-            activos, mes, anio);
+            conContrato, mes, anio);
+
+        // Si hubo omitidos, advertir al final
+        if (!omitidos.isEmpty()) {
+            resultado += "\n\nADVERTENCIA: Los siguientes empleados no tienen contratación activa y fueron omitidos:\n"
+                + String.join("\n", omitidos);
+        }
+        return resultado;
     }
 
     public List<Planilla> listarTodas() { return planillaDAO.obtenerTodas(); }

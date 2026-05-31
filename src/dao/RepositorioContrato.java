@@ -9,8 +9,9 @@ import java.util.*;
 public class RepositorioContrato {
     private static final String SQL_INSERT = "INSERT INTO Contrato (Nombre, Tipo, Descripcion, Activo) VALUES (?, ?, ?, ?)";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM Contrato WHERE IdContrato = ?";
-    private static final String SQL_SELECT_ALL = "SELECT * FROM Contrato WHERE Activo = 1";
-    private static final String SQL_UPDATE = "UPDATE Contrato SET Nombre = ?, Tipo = ?, Descripcion = ? WHERE IdContrato = ?";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM Contrato";
+    private static final String SQL_SELECT_ACTIVE = "SELECT * FROM Contrato WHERE Activo = 1";
+    private static final String SQL_UPDATE = "UPDATE Contrato SET Nombre = ?, Tipo = ?, Descripcion = ?, Activo = ? WHERE IdContrato = ?";
     private static final String SQL_DELETE = "UPDATE Contrato SET Activo = 0 WHERE IdContrato = ?";
 
     public void create(Contrato contrato) {
@@ -50,13 +51,26 @@ public class RepositorioContrato {
         return lista;
     }
 
+    public List<Contrato> findActive() {
+        List<Contrato> lista = new ArrayList<>();
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ACTIVE);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) lista.add(mapResultSet(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar contratos activos: " + e.getMessage(), e);
+        }
+        return lista;
+    }
+
     public void update(Contrato contrato) {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
             ps.setString(1, contrato.getNombre());
             ps.setString(2, contrato.getTipo() == TipoContrato.FIJO ? "Fijo" : "Por Hora");
             ps.setString(3, contrato.getDescripcion());
-            ps.setInt(4, contrato.getIdContrato());
+            ps.setBoolean(4, contrato.isActivo());
+            ps.setInt(5, contrato.getIdContrato());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar contrato: " + e.getMessage(), e);

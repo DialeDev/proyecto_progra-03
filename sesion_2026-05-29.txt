@@ -1,0 +1,90 @@
+========================================================================
+ SESIÓN DE TRABAJO - 29 de mayo de 2026
+ Proyecto: Sistema de Control de Asistencia y Planillas
+ Repositorio: DialeDev/proyecto_progra-03
+ Rama activa: feat/inactive-departments
+========================================================================
+
+OBJETIVO DE LA SESIÓN
+----------------------
+Crear scripts SQL para probar el sistema de forma completa y diagnosticar
+errores en la generación de planillas.
+
+ARCHIVOS CREADOS / MODIFICADOS
+-------------------------------
+
+1. test_consultas.sql (NUEVO)
+   - Script de solo lectura (SELECT) para verificar el estado de la base
+     de datos luego de usar la aplicación.
+   - Consultas incluidas: empleados activos, contrataciones vigentes,
+     usuarios/roles, permisos RBAC, marcaciones de asistencia, planillas
+     emitidas, boletas de pago y detalle de deducciones.
+
+2. test_datos_crudos.sql (NUEVO)
+   - Script de inyección de datos para el mes de JUNIO 2026.
+   - Crea 3 empleados nuevos: Ana Pérez (RRHH), Luis Gómez (Ingeniería)
+     y Carmen Díaz (Operaciones).
+   - Crea contrataciones mixtas: Ana y Luis con salario fijo,
+     Carmen pago por hora ($15/hr).
+   - Asigna jornadas de trabajo.
+   - Inyecta 5 días de marcaciones con escenarios complejos:
+       * Llegadas tardías (Ana el día 3)
+       * Horas extra diurnas (Luis días 2 y 5)
+       * Horas extra nocturnas (Luis día 4, hasta las 22:00)
+       * Falta injustificada (Carmen día 2)
+       * Falta justificada (Ana día 5)
+   - Propósito: permitir que el programa Java calcule las boletas
+     desde cero usando estos datos crudos.
+
+3. src/controllers/PlanillaController.java (MODIFICADO)
+   - BUG ENCONTRADO Y CORREGIDO: El método generarNuevaPlanilla() bloqueaba
+     la generación de toda la planilla si cualquier empleado activo no
+     tenía contratación activa. Esto afectaba al empleado "Admin Sistema"
+     (ID: 1), que es la cuenta del sistema y nunca tuvo contrato.
+   - SOLUCIÓN IMPLEMENTADA: En lugar de bloquear, el sistema ahora separa
+     los empleados en dos listas:
+       * conContrato  → se procesan normalmente en la planilla.
+       * omitidos     → se reportan como ADVERTENCIA al final del mensaje,
+                        sin bloquear la generación.
+   - Esto hace el sistema robusto ante cuentas de sistema o empleados de
+     datos históricos que no tienen contrato activo en la fecha actual.
+
+DIAGNÓSTICO TÉCNICO (Evaluación del proyecto)
+----------------------------------------------
+PUNTOS FUERTES identificados:
+  + Separación MVC real y consistente (View → Controller → DAO).
+  + Uso de PreparedStatement en todos los DAOs (protección contra SQL injection).
+  + Mensajes de error desacoplados de la capa de datos.
+  + Logger implementado en Controllers y Views.
+
+DEUDA TÉCNICA identificada (para mejorar en futuras iteraciones):
+  - Controllers con lógica de negocio mezclada (debería ir a una capa Service).
+  - Strings mágicos para tipos de alerta ("error", "exito", "advertencia")
+    → se recomienda reemplazar con un Enum TipoAlerta.
+  - Llamadas a base de datos en el Event Dispatch Thread de Swing
+    → riesgo de congelamiento de UI en entornos de red.
+  - Catch genérico (Exception) en varios lugares sin logear el stack trace.
+
+CREDENCIALES DE PRUEBA
+-----------------------
+  Admin:    admin / admin123        (acceso total, bypass de permisos RBAC)
+  RRHH:     mgarcia / 123456        (módulos: Empleados, Contratos, Planillas, Reportes)
+  Empleado: cmartinez / 123456      (solo Marcación, dpto. Ingeniería)
+  Empleado: plopez / 123456         (solo Marcación, dpto. Administración)
+
+PASOS PARA PROBAR LA PLANILLA (flujo completo)
+-----------------------------------------------
+1. Ejecutar test_datos_crudos.sql en SQL Server Management Studio.
+2. Compilar y ejecutar el proyecto desde App.java en NetBeans.
+3. Loguearse como admin.
+4. Ir al módulo Planillas.
+5. Seleccionar Mes: Junio (6) y Año: 2026.
+6. Clic en "Generar Planilla".
+7. Verificar que aparezcan boletas para Ana Pérez, Luis Gómez y Carmen Díaz.
+8. Revisar que los cálculos de horas, deducciones ISSS/AFP/ISR sean correctos.
+9. Probar los botones "Emitir" y "Anular" sobre la planilla generada.
+10. Ir a Reportes y verificar que la planilla emitida aparezca en los reportes.
+
+========================================================================
+ FIN DEL RESUMEN DE SESIÓN
+========================================================================

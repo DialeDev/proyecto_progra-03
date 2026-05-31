@@ -78,7 +78,9 @@ public class ContratoController implements ActionListener {
             return;
         }
         try {
-            contratoDAO.create(new Contrato(0, nombre, tipo, descripcion));
+            Contrato nuevoContrato = new Contrato(0, nombre, tipo, descripcion);
+            nuevoContrato.setActivo(vista.getChkActivo().isSelected());
+            contratoDAO.create(nuevoContrato);
             vista.mostrarMensaje("exito", "Guardado exitosamente.");
             cargarTabla();
         } catch (Exception ex) {
@@ -99,7 +101,9 @@ public class ContratoController implements ActionListener {
         }
         if (vista.mostrarConfirmacion("¿Actualizar '" + nombre + "'?")) {
             try {
-                contratoDAO.update(new Contrato(id, nombre, tipo, descripcion));
+                Contrato contratoActualizado = new Contrato(id, nombre, tipo, descripcion);
+                contratoActualizado.setActivo(vista.getChkActivo().isSelected());
+                contratoDAO.update(contratoActualizado);
                 vista.mostrarMensaje("exito", "Actualizado exitosamente.");
                 cargarTabla();
             } catch (Exception ex) {
