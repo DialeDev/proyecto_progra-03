@@ -38,10 +38,6 @@ public class FrmGestionContratos extends javax.swing.JFrame {
     }
 
     private void configurarComponentes() {
-        btnGuardarTipo.addActionListener(e -> {
-            controller.guardarTipoContrato(txtNombreTipo.getText().trim(), cmbTipoContrato.getSelectedItem().toString(), txtDescripcion.getText().trim());
-            limpiarFormularioTipo();
-        });
         btnActualizarTipo.addActionListener(e -> {
             int fila = tablaContratos.getSelectedRow();
             if (fila == -1) { JOptionPane.showMessageDialog(this, "Seleccione un tipo.", "Error", JOptionPane.WARNING_MESSAGE); return; }
@@ -86,11 +82,16 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        btnGuardarTipo = new javax.swing.JButton();
         btnActualizarTipo = new javax.swing.JButton();
         btnEliminarTipo = new javax.swing.JButton();
         btnLimpiarTipo = new javax.swing.JButton();
         chkActivo = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
+        txtFechaInicio = new javax.swing.JTextField();
+        txtFechaFin = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtSalario = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion de contratos");
@@ -138,21 +139,17 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         jLabel3.setText("Tipo");
         panelTipoContrato.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
 
-        cmbTipoContrato.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fijo", "Por Hora" }));
+        cmbTipoContrato.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fijo", "Por Hora", "Indefinido", " " }));
         cmbTipoContrato.addActionListener(this::cmbTipoContratoActionPerformed);
         panelTipoContrato.add(cmbTipoContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, -1, -1));
 
         jLabel4.setText("Descripcion");
-        panelTipoContrato.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
+        panelTipoContrato.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
         txtDescripcion.setColumns(20);
-        panelTipoContrato.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, -1, 50));
+        panelTipoContrato.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, -1, 50));
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 7, 7));
-
-        btnGuardarTipo.setBackground(new java.awt.Color(204, 255, 204));
-        btnGuardarTipo.setText("Guardar");
-        jPanel2.add(btnGuardarTipo);
 
         btnActualizarTipo.setBackground(new java.awt.Color(255, 255, 204));
         btnActualizarTipo.setText("Actualizar");
@@ -166,10 +163,22 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         btnLimpiarTipo.setText("Limpiar");
         jPanel2.add(btnLimpiarTipo);
 
-        panelTipoContrato.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 580, 60));
+        panelTipoContrato.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 580, 40));
 
         chkActivo.setText("Activo");
         panelTipoContrato.add(chkActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, -1, -1));
+
+        jLabel5.setText("Fecha inicio");
+        panelTipoContrato.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, -1, -1));
+        panelTipoContrato.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 100, 140, -1));
+        panelTipoContrato.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, 140, -1));
+
+        jLabel6.setText("Fecha Fin");
+        panelTipoContrato.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, -1, -1));
+
+        jLabel7.setText("Salario");
+        panelTipoContrato.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 190, -1, -1));
+        panelTipoContrato.add(txtSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 190, 80, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,8 +201,8 @@ public class FrmGestionContratos extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(panelTipoContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addComponent(panelTipoContrato, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -207,19 +216,27 @@ public class FrmGestionContratos extends javax.swing.JFrame {
         int fila = tablaContratos.getSelectedRow();
         if (fila == -1) return;
         DefaultTableModel model = (DefaultTableModel) tablaContratos.getModel();
+        int id = (int) model.getValueAt(fila, 0);
+
         txtNombreTipo.setText(model.getValueAt(fila, 1).toString());
+        txtNombreTipo.setEditable(false); // No se debe editar el nombre del empleado desde aquí
         cmbTipoContrato.setSelectedItem(model.getValueAt(fila, 2).toString());
-        txtDescripcion.setText(model.getValueAt(fila, 3) != null ? model.getValueAt(fila, 3).toString() : "");
         chkActivo.setSelected("Activo".equals(model.getValueAt(fila, 4)));
+
+        // Delegar la carga de FechaInicio, FechaFin y Salario al controlador
+        controller.cargarDetallesContratacion(id);
     }
 
     private void limpiarFormularioTipo() {
         txtNombreTipo.setText("");
+        txtNombreTipo.setEditable(true);
         cmbTipoContrato.setSelectedIndex(0);
         txtDescripcion.setText("");
+        txtFechaInicio.setText("");
+        txtFechaFin.setText("");
+        txtSalario.setText("");
         chkActivo.setSelected(true);
         tablaContratos.clearSelection();
-        txtNombreTipo.requestFocus();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -227,7 +244,6 @@ public class FrmGestionContratos extends javax.swing.JFrame {
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminarTipo;
-    private javax.swing.JButton btnGuardarTipo;
     private javax.swing.JButton btnLimpiarTipo;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JCheckBox chkActivo;
@@ -236,13 +252,19 @@ public class FrmGestionContratos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelTipoContrato;
     private javax.swing.JTable tablaContratos;
     private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtFechaFin;
+    private javax.swing.JTextField txtFechaInicio;
     private javax.swing.JTextField txtNombreTipo;
+    private javax.swing.JTextField txtSalario;
     // End of variables declaration//GEN-END:variables
 
     public JButton getBtnCerrar() { return btnCerrar; }
@@ -250,4 +272,8 @@ public class FrmGestionContratos extends javax.swing.JFrame {
     public JButton getBtnNuevo() { return btnNuevo; }
     public JTable getTablaContratos() { return tablaContratos; }
     public javax.swing.JCheckBox getChkActivo() { return chkActivo; }
+    public javax.swing.JComboBox<String> getCmbTipoContrato() { return cmbTipoContrato; }
+    public JTextField getTxtFechaInicio() { return txtFechaInicio; }
+    public JTextField getTxtFechaFin() { return txtFechaFin; }
+    public JTextField getTxtSalario() { return txtSalario; }
 }

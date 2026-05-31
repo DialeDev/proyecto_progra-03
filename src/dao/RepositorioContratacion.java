@@ -81,4 +81,55 @@ public class RepositorioContratacion {
         c.setVigente(rs.getBoolean("Vigente"));
         return c;
     }
+
+    public List<Map<String, Object>> findAllWithDetails() {
+        List<Map<String, Object>> lista = new ArrayList<>();
+        String sql = "SELECT c.IdContratacion, e.Nombres + ' ' + e.Apellidos AS Empleado, " +
+                     "co.Nombre AS TipoContrato, c.FechaInicio, c.FechaFin, c.SalarioBaseAcordado, c.Vigente " +
+                     "FROM Contratacion c " +
+                     "JOIN Empleado e ON c.IdEmpleado = e.IdEmpleado " +
+                     "JOIN Contrato co ON c.IdContrato = co.IdContrato " +
+                     "ORDER BY c.IdContratacion DESC";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("Id", rs.getInt("IdContratacion"));
+                map.put("Empleado", rs.getString("Empleado"));
+                map.put("TipoContrato", rs.getString("TipoContrato"));
+                map.put("FechaInicio", rs.getDate("FechaInicio"));
+                map.put("FechaFin", rs.getDate("FechaFin"));
+                map.put("Salario", rs.getDouble("SalarioBaseAcordado"));
+                map.put("Vigente", rs.getBoolean("Vigente"));
+                lista.add(map);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar todas las contrataciones: " + e.getMessage(), e);
+        }
+        return lista;
+    }
+
+    public void delete(int idContratacion) {
+        String sql = "DELETE FROM Contratacion WHERE IdContratacion = ?";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idContratacion);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al eliminar contratacion: " + e.getMessage(), e);
+        }
+    }
+
+    public void actualizarVigencia(int idContratacion, boolean vigente) {
+        String sql = "UPDATE Contratacion SET Vigente = ? WHERE IdContratacion = ?";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBoolean(1, vigente);
+            ps.setInt(2, idContratacion);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar vigencia: " + e.getMessage(), e);
+        }
+    }
 }

@@ -16,6 +16,7 @@ public class ContratoController implements ActionListener {
     private final RepositorioContrato contratoDAO;
     private final RepositorioContratacion contratacionDAO;
     private DefaultTableModel modeloTabla;
+    private java.util.List<java.util.Map<String, Object>> contrataciones;
 
     public ContratoController(FrmGestionContratos vista) {
         this.vista = vista;
@@ -24,6 +25,9 @@ public class ContratoController implements ActionListener {
         this.vista.getBtnNuevo().addActionListener(this);
         this.vista.getBtnEliminar().addActionListener(this);
         this.vista.getBtnCerrar().addActionListener(this);
+        
+
+        
         iniciarTabla();
         cargarTabla();
     }
@@ -40,19 +44,44 @@ public class ContratoController implements ActionListener {
 
     private void cargarTabla() {
         try {
-            java.util.List<Contrato> contratos = contratoDAO.findAll();
+            dao.RepositorioContratacion repContratacion = new dao.RepositorioContratacion();
+            contrataciones = repContratacion.findAllWithDetails();
             DefaultTableModel nuevoModelo = new DefaultTableModel();
             nuevoModelo.addColumn("ID");
-            nuevoModelo.addColumn("Nombre");
-            nuevoModelo.addColumn("Tipo");
-            nuevoModelo.addColumn("Descripción");
-            nuevoModelo.addColumn("Activo");
-            contratos.forEach(c -> nuevoModelo.addRow(new Object[]{
-                c.getIdContrato(), c.getNombre(), c.getTipo().name(), c.getDescripcion(), c.isActivo() ? "Activo" : "Inactivo"}));
-            modeloTabla = nuevoModelo;
+            nuevoModelo.addColumn("Empleado"); 
+            nuevoModelo.addColumn("Tipo Contrato");   
+            nuevoModelo.addColumn("Descripción"); 
+            nuevoModelo.addColumn("Estado");      
+            
+            for (java.util.Map<String, Object> c : contrataciones) {
+                String inicioStr = c.get("FechaInicio") != null ? c.get("FechaInicio").toString() : "";
+                boolean vigente = (boolean) c.get("Vigente");
+                
+                nuevoModelo.addRow(new Object[]{
+                    c.get("Id"),
+                    c.get("Empleado"),
+                    c.get("TipoContrato"),
+                    "Inicio: " + inicioStr,
+                    vigente ? "Activo" : "Inactivo"
+                });
+            }
+            
             vista.getTablaContratos().setModel(nuevoModelo);
+            modeloTabla = nuevoModelo;
         } catch (Exception e) {
             vista.mostrarMensaje("error", "Error al cargar: " + e.getMessage());
+        }
+    }
+
+    public void cargarDetallesContratacion(int id) {
+        if (contrataciones == null) return;
+        for (java.util.Map<String, Object> c : contrataciones) {
+            if ((int) c.get("Id") == id) {
+                vista.getTxtFechaInicio().setText(c.get("FechaInicio") != null ? c.get("FechaInicio").toString() : "");
+                vista.getTxtFechaFin().setText(c.get("FechaFin") != null ? c.get("FechaFin").toString() : "");
+                vista.getTxtSalario().setText(c.get("Salario") != null ? c.get("Salario").toString() : "");
+                break;
+            }
         }
     }
 
@@ -96,22 +125,40 @@ public class ContratoController implements ActionListener {
     }
 
     public void actualizarTipoContrato(int id, String nombre, String tipoStr, String descripcion) {
-        if (nombre.isEmpty()) {
-            vista.mostrarMensaje("advertencia", "El nombre es obligatorio.");
-            return;
-        }
-        TipoContrato tipo = parsearTipo(tipoStr);
-        if (tipo == null) {
-            vista.mostrarMensaje("advertencia", "Tipo no válido.");
-            return;
-        }
-        if (vista.mostrarConfirmacion("¿Actualizar '" + nombre + "'?")) {
+        boolean activo = vista.getChkActivo().isSelected();
+        String inicioStr = vista.getTxtFechaInicio().getText().trim();
+        String finStr = vista.getTxtFechaFin().getText().trim();
+        String salarioStr = vista.getTxtSalario().getText().trim();
+        String tipoSeleccionado = vista.getCmbTipoContrato().getSelectedItem().toString();
+
+        if (vista.mostrarConfirmacion("¿Actualizar la información de este contrato?")) {
             try {
-                Contrato contratoActualizado = new Contrato(id, nombre, tipo, descripcion);
-                contratoActualizado.setActivo(vista.getChkActivo().isSelected());
-                contratoDAO.update(contratoActualizado);
-                vista.mostrarMensaje("exito", "Actualizado exitosamente.");
+                // Parse dates and salary
+                java.time.LocalDate fechaInicio = java.time.LocalDate.parse(inicioStr, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                java.time.LocalDate fechaFin = finStr.isEmpty() ? null : java.time.LocalDate.parse(finStr, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                double salarioBase = salarioStr.isEmpty() ? 0 : Double.parseDouble(salarioStr);
+                double valorHora = salarioBase > 0 ? Math.round(salarioBase / 160.0 * 100.0) / 100.0 : 0;
+
+                // Lookup contract type ID
+                models.Contrato tipoContrato = contratoDAO.buscarPorNombre(tipoSeleccionado);
+                if (tipoContrato == null) {
+                    vista.mostrarMensaje("error", "El tipo de contrato seleccionado no existe.");
+                    return;
+                }
+
+                // Update using RepositorioContratacion
+                dao.RepositorioContratacion rep = new dao.RepositorioContratacion();
+                models.Contratacion c = new models.Contratacion(id, 0, tipoContrato.getIdContrato(), fechaInicio, salarioBase, valorHora);
+                c.setFechaFin(fechaFin);
+                c.setVigente(activo);
+                
+                rep.update(c);
+                vista.mostrarMensaje("exito", "Contrato actualizado exitosamente.");
                 cargarTabla();
+            } catch (java.time.format.DateTimeParseException ex) {
+                vista.mostrarMensaje("error", "Formato de fecha inválido. Use yyyy-MM-dd.");
+            } catch (NumberFormatException ex) {
+                vista.mostrarMensaje("error", "Salario inválido.");
             } catch (Exception ex) {
                 vista.mostrarMensaje("error", "Error: " + ex.getMessage());
             }
@@ -146,7 +193,8 @@ public class ContratoController implements ActionListener {
         int id = (int) modelo.getValueAt(fila, 0);
         if (vista.mostrarConfirmacion("¿Eliminar el contrato seleccionado?")) {
             try {
-                contratoDAO.delete(id);
+                dao.RepositorioContratacion repContratacion = new dao.RepositorioContratacion();
+                repContratacion.delete(id);
                 cargarTabla();
                 vista.mostrarMensaje("exito", "Contrato eliminado exitosamente.");
             } catch (Exception e) {
