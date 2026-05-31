@@ -80,9 +80,6 @@ public class RegistroContratoController implements ActionListener {
         try {
             contratacionDAO.create(c);
             vistaRegistro.mostrarMensaje("exito", "Contratación registrada exitosamente.");
-            DefaultTableModel modelo = (DefaultTableModel) vistaPrincipal.getTablaContratos().getModel();
-            modelo.addRow(new Object[]{c.getIdContratacion(), vistaRegistro.getCmbEmpleado().getSelectedItem(),
-                vistaRegistro.getCmbTipo().getSelectedItem(), inicioStr, finStr.isEmpty() ? "Indefinido" : finStr, salarioStr, "Vigente"});
             vistaRegistro.dispose();
         } catch (Exception ex) {
             vistaRegistro.mostrarMensaje("error", "Error al guardar: " + ex.getMessage());
