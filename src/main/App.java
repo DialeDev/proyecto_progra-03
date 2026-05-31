@@ -1,21 +1,14 @@
 package main;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import views.FrmLogin;
-import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import java.awt.Taskbar;
+import javax.swing.*;
+import java.awt.*;
 
 // @author DialeMRZ
 public class App {
     public static void main(String[] args) {
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) { UIManager.setLookAndFeel(info.getClassName()); break; }
-            }
-        } catch (Exception ex) {
-            System.err.println("Error al cargar Nimbus. Usando tema por defecto.");
-        }
+        FlatLightLaf.setup();
 
         // Icono global de la aplicación (barra de tareas / dock)
         var icono = new ImageIcon(App.class.getResource("/img/icono.png")).getImage();
