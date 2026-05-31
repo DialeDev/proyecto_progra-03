@@ -1,0 +1,24 @@
+# Normalizar line endings — LF en repo, CRLF en checkout Windows
+* text=auto
+
+# Java
+*.java     text eol=lf
+*.form     text eol=lf
+
+# Web / config
+*.xml      text eol=lf
+*.properties text eol=lf
+*.json     text eol=lf
+
+# Docs / scripts
+*.txt      text eol=lf
+*.md       text eol=lf
+*.sql      text eol=lf
+*.bat      text eol=crlf
+*.sh       text eol=lf
+
+# Build / binarios
+*.jar      binary
+*.png      binary
+*.jpg      binary
+*.dll      binary
