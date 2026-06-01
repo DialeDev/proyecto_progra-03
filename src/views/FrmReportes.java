@@ -31,7 +31,7 @@ public class FrmReportes extends javax.swing.JFrame {
         // Modelos de tabla
         modeloAsistencia = new DefaultTableModel(new String[]{"ID", "Empleado", "Entrada", "Salida", "Horas", "Estado"}, 0);
         jTableAsistencia.setModel(modeloAsistencia);
-        modeloBoletas = new DefaultTableModel(new String[]{"ID", "Empleado", "Ingresos", "Deducciones", "Líquido"}, 0);
+        modeloBoletas = new DefaultTableModel(new String[]{"ID", "Empleado", "Periodo","Ingresos", "Deducciones", "Líquido"}, 0);
         jTableBoletas.setModel(modeloBoletas);
 
         // Configurar spinners
@@ -129,7 +129,6 @@ public class FrmReportes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Reportes");
-        setResizable(false);
 
         lblEmpleadoAsist.setText("Empleado:");
 
@@ -200,7 +199,7 @@ public class FrmReportes extends javax.swing.JFrame {
                 .addGap(15, 15, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Asistencia", tabAsistencia);
+        jTabbedPane1.addTab("Marcación", tabAsistencia);
 
         jLabelPlanilla.setText("Planilla:");
 
