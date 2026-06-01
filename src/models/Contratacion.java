@@ -10,6 +10,7 @@ public class Contratacion {
     private LocalDate fechaFin;
     private double salarioBaseAcordado;
     private double valorHoraAcordado;
+    private String observaciones;
     private boolean vigente;
 
     public Contratacion(int idContratacion, int idEmpleado, int idContrato, LocalDate fechaInicio, double salarioBaseAcordado, double valorHoraAcordado) {
@@ -37,6 +38,8 @@ public class Contratacion {
     public void setSalarioBaseAcordado(double salarioBaseAcordado) { this.salarioBaseAcordado = salarioBaseAcordado; }
     public double getValorHoraAcordado() { return valorHoraAcordado; }
     public void setValorHoraAcordado(double valorHoraAcordado) { this.valorHoraAcordado = valorHoraAcordado; }
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
     public boolean isVigente() { return vigente; }
     public void setVigente(boolean vigente) { this.vigente = vigente; }
 }

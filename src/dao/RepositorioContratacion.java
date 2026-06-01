@@ -7,10 +7,10 @@ import java.util.*;
 
 // @author DialeMRZ
 public class RepositorioContratacion {
-    private static final String SQL_INSERT = "INSERT INTO Contratacion (IdEmpleado, IdContrato, FechaInicio, FechaFin, SalarioBaseAcordado, ValorHoraAcordado, Vigente) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO Contratacion (IdEmpleado, IdContrato, FechaInicio, FechaFin, SalarioBaseAcordado, ValorHoraAcordado, Observaciones, Vigente) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ACTIVO_BY_EMPLEADO = "SELECT * FROM Contratacion WHERE IdEmpleado = ? AND Vigente = 1";
     private static final String SQL_SELECT_HISTORIAL_BY_EMPLEADO = "SELECT * FROM Contratacion WHERE IdEmpleado = ? ORDER BY FechaInicio DESC";
-    private static final String SQL_UPDATE = "UPDATE Contratacion SET IdContrato = ?, FechaInicio = ?, FechaFin = ?, SalarioBaseAcordado = ?, ValorHoraAcordado = ?, Vigente = ? WHERE IdContratacion = ?";
+    private static final String SQL_UPDATE = "UPDATE Contratacion SET IdContrato = ?, FechaInicio = ?, FechaFin = ?, SalarioBaseAcordado = ?, ValorHoraAcordado = ?, Observaciones = ?, Vigente = ? WHERE IdContratacion = ?";
 
     public void create(Contratacion contratacion) {
         try (Connection conn = Conexion.getConnection();
@@ -22,7 +22,8 @@ public class RepositorioContratacion {
             else ps.setNull(4, java.sql.Types.DATE);
             ps.setDouble(5, contratacion.getSalarioBaseAcordado());
             ps.setDouble(6, contratacion.getValorHoraAcordado());
-            ps.setBoolean(7, contratacion.isVigente());
+            ps.setString(7, contratacion.getObservaciones());
+            ps.setBoolean(8, contratacion.isVigente());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al crear contratacion: " + e.getMessage(), e);
@@ -64,8 +65,9 @@ public class RepositorioContratacion {
             else ps.setNull(3, java.sql.Types.DATE);
             ps.setDouble(4, contratacion.getSalarioBaseAcordado());
             ps.setDouble(5, contratacion.getValorHoraAcordado());
-            ps.setBoolean(6, contratacion.isVigente());
-            ps.setInt(7, contratacion.getIdContratacion());
+            ps.setString(6, contratacion.getObservaciones());
+            ps.setBoolean(7, contratacion.isVigente());
+            ps.setInt(8, contratacion.getIdContratacion());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar contratacion: " + e.getMessage(), e);
@@ -78,6 +80,7 @@ public class RepositorioContratacion {
             rs.getDouble("SalarioBaseAcordado"), rs.getDouble("ValorHoraAcordado"));
         java.sql.Date fechaFin = rs.getDate("FechaFin");
         if (fechaFin != null) c.setFechaFin(fechaFin.toLocalDate());
+        c.setObservaciones(rs.getString("Observaciones"));
         c.setVigente(rs.getBoolean("Vigente"));
         return c;
     }
@@ -85,7 +88,7 @@ public class RepositorioContratacion {
     public List<Map<String, Object>> findAllWithDetails() {
         List<Map<String, Object>> lista = new ArrayList<>();
         String sql = "SELECT c.IdContratacion, e.Nombres + ' ' + e.Apellidos AS Empleado, " +
-                     "co.Nombre AS TipoContrato, c.FechaInicio, c.FechaFin, c.SalarioBaseAcordado, c.Vigente " +
+                     "co.Nombre AS TipoContrato, c.FechaInicio, c.FechaFin, c.SalarioBaseAcordado, c.Observaciones, c.Vigente " +
                      "FROM Contratacion c " +
                      "JOIN Empleado e ON c.IdEmpleado = e.IdEmpleado " +
                      "JOIN Contrato co ON c.IdContrato = co.IdContrato " +
@@ -101,6 +104,7 @@ public class RepositorioContratacion {
                 map.put("FechaInicio", rs.getDate("FechaInicio"));
                 map.put("FechaFin", rs.getDate("FechaFin"));
                 map.put("Salario", rs.getDouble("SalarioBaseAcordado"));
+                map.put("Observaciones", rs.getString("Observaciones"));
                 map.put("Vigente", rs.getBoolean("Vigente"));
                 lista.add(map);
             }
