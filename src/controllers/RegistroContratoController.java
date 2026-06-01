@@ -76,11 +76,16 @@ public class RegistroContratoController implements ActionListener {
         double valorHora = salarioBase > 0 ? Math.round(salarioBase / 160.0 * 100.0) / 100.0 : 0;
         Contratacion c = new Contratacion(0, idEmpleado, idContrato, fechaInicio, salarioBase, valorHora);
         if (fechaFin != null) c.setFechaFin(fechaFin);
+        c.setObservaciones(vistaRegistro.getTxtObservaciones().getText().trim());
         c.setVigente(true);
         try {
             contratacionDAO.create(c);
             vistaRegistro.mostrarMensaje("exito", "Contratación registrada exitosamente.");
             vistaRegistro.dispose();
+            
+            if (vistaPrincipal.getController() != null) {
+                vistaPrincipal.getController().cargarTabla();
+            }
         } catch (Exception ex) {
             vistaRegistro.mostrarMensaje("error", "Error al guardar: " + ex.getMessage());
         }

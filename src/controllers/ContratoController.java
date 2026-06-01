@@ -3,7 +3,6 @@ package controllers;
 import dao.RepositorioContrato;
 import dao.RepositorioContratacion;
 import models.Contrato;
-import models.Contrato.TipoContrato;
 import javax.swing.table.DefaultTableModel;
 import views.FrmGestionContratos;
 import views.FrmRegistroContratos;
@@ -20,29 +19,43 @@ public class ContratoController implements ActionListener {
 
     public ContratoController(FrmGestionContratos vista) {
         this.vista = vista;
+        this.vista.setController(this);
         this.contratoDAO = new RepositorioContrato();
         this.contratacionDAO = new RepositorioContratacion();
         this.vista.getBtnNuevo().addActionListener(this);
         this.vista.getBtnEliminar().addActionListener(this);
         this.vista.getBtnCerrar().addActionListener(this);
         
-
+        // Listeners para la pestaña Crear Tipo
+        this.vista.getBtnGuardar().addActionListener(this);
+        this.vista.getBtnLimpiar().addActionListener(this);
+        this.vista.getBtnEditar().addActionListener(this);
+        this.vista.getBtnBorrar().addActionListener(this);
+        
+        // Listener para seleccionar fila en tablaTipos
+        this.vista.getTablaTipos().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                seleccionarTipoDesdeTablaTipos();
+            }
+        });
         
         iniciarTabla();
         cargarTabla();
+        cargarTablaTipos();
     }
 
-    private void iniciarTabla() {
+    public void iniciarTabla() {
         modeloTabla = new DefaultTableModel();
         modeloTabla.addColumn("ID");
-        modeloTabla.addColumn("Nombre");
-        modeloTabla.addColumn("Tipo");
+        modeloTabla.addColumn("Empleado");
+        modeloTabla.addColumn("Tipo Contrato");
         modeloTabla.addColumn("Descripción");
-        modeloTabla.addColumn("Activo");
+        modeloTabla.addColumn("Estado");
         vista.getTablaContratos().setModel(modeloTabla);
     }
 
-    private void cargarTabla() {
+    public void cargarTabla() {
         try {
             dao.RepositorioContratacion repContratacion = new dao.RepositorioContratacion();
             contrataciones = repContratacion.findAllWithDetails();
@@ -54,14 +67,13 @@ public class ContratoController implements ActionListener {
             nuevoModelo.addColumn("Estado");      
             
             for (java.util.Map<String, Object> c : contrataciones) {
-                String inicioStr = c.get("FechaInicio") != null ? c.get("FechaInicio").toString() : "";
                 boolean vigente = (boolean) c.get("Vigente");
                 
                 nuevoModelo.addRow(new Object[]{
                     c.get("Id"),
                     c.get("Empleado"),
                     c.get("TipoContrato"),
-                    "Inicio: " + inicioStr,
+                    c.get("Observaciones"),
                     vigente ? "Activo" : "Inactivo"
                 });
             }
@@ -71,6 +83,43 @@ public class ContratoController implements ActionListener {
         } catch (Exception e) {
             vista.mostrarMensaje("error", "Error al cargar: " + e.getMessage());
         }
+    }
+
+    private void cargarTablaTipos() {
+        try {
+            List<Contrato> contratos = contratoDAO.findAll();
+            DefaultTableModel modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int row, int column) { return false; }
+            };
+            modelo.addColumn("ID");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Descripción");
+            modelo.addColumn("Activo");
+            
+            for (Contrato c : contratos) {
+                modelo.addRow(new Object[]{
+                    c.getIdContrato(),
+                    c.getNombre(),
+                    c.getDescripcion(),
+                    c.isActivo() ? "Activo" : "Inactivo"
+                });
+            }
+            vista.getTablaTipos().setModel(modelo);
+        } catch (Exception e) {
+            vista.mostrarMensaje("error", "Error al cargar tipos: " + e.getMessage());
+        }
+    }
+
+    private void seleccionarTipoDesdeTablaTipos() {
+        int fila = vista.getTablaTipos().getSelectedRow();
+        if (fila == -1) return;
+        DefaultTableModel modelo = (DefaultTableModel) vista.getTablaTipos().getModel();
+        
+        vista.getTxtNombreTipo().setText(modelo.getValueAt(fila, 1).toString());
+        String desc = modelo.getValueAt(fila, 2) != null ? modelo.getValueAt(fila, 2).toString() : "";
+        vista.getTxtDescripcionTipo().setText(desc);
+        vista.getChkActivo1().setSelected("Activo".equals(modelo.getValueAt(fila, 3)));
     }
 
     public void cargarDetallesContratacion(int id) {
@@ -96,17 +145,31 @@ public class ContratoController implements ActionListener {
             eliminarContrato();
         } else if (e.getSource() == vista.getBtnCerrar()) {
             vista.dispose();
+        } else if (e.getSource() == vista.getBtnGuardar()) {
+            guardarTipoContratoNuevo();
+        } else if (e.getSource() == vista.getBtnLimpiar()) {
+            limpiarFormularioNuevoTipo();
+        } else if (e.getSource() == vista.getBtnEditar()) {
+            editarTipoContrato();
+        } else if (e.getSource() == vista.getBtnBorrar()) {
+            borrarTipoContrato();
         }
     }
 
-    public void guardarTipoContrato(String nombre, String tipoStr, String descripcion) {
+    private void limpiarFormularioNuevoTipo() {
+        vista.getTxtNombreTipo().setText("");
+        vista.getTxtDescripcionTipo().setText("");
+        vista.getChkActivo1().setSelected(true); // Mejor UX: Activo por defecto
+        vista.getTablaTipos().clearSelection();
+    }
+
+    private void guardarTipoContratoNuevo() {
+        String nombre = vista.getTxtNombreTipo().getText().trim();
+        String descripcion = vista.getTxtDescripcionTipo().getText().trim();
+        boolean activo = vista.getChkActivo1().isSelected();
+
         if (nombre.isEmpty()) {
             vista.mostrarMensaje("advertencia", "El nombre es obligatorio.");
-            return;
-        }
-        TipoContrato tipo = parsearTipo(tipoStr);
-        if (tipo == null) {
-            vista.mostrarMensaje("advertencia", "Tipo no válido.");
             return;
         }
         if (contratoDAO.buscarPorNombre(nombre) != null) {
@@ -114,13 +177,76 @@ public class ContratoController implements ActionListener {
             return;
         }
         try {
-            Contrato nuevoContrato = new Contrato(0, nombre, tipo, descripcion);
-            nuevoContrato.setActivo(vista.getChkActivo().isSelected());
+            Contrato nuevoContrato = new Contrato(0, nombre, descripcion);
+            nuevoContrato.setActivo(activo);
             contratoDAO.create(nuevoContrato);
-            vista.mostrarMensaje("exito", "Guardado exitosamente.");
-            cargarTabla();
+            vista.mostrarMensaje("exito", "Tipo de contrato guardado exitosamente.");
+            vista.recargarTiposContrato();
+            cargarTablaTipos();
+            limpiarFormularioNuevoTipo();
         } catch (Exception ex) {
             vista.mostrarMensaje("error", "Error: " + ex.getMessage());
+        }
+    }
+
+    private void editarTipoContrato() {
+        int fila = vista.getTablaTipos().getSelectedRow();
+        if (fila == -1) {
+            vista.mostrarMensaje("advertencia", "Seleccione un tipo de contrato de la tabla.");
+            return;
+        }
+        DefaultTableModel modelo = (DefaultTableModel) vista.getTablaTipos().getModel();
+        int id = (int) modelo.getValueAt(fila, 0);
+        String nombre = vista.getTxtNombreTipo().getText().trim();
+        String descripcion = vista.getTxtDescripcionTipo().getText().trim();
+        boolean activo = vista.getChkActivo1().isSelected();
+
+        if (nombre.isEmpty()) {
+            vista.mostrarMensaje("advertencia", "El nombre es obligatorio.");
+            return;
+        }
+        
+        models.Contrato existente = contratoDAO.buscarPorNombre(nombre);
+        if (existente != null && existente.getIdContrato() != id) {
+            vista.mostrarMensaje("advertencia", "Ya existe otro tipo de contrato con el nombre '" + nombre + "'.");
+            return;
+        }
+
+        if (vista.mostrarConfirmacion("¿Actualizar el tipo de contrato '" + nombre + "'?")) {
+            try {
+                Contrato contrato = new Contrato(id, nombre, descripcion);
+                contrato.setActivo(activo);
+                contratoDAO.update(contrato);
+                vista.mostrarMensaje("exito", "Tipo de contrato actualizado exitosamente.");
+                vista.recargarTiposContrato();
+                cargarTablaTipos();
+                limpiarFormularioNuevoTipo();
+            } catch (Exception ex) {
+                vista.mostrarMensaje("error", "Error: " + ex.getMessage());
+            }
+        }
+    }
+
+    private void borrarTipoContrato() {
+        int fila = vista.getTablaTipos().getSelectedRow();
+        if (fila == -1) {
+            vista.mostrarMensaje("advertencia", "Seleccione un tipo de contrato de la tabla.");
+            return;
+        }
+        DefaultTableModel modelo = (DefaultTableModel) vista.getTablaTipos().getModel();
+        int id = (int) modelo.getValueAt(fila, 0);
+        String nombre = modelo.getValueAt(fila, 1).toString();
+
+        if (vista.mostrarConfirmacion("¿Eliminar el tipo '" + nombre + "'? Se desactivará (borrado lógico).")) {
+            try {
+                contratoDAO.delete(id);
+                vista.mostrarMensaje("exito", "Tipo de contrato eliminado exitosamente.");
+                vista.recargarTiposContrato();
+                cargarTablaTipos();
+                limpiarFormularioNuevoTipo();
+            } catch (Exception ex) {
+                vista.mostrarMensaje("error", "Error: " + ex.getMessage());
+            }
         }
     }
 
@@ -133,20 +259,17 @@ public class ContratoController implements ActionListener {
 
         if (vista.mostrarConfirmacion("¿Actualizar la información de este contrato?")) {
             try {
-                // Parse dates and salary
                 java.time.LocalDate fechaInicio = java.time.LocalDate.parse(inicioStr, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 java.time.LocalDate fechaFin = finStr.isEmpty() ? null : java.time.LocalDate.parse(finStr, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 double salarioBase = salarioStr.isEmpty() ? 0 : Double.parseDouble(salarioStr);
                 double valorHora = salarioBase > 0 ? Math.round(salarioBase / 160.0 * 100.0) / 100.0 : 0;
 
-                // Lookup contract type ID
                 models.Contrato tipoContrato = contratoDAO.buscarPorNombre(tipoSeleccionado);
                 if (tipoContrato == null) {
                     vista.mostrarMensaje("error", "El tipo de contrato seleccionado no existe.");
                     return;
                 }
 
-                // Update using RepositorioContratacion
                 dao.RepositorioContratacion rep = new dao.RepositorioContratacion();
                 models.Contratacion c = new models.Contratacion(id, 0, tipoContrato.getIdContrato(), fechaInicio, salarioBase, valorHora);
                 c.setFechaFin(fechaFin);
@@ -175,12 +298,6 @@ public class ContratoController implements ActionListener {
                 vista.mostrarMensaje("error", "Error: " + ex.getMessage());
             }
         }
-    }
-
-    private TipoContrato parsearTipo(String tipoStr) {
-        if ("Fijo".equalsIgnoreCase(tipoStr) || "FIJO".equals(tipoStr)) return TipoContrato.FIJO;
-        if ("Por Hora".equalsIgnoreCase(tipoStr) || "POR_HORA".equals(tipoStr)) return TipoContrato.POR_HORA;
-        return null;
     }
 
     private void eliminarContrato() {

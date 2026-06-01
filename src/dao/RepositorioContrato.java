@@ -1,26 +1,24 @@
 package dao;
 
 import models.Contrato;
-import models.Contrato.TipoContrato;
 import java.sql.*;
 import java.util.*;
 
 // @author DialeMRZ
 public class RepositorioContrato {
-    private static final String SQL_INSERT = "INSERT INTO Contrato (Nombre, Tipo, Descripcion, Activo) VALUES (?, ?, ?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO Contrato (Nombre, Descripcion, Activo) VALUES (?, ?, ?)";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM Contrato WHERE IdContrato = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM Contrato";
     private static final String SQL_SELECT_ACTIVE = "SELECT * FROM Contrato WHERE Activo = 1";
-    private static final String SQL_UPDATE = "UPDATE Contrato SET Nombre = ?, Tipo = ?, Descripcion = ?, Activo = ? WHERE IdContrato = ?";
+    private static final String SQL_UPDATE = "UPDATE Contrato SET Nombre = ?, Descripcion = ?, Activo = ? WHERE IdContrato = ?";
     private static final String SQL_DELETE = "UPDATE Contrato SET Activo = 0 WHERE IdContrato = ?";
 
     public void create(Contrato contrato) {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
             ps.setString(1, contrato.getNombre());
-            ps.setString(2, contrato.getTipo() == TipoContrato.FIJO ? "Fijo" : "Por Hora");
-            ps.setString(3, contrato.getDescripcion());
-            ps.setBoolean(4, contrato.isActivo());
+            ps.setString(2, contrato.getDescripcion());
+            ps.setBoolean(3, contrato.isActivo());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al crear contrato: " + e.getMessage(), e);
@@ -67,10 +65,9 @@ public class RepositorioContrato {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
             ps.setString(1, contrato.getNombre());
-            ps.setString(2, contrato.getTipo() == TipoContrato.FIJO ? "Fijo" : "Por Hora");
-            ps.setString(3, contrato.getDescripcion());
-            ps.setBoolean(4, contrato.isActivo());
-            ps.setInt(5, contrato.getIdContrato());
+            ps.setString(2, contrato.getDescripcion());
+            ps.setBoolean(3, contrato.isActivo());
+            ps.setInt(4, contrato.getIdContrato());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar contrato: " + e.getMessage(), e);
@@ -96,9 +93,7 @@ public class RepositorioContrato {
     }
 
     private Contrato mapResultSet(ResultSet rs) throws SQLException {
-        String tipoStr = rs.getString("Tipo");
-        TipoContrato tipo = "Fijo".equalsIgnoreCase(tipoStr) || "FIJO".equals(tipoStr) ? TipoContrato.FIJO : TipoContrato.POR_HORA;
-        Contrato c = new Contrato(rs.getInt("IdContrato"), rs.getString("Nombre"), tipo, rs.getString("Descripcion"));
+        Contrato c = new Contrato(rs.getInt("IdContrato"), rs.getString("Nombre"), rs.getString("Descripcion"));
         c.setActivo(rs.getBoolean("Activo"));
         return c;
     }

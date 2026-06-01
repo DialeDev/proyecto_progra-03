@@ -64,7 +64,6 @@ BEGIN
     CREATE TABLE dbo.Contrato (
         IdContrato INT IDENTITY(1,1) PRIMARY KEY,
         Nombre VARCHAR(100) NOT NULL,
-        Tipo VARCHAR(20) NOT NULL CHECK (Tipo IN ('Fijo', 'Por Hora')), 
         Descripcion VARCHAR(255) NULL,
         Activo BIT NOT NULL DEFAULT 1
     );
@@ -80,11 +79,15 @@ BEGIN
         FechaFin DATE NULL, -- Si es NULL, es el contrato actual vigente
         SalarioBaseAcordado DECIMAL(10,2) NULL CHECK (SalarioBaseAcordado >= 0),
         ValorHoraAcordado DECIMAL(10,2) NULL CHECK (ValorHoraAcordado >= 0),
+        Observaciones VARCHAR(255) NULL,
         Vigente BIT NOT NULL DEFAULT 1,
         CONSTRAINT FK_Contratacion_Empleado FOREIGN KEY (IdEmpleado) REFERENCES dbo.Empleado(IdEmpleado),
         CONSTRAINT FK_Contratacion_Contrato FOREIGN KEY (IdContrato) REFERENCES dbo.Contrato(IdContrato)
     );
 END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Contratacion' AND COLUMN_NAME='Observaciones')
+    ALTER TABLE dbo.Contratacion ADD Observaciones VARCHAR(255) NULL;
 
 -- ========================================================================
 -- 4. MÓDULO DE HORARIOS Y CONTROL DE ASISTENCIA
@@ -206,20 +209,20 @@ GO
 -- 6.2 Tipos de Contrato
 IF NOT EXISTS (SELECT 1 FROM dbo.Contrato WHERE Nombre = 'Indefinido')
 BEGIN
-    INSERT INTO dbo.Contrato (Nombre, Tipo, Descripcion, Activo) 
-    VALUES ('Indefinido', 'Fijo', 'Contrato laboral sin fecha de vencimiento', 1);
+    INSERT INTO dbo.Contrato (Nombre, Descripcion, Activo) 
+    VALUES ('Indefinido', 'Contrato laboral sin fecha de vencimiento', 1);
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Contrato WHERE Nombre = 'Fijo')
 BEGIN
-    INSERT INTO dbo.Contrato (Nombre, Tipo, Descripcion, Activo) 
-    VALUES ('Fijo', 'Fijo', 'Contrato laboral por período determinado', 1);
+    INSERT INTO dbo.Contrato (Nombre, Descripcion, Activo) 
+    VALUES ('Fijo', 'Contrato laboral por período determinado', 1);
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Contrato WHERE Nombre = 'Por Hora')
 BEGIN
-    INSERT INTO dbo.Contrato (Nombre, Tipo, Descripcion, Activo) 
-    VALUES ('Por Hora', 'Por Hora', 'Contrato por horas trabajadas', 1);
+    INSERT INTO dbo.Contrato (Nombre, Descripcion, Activo) 
+    VALUES ('Por Hora', 'Contrato por horas trabajadas', 1);
 END
 GO
 
@@ -386,14 +389,14 @@ SELECT @IdEmpCarlos = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
 SELECT @IdEmpPedro = IdEmpleado FROM dbo.Empleado WHERE DUI = '55555555-5';
 
 IF @IdEmpMaria IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpMaria)
-    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
-    VALUES (@IdEmpMaria, @IdContratoIndef, '2024-01-15', 1200.00, 7.50, 1);
+    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Observaciones, Vigente)
+    VALUES (@IdEmpMaria, @IdContratoIndef, '2024-01-15', 1200.00, 7.50, 'Contratación inicial', 1);
 IF @IdEmpCarlos IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpCarlos)
-    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
-    VALUES (@IdEmpCarlos, @IdContratoFijo, '2024-03-01', 1500.00, 9.38, 1);
+    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Observaciones, Vigente)
+    VALUES (@IdEmpCarlos, @IdContratoFijo, '2024-03-01', 1500.00, 9.38, 'Sin observaciones', 1);
 IF @IdEmpPedro IS NOT NULL AND NOT EXISTS (SELECT 1 FROM dbo.Contratacion WHERE IdEmpleado = @IdEmpPedro)
-    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Vigente)
-    VALUES (@IdEmpPedro, @IdContratoFijo, '2025-01-01', 800.00, 5.00, 1);
+    INSERT INTO dbo.Contratacion (IdEmpleado, IdContrato, FechaInicio, SalarioBaseAcordado, ValorHoraAcordado, Observaciones, Vigente)
+    VALUES (@IdEmpPedro, @IdContratoFijo, '2025-01-01', 800.00, 5.00, 'Ingreso reciente', 1);
 GO
 
 -- Asignaciones de jornada de prueba

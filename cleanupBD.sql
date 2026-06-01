@@ -64,7 +64,6 @@ CREATE TABLE dbo.Usuario (
 CREATE TABLE dbo.Contrato (
     IdContrato INT IDENTITY(1,1) PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
-    Tipo VARCHAR(20) NOT NULL CHECK (Tipo IN ('Fijo', 'Por Hora')),
     Descripcion VARCHAR(255) NULL,
     Activo BIT NOT NULL DEFAULT 1
 );
