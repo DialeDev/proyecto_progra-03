@@ -3,6 +3,7 @@ package controllers;
 import dao.RepositorioContrato;
 import dao.RepositorioContratacion;
 import models.Contrato;
+import utils.SesionGlobal;
 import javax.swing.table.DefaultTableModel;
 import views.FrmGestionContratos;
 import views.FrmRegistroContratos;
@@ -164,6 +165,10 @@ public class ContratoController implements ActionListener {
     }
 
     private void guardarTipoContratoNuevo() {
+        if (!SesionGlobal.puedeOperar("Contratos")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         String nombre = vista.getTxtNombreTipo().getText().trim();
         String descripcion = vista.getTxtDescripcionTipo().getText().trim();
         boolean activo = vista.getChkActivo1().isSelected();
@@ -190,6 +195,10 @@ public class ContratoController implements ActionListener {
     }
 
     private void editarTipoContrato() {
+        if (!SesionGlobal.puedeOperar("Contratos")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         int fila = vista.getTablaTipos().getSelectedRow();
         if (fila == -1) {
             vista.mostrarMensaje("advertencia", "Seleccione un tipo de contrato de la tabla.");
@@ -228,6 +237,10 @@ public class ContratoController implements ActionListener {
     }
 
     private void borrarTipoContrato() {
+        if (!SesionGlobal.puedeOperar("Contratos")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         int fila = vista.getTablaTipos().getSelectedRow();
         if (fila == -1) {
             vista.mostrarMensaje("advertencia", "Seleccione un tipo de contrato de la tabla.");
@@ -251,6 +264,10 @@ public class ContratoController implements ActionListener {
     }
 
     public void actualizarTipoContrato(int id, String nombre, String tipoStr, String descripcion) {
+        if (!SesionGlobal.puedeOperar("Contratos")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         boolean activo = vista.getChkActivo().isSelected();
         String inicioStr = vista.getTxtFechaInicio().getText().trim();
         String finStr = vista.getTxtFechaFin().getText().trim();
@@ -289,6 +306,10 @@ public class ContratoController implements ActionListener {
     }
 
     public void eliminarTipoContrato(int id, String nombre) {
+        if (!SesionGlobal.puedeOperar("Contratos")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         if (vista.mostrarConfirmacion("¿Eliminar '" + nombre + "'?")) {
             try {
                 contratoDAO.delete(id);
@@ -301,6 +322,10 @@ public class ContratoController implements ActionListener {
     }
 
     private void eliminarContrato() {
+        if (!SesionGlobal.puedeOperar("Contratos")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         int fila = vista.getTablaContratos().getSelectedRow();
         if (fila == -1) {
             vista.mostrarMensaje("advertencia", "Seleccione un contrato.");

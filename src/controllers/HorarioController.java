@@ -2,6 +2,7 @@ package controllers;
 
 import dao.RepositorioJornada;
 import models.Jornada;
+import utils.SesionGlobal;
 import views.FrmGestionHorarios;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -19,6 +20,10 @@ public class HorarioController {
     }
 
     public void guardarJornada() {
+        if (!SesionGlobal.puedeOperar("Horarios")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         try {
             String nombre = vista.getTxtNombre().getText().trim();
             String entradaTxt = vista.getTxtEntrada().getText().trim();
@@ -84,6 +89,10 @@ public class HorarioController {
     }
 
     public void eliminarJornada() {
+        if (!SesionGlobal.puedeOperar("Horarios")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         try {
             int fila = vista.getTblHorarios().getSelectedRow();
             if (fila == -1) { vista.mostrarMensaje("advertencia", "Seleccione una jornada."); return; }

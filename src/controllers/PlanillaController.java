@@ -6,6 +6,7 @@ import dao.RepositorioPlanilla;
 import models.Empleado;
 import models.Planilla;
 import models.Planilla.EstadoPlanilla;
+import utils.SesionGlobal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class PlanillaController {
     }
 
     public String generarNuevaPlanilla(int mes, int anio) {
+        if (!SesionGlobal.puedeOperar("Planillas"))
+            return "No tiene permisos para realizar esta operación.";
         List<Empleado> activos = empleadoDAO.findAllActivos();
         if (activos.isEmpty()) return "No hay empleados activos para generar planilla.";
 
@@ -67,7 +70,13 @@ public class PlanillaController {
 
     public Optional<Planilla> buscarPlanilla(Integer id) { return planillaDAO.obtenerPorId(id); }
 
-    public boolean emitirPlanilla(Integer id) { return planillaDAO.actualizarEstado(id, EstadoPlanilla.EMITIDA); }
+    public boolean emitirPlanilla(Integer id) {
+        if (!SesionGlobal.puedeOperar("Planillas")) return false;
+        return planillaDAO.actualizarEstado(id, EstadoPlanilla.EMITIDA);
+    }
 
-    public boolean anularPlanilla(Integer id) { return planillaDAO.actualizarEstado(id, EstadoPlanilla.ANULADA); }
+    public boolean anularPlanilla(Integer id) {
+        if (!SesionGlobal.puedeOperar("Planillas")) return false;
+        return planillaDAO.actualizarEstado(id, EstadoPlanilla.ANULADA);
+    }
 }

@@ -25,12 +25,20 @@ public class UsuarioController {
     }
 
     public void crearUsuario(String username, String password, String rol, int idEmpleado) {
+        if (!SesionGlobal.puedeOperar("Usuarios")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         Usuario u = new Usuario(0, idEmpleado, username, password, rol);
         u.setActivo(true);
         repo.create(u);
     }
 
     public void editarUsuario(int id, String username, String rol, int idEmpleado, boolean activo) {
+        if (!SesionGlobal.puedeOperar("Usuarios")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         Usuario u = repo.findById(id);
         if (u == null) {
             vista.mostrarMensaje("error", "Usuario no encontrado.");
@@ -44,6 +52,10 @@ public class UsuarioController {
     }
 
     public void desactivarUsuario(int id) {
+        if (!SesionGlobal.puedeOperar("Usuarios")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         // Validar que no sea autodesactivación
         Usuario userActual = SesionGlobal.getUsuarioActivo();
         if (userActual != null && userActual.getIdUsuario() == id) {
@@ -54,6 +66,10 @@ public class UsuarioController {
     }
 
     public void reactivarUsuario(int id) {
+        if (!SesionGlobal.puedeOperar("Usuarios")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         repo.reactivarUsuario(id);
     }
 

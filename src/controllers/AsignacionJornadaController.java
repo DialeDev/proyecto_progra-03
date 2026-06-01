@@ -6,6 +6,7 @@ import dao.RepositorioJornada;
 import models.AsignacionJornada;
 import models.Empleado;
 import models.Jornada;
+import utils.SesionGlobal;
 import java.util.List;
 
 public class AsignacionJornadaController {
@@ -28,6 +29,8 @@ public class AsignacionJornadaController {
     }
 
     public String guardar(AsignacionJornada a) {
+        if (!SesionGlobal.puedeOperar("AsignacionJornada"))
+            return "No tiene permisos para realizar esta operación.";
         String error = validar(a, 0);
         if (error != null) return error;
         asignacionDAO.create(a);
@@ -35,6 +38,8 @@ public class AsignacionJornadaController {
     }
 
     public String actualizar(AsignacionJornada a) {
+        if (!SesionGlobal.puedeOperar("AsignacionJornada"))
+            return "No tiene permisos para realizar esta operación.";
         String error = validar(a, a.getIdAsignacion());
         if (error != null) return error;
         asignacionDAO.update(a);
@@ -42,6 +47,8 @@ public class AsignacionJornadaController {
     }
 
     public String eliminar(int id) {
+        if (!SesionGlobal.puedeOperar("AsignacionJornada"))
+            return "No tiene permisos para realizar esta operación.";
         asignacionDAO.delete(id);
         return "Asignacion eliminada correctamente.";
     }

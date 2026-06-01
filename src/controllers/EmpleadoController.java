@@ -4,6 +4,7 @@ import dao.RepositorioDepartamento;
 import dao.RepositorioEmpleado;
 import models.Departamento;
 import models.Empleado;
+import utils.SesionGlobal;
 import views.FrmGestionEmpleados;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -44,6 +45,10 @@ public class EmpleadoController {
     }
 
     public void guardarEmpleado() {
+        if (!SesionGlobal.puedeOperar("Empleados")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         String nombres = vista.getTxtNombres().getText().trim();
         String apellidos = vista.getTxtApellidos().getText().trim();
         String dui = vista.getTxtDui().getText().trim();
@@ -110,6 +115,10 @@ public class EmpleadoController {
     }
 
     public void desactivarEmpleado() {
+        if (!SesionGlobal.puedeOperar("Empleados")) {
+            vista.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         int fila = vista.getTblEmpleados().getSelectedRow();
         if (fila == -1) {
             vista.mostrarMensaje("advertencia", "Seleccione un empleado.");

@@ -4,6 +4,7 @@ import dao.RepositorioAsistencia;
 import dao.RepositorioEmpleado;
 import models.Empleado;
 import models.RegistroAsistencia;
+import utils.SesionGlobal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -29,6 +30,7 @@ public class AsistenciaController {
     }
 
     public RegistroAsistencia marcarEntrada(int idEmpleado) {
+        if (!SesionGlobal.puedeOperar("Marcacion")) return null;
         Optional<RegistroAsistencia> activa = asistenciaDAO.findEntradaActivaByEmpleado(idEmpleado);
         if (activa.isPresent()) return null;
         RegistroAsistencia nuevo = new RegistroAsistencia(0, idEmpleado, LocalDateTime.now());
@@ -38,6 +40,7 @@ public class AsistenciaController {
     }
 
     public boolean marcarSalida(int idEmpleado) {
+        if (!SesionGlobal.puedeOperar("Marcacion")) return false;
         Optional<RegistroAsistencia> opt = asistenciaDAO.findEntradaActivaByEmpleado(idEmpleado);
         if (opt.isEmpty()) return false;
         RegistroAsistencia activa = opt.get();
@@ -47,6 +50,7 @@ public class AsistenciaController {
     }
 
     public RegistroAsistencia marcarEntrada(int idEmpleado, LocalDateTime fechaHora) {
+        if (!SesionGlobal.puedeOperar("Marcacion")) return null;
         Optional<RegistroAsistencia> activa = asistenciaDAO.findEntradaActivaByEmpleado(idEmpleado);
         if (activa.isPresent()) return null;
         RegistroAsistencia nuevo = new RegistroAsistencia(0, idEmpleado, fechaHora);
@@ -56,6 +60,7 @@ public class AsistenciaController {
     }
 
     public boolean marcarSalida(int idEmpleado, LocalDateTime fechaHora) {
+        if (!SesionGlobal.puedeOperar("Marcacion")) return false;
         Optional<RegistroAsistencia> opt = asistenciaDAO.findEntradaActivaByEmpleado(idEmpleado);
         if (opt.isEmpty()) return false;
         RegistroAsistencia activa = opt.get();
@@ -87,6 +92,7 @@ public class AsistenciaController {
     }
 
     public void eliminarAsistencia(long idRegistro) {
+        if (!SesionGlobal.puedeOperar("Marcacion")) return;
         asistenciaDAO.eliminar(idRegistro);
     }
 

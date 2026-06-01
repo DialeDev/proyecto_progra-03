@@ -3,6 +3,8 @@ package views;
 import controllers.AsistenciaController;
 import models.Empleado;
 import models.RegistroAsistencia;
+import models.Usuario;
+import utils.SesionGlobal;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
@@ -74,12 +76,23 @@ public class FrmMarcacion extends javax.swing.JFrame {
 
     private void cargarEmpleados() {
         try {
-            empleadosActivos = asistenciaController.listarEmpleadosActivos();
+            Usuario usuario = SesionGlobal.getUsuarioActivo();
+            List<Empleado> todos = asistenciaController.listarEmpleadosActivos();
+
+            if (usuario != null && ("Admin".equals(usuario.getRol()) || "RRHH".equals(usuario.getRol()))) {
+                empleadosActivos = todos;
+            } else if (usuario != null) {
+                // Empleado role: only show the employee linked to this user
+                empleadosActivos = todos.stream()
+                    .filter(e -> e.getIdEmpleado() == usuario.getIdEmpleado())
+                    .collect(java.util.stream.Collectors.toList());
+            } else {
+                empleadosActivos = todos;
+            }
+
             modeloCombo = new DefaultComboBoxModel<>();
-            
             for (Empleado emp : empleadosActivos) {
-                String nombreCompleto = emp.getNombres() + " " + emp.getApellidos();
-                modeloCombo.addElement(nombreCompleto);
+                modeloCombo.addElement(emp.getNombres() + " " + emp.getApellidos());
             }
             
             cmbEmpleado.setModel(modeloCombo);
@@ -149,6 +162,10 @@ public class FrmMarcacion extends javax.swing.JFrame {
 
     private void marcarEntrada() {
         if (idEmpleadoVerificado == -1) { JOptionPane.showMessageDialog(this, "Verifique un empleado primero.", "Error", JOptionPane.WARNING_MESSAGE); return; }
+        if (!SesionGlobal.puedeOperar("Marcacion")) {
+            JOptionPane.showMessageDialog(this, "No tiene permisos para realizar esta operación.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         try {
             LocalDateTime fechaHora = getFechaHoraDesdeSpinners();
             if (fechaHora == null) return;
@@ -164,6 +181,10 @@ public class FrmMarcacion extends javax.swing.JFrame {
 
     private void marcarSalida() {
         if (idEmpleadoVerificado == -1) { JOptionPane.showMessageDialog(this, "Verifique un empleado primero.", "Error", JOptionPane.WARNING_MESSAGE); return; }
+        if (!SesionGlobal.puedeOperar("Marcacion")) {
+            JOptionPane.showMessageDialog(this, "No tiene permisos para realizar esta operación.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         try {
             LocalDateTime fechaHora = getFechaHoraDesdeSpinners();
             if (fechaHora == null) return;
@@ -197,6 +218,10 @@ public class FrmMarcacion extends javax.swing.JFrame {
     }
 
     private void eliminarMarcacionSeleccionada() {
+        if (!SesionGlobal.puedeOperar("Marcacion")) {
+            JOptionPane.showMessageDialog(this, "No tiene permisos para realizar esta operación.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         int idx = jList1.getSelectedIndex();
         if (idx < 0 || idx >= asistenciasActuales.size()) {
             JOptionPane.showMessageDialog(this, "Seleccione una marcacion de la lista.", "Error", JOptionPane.WARNING_MESSAGE);
@@ -272,15 +297,16 @@ public class FrmMarcacion extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblIdEmpleado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnVerificar))
+                        .addComponent(cmbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblNombreEmpleado)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -295,17 +321,18 @@ public class FrmMarcacion extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIdEmpleado)
-                    .addComponent(btnVerificar)
                     .addComponent(cmbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                .addGap(22, 22, 22)
                 .addComponent(lblNombreEmpleado)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)

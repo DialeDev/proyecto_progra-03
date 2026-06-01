@@ -25,6 +25,7 @@ public class DashboardController {
         if (user == null) return;
 
         permisoService.cargarPermisos(user);
+        SesionGlobal.setPermisoService(permisoService);
 
         // Set button visibility based on PuedeVer permission
         vista.getBtnEmpleados().setVisible(permisoService.tieneAcceso(user, "Empleados", "ver"));

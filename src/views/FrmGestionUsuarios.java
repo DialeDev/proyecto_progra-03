@@ -47,7 +47,7 @@ public class FrmGestionUsuarios extends javax.swing.JFrame {
         btnDesactivar = new javax.swing.JButton();
         btnReactivar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Usuarios");
         setResizable(false);
 

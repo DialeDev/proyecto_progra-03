@@ -2,6 +2,7 @@ package controllers;
 
 import dao.RepositorioPermiso;
 import models.Permiso;
+import utils.SesionGlobal;
 import views.FrmGestionPermisos;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,8 @@ public class PermisoController {
     }
 
     public String guardar(Permiso p) {
+        if (!SesionGlobal.puedeOperar("Permisos"))
+            return "No tiene permisos para realizar esta operación.";
         if (p.getRol() == null || p.getRol().trim().isEmpty())
             return "El rol es obligatorio.";
         if (p.getModulo() == null || p.getModulo().trim().isEmpty())
@@ -39,6 +42,8 @@ public class PermisoController {
     }
 
     public String actualizar(Permiso p) {
+        if (!SesionGlobal.puedeOperar("Permisos"))
+            return "No tiene permisos para realizar esta operación.";
         if (p.getRol() == null || p.getRol().trim().isEmpty())
             return "El rol es obligatorio.";
         if (p.getModulo() == null || p.getModulo().trim().isEmpty())
@@ -52,6 +57,8 @@ public class PermisoController {
     }
 
     public String eliminar(int id) {
+        if (!SesionGlobal.puedeOperar("Permisos"))
+            return "No tiene permisos para realizar esta operación.";
         try {
             permisoDAO.delete(id);
             return "Permiso eliminado correctamente.";

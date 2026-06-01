@@ -2,6 +2,7 @@ package controllers;
 
 import dao.RepositorioContratacion;
 import models.Contratacion;
+import utils.SesionGlobal;
 import javax.swing.table.DefaultTableModel;
 import views.FrmRegistroContratos;
 import views.FrmGestionContratos;
@@ -34,6 +35,10 @@ public class RegistroContratoController implements ActionListener {
     }
 
     private void guardarContratacion() {
+        if (!SesionGlobal.puedeOperar("Contratos")) {
+            vistaRegistro.mostrarMensaje("error", "No tiene permisos para realizar esta operación.");
+            return;
+        }
         int idEmpleado = vistaRegistro.getEmpleadoSeleccionadoId();
         int idContrato = vistaRegistro.getContratoSeleccionadoId();
         if (idEmpleado <= 0 || idContrato <= 0) {

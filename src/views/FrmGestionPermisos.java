@@ -50,7 +50,7 @@ public class FrmGestionPermisos extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         cmbDepartamento = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion de permisos");
         setResizable(false);
 
