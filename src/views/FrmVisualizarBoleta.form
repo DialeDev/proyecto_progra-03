@@ -29,12 +29,7 @@
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelTitulo" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabelEmpleado" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -50,8 +45,8 @@
                               <Component id="txtHorasOrd" min="-2" pref="100" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Component id="jLabelHorasExtra" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Component id="txtHorasExtra" min="-2" pref="100" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtHorasExtra" min="-2" pref="160" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabelTotalIngresos" min="-2" max="-2" attributes="0"/>
@@ -66,12 +61,17 @@
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Component id="txtLiquidoPagar" min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPaneDetalles" alignment="0" min="-2" pref="534" max="-2" attributes="0"/>
+                          <Component id="jScrollPaneDetalles" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace pref="23" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnCerrar" min="-2" pref="144" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -79,8 +79,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-              <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelTitulo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCerrar" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabelEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -105,9 +108,7 @@
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Component id="jScrollPaneDetalles" min="-2" pref="180" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="15" max="32767" attributes="0"/>
+              <EmptySpace pref="48" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

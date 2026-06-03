@@ -186,14 +186,15 @@ public final class UIStyles {
             String t = text.toLowerCase().trim();
             if (t.contains("eliminar") || t.contains("borrar") || t.contains("cerrar sesión")
                     || t.contains("salir") || t.contains("cancelar")
-                    || t.contains("desactivar")) {
+                    || t.contains("desactivar") || t.contains("anular")) {
                 btnColor = BTN_DANGER;
                 btnHover = darken(BTN_DANGER);
-            } else if (t.contains("guardar") || t.contains("registrar") || t.contains("crear")) {
+            } else if (t.contains("guardar") || t.contains("registrar") || t.contains("crear")
+                    || t.contains("emitir")) {
                 btnColor = BTN_SUCCESS;
                 btnHover = darken(BTN_SUCCESS);
             } else if (t.contains("limpiar") || t.contains("buscar") || t.contains("volver")
-                    || t.contains("reactivar")) {
+                    || t.contains("reactivar") || t.contains("refrescar")) {
                 btnColor = BTN_SECONDARY;
                 btnHover = BTN_SECONDARY_DK;
             } else {

@@ -190,6 +190,8 @@
                               <Component id="btnCargarBoletas" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Component id="btnExportarPlanilla" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnVerBoleta" min="-2" pref="100" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPanePlanilla" alignment="0" min="-2" pref="680" max="-2" attributes="0"/>
                       </Group>
@@ -209,6 +211,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnCargarBoletas" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnExportarPlanilla" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnVerBoleta" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Component id="jScrollPanePlanilla" min="-2" pref="350" max="-2" attributes="0"/>
@@ -258,6 +261,14 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="btnVerBoleta">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver Boleta"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerBoletaActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>

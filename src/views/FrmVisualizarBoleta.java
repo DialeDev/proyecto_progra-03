@@ -1,5 +1,6 @@
 package views;
 
+import dao.RepositorioEmpleado;
 import models.BoletaDetalle;
 import models.BoletaPago;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +19,9 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
         modeloDetalles = new DefaultTableModel(new String[]{"Concepto", "Tipo", "Monto"}, 0);
         jTableDetalles.setModel(modeloDetalles);
 
-        txtEmpleado.setText("ID: " + boleta.idEmpleado());
+        var emp = new RepositorioEmpleado().findById(boleta.idEmpleado());
+        txtEmpleado.setText(emp.map(e -> e.getNombres() + " " + e.getApellidos())
+            .orElse("ID: " + boleta.idEmpleado()));
         txtSueldoBase.setText(String.format("$%.2f", boleta.sueldoBaseAplicado()));
         txtHorasOrd.setText(String.format("%.2f", boleta.horasOrdinariasCalculadas()));
         txtHorasExtra.setText(String.format("D: %.2f / N: %.2f",
@@ -94,7 +97,7 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
 
         txtLiquidoPagar.setEditable(false);
         txtLiquidoPagar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txtLiquidoPagar.setForeground(java.awt.Color.RED);
+        txtLiquidoPagar.setForeground(new java.awt.Color(0, 0, 255));
 
         jTableDetalles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -119,11 +122,7 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCerrar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelTitulo)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelEmpleado)
                                 .addGap(6, 6, 6)
@@ -138,8 +137,8 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
                                 .addComponent(txtHorasOrd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabelHorasExtra)
-                                .addGap(6, 6, 6)
-                                .addComponent(txtHorasExtra, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtHorasExtra, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelTotalIngresos)
                                 .addGap(6, 6, 6)
@@ -152,16 +151,22 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
                                 .addComponent(jLabelLiquido)
                                 .addGap(6, 6, 6)
                                 .addComponent(txtLiquidoPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPaneDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(23, 23, 23))
+                            .addComponent(jScrollPaneDetalles))
+                        .addContainerGap(23, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelTitulo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabelTitulo)
-                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelTitulo)
+                    .addComponent(btnCerrar))
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelEmpleado)
                     .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -183,9 +188,7 @@ public class FrmVisualizarBoleta extends javax.swing.JFrame {
                     .addComponent(txtLiquidoPagar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPaneDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btnCerrar)
-                .addGap(15, 15, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();

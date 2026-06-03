@@ -12,7 +12,8 @@ public class RepositorioPlanilla {
     private static final String SQL_SELECT_ALL = "SELECT * FROM Planilla ORDER BY anio DESC, mes DESC";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM Planilla WHERE idPlanilla = ?";
     private static final String SQL_UPDATE_ESTADO = "UPDATE Planilla SET estado = ? WHERE idPlanilla = ?";
-    private static final String SQL_EXISTS_MES_ANIO = "SELECT COUNT(*) FROM Planilla WHERE mes = ? AND anio = ?";
+    private static final String SQL_SELECT_EMITIDAS = "SELECT * FROM Planilla WHERE estado = 'Emitida' ORDER BY anio DESC, mes DESC";
+    private static final String SQL_EXISTS_MES_ANIO = "SELECT COUNT(*) FROM Planilla WHERE mes = ? AND anio = ? AND estado != 'Anulada'";
 
     public int crear(Planilla planilla) {
         try (Connection conn = Conexion.getConnection()) {
@@ -41,6 +42,18 @@ public class RepositorioPlanilla {
 
     public List<Planilla> findAll() {
         return obtenerTodas();
+    }
+
+    public List<Planilla> findAllEmitidas() {
+        List<Planilla> lista = new ArrayList<>();
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_EMITIDAS);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) lista.add(mapResultSet(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar planillas emitidas: " + e.getMessage(), e);
+        }
+        return lista;
     }
 
     public List<Planilla> obtenerTodas() {

@@ -35,7 +35,7 @@ public class ReporteController {
     }
 
     public List<Planilla> listarPlanillas() {
-        return planillaDAO.findAll();
+        return planillaDAO.findAllEmitidas();
     }
 
     public List<RegistroAsistencia> reporteAsistencia(int idEmpleado, LocalDate desde, LocalDate hasta) {
@@ -67,12 +67,20 @@ public class ReporteController {
 
     public List<Object[]> boletasPorPlanillaFormateado(int idPlanilla) {
         List<BoletaPago> boletas = boletasPorPlanilla(idPlanilla);
+        // Resolver el período real (mes/año) desde la planilla
+        String periodo = planillaDAO.obtenerPorId(idPlanilla)
+            .map(p -> {
+                String[] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio",
+                    "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
+                return meses[p.getMes() - 1] + " " + p.getAnio();
+            })
+            .orElse("?");
         List<Object[]> filas = new ArrayList<>();
         for (BoletaPago b : boletas) {
             String empleado = empleadoDAO.findById(b.idEmpleado())
                     .map(e -> e.getNombres() + " " + e.getApellidos()).orElse("?");
             filas.add(new Object[]{
-                b.idBoleta(), empleado, String.valueOf(b.idPlanilla()),
+                b.idBoleta(), empleado, periodo,
                 String.format("$%.2f", b.totalIngresos()),
                 String.format("$%.2f", b.totalDeducciones()),
                 String.format("$%.2f", b.liquidoAPagar())

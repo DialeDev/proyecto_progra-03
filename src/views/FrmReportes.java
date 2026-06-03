@@ -1,8 +1,10 @@
 package views;
 
 import controllers.ReporteController;
+import models.BoletaPago;
 import models.Planilla;
 import utils.ExportadorCSV;
+import views.FrmVisualizarBoleta;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -63,6 +65,7 @@ public class FrmReportes extends javax.swing.JFrame {
         btnExportarAsistencia.addActionListener(e -> ExportadorCSV.exportarJTable(jTableAsistencia, "asistencia", this));
         btnCargarBoletas.addActionListener(e -> cargarReporteBoletas());
         btnExportarPlanilla.addActionListener(e -> ExportadorCSV.exportarJTable(jTableBoletas, "planilla", this));
+
     }
 
     private void generarReporteAsistencia() {
@@ -103,6 +106,33 @@ public class FrmReportes extends javax.swing.JFrame {
         }
     }
 
+    private void verBoletaSeleccionada() {
+        int fila = jTableBoletas.getSelectedRow();
+        if (fila < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Seleccione una boleta de la tabla.", "Sin selección",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            Long idBoleta = (Long) modeloBoletas.getValueAt(fila, 0);
+            BoletaPago boleta = controller.boletaCompleta(idBoleta);
+            if (boleta == null) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "No se encontró la boleta.", "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            FrmVisualizarBoleta frm = new FrmVisualizarBoleta(boleta);
+            frm.setLocationRelativeTo(this);
+            frm.setVisible(true);
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Error al abrir boleta: " + e.getMessage(), "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -126,6 +156,7 @@ public class FrmReportes extends javax.swing.JFrame {
         btnExportarPlanilla = new javax.swing.JButton();
         jScrollPanePlanilla = new javax.swing.JScrollPane();
         jTableBoletas = new javax.swing.JTable();
+        btnVerBoleta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Reportes");
@@ -220,6 +251,9 @@ public class FrmReportes extends javax.swing.JFrame {
         ));
         jScrollPanePlanilla.setViewportView(jTableBoletas);
 
+        btnVerBoleta.setText("Ver Boleta");
+        btnVerBoleta.addActionListener(this::btnVerBoletaActionPerformed);
+
         javax.swing.GroupLayout tabPlanillaLayout = new javax.swing.GroupLayout(tabPlanilla);
         tabPlanilla.setLayout(tabPlanillaLayout);
         tabPlanillaLayout.setHorizontalGroup(
@@ -234,7 +268,9 @@ public class FrmReportes extends javax.swing.JFrame {
                     .addGroup(tabPlanillaLayout.createSequentialGroup()
                         .addComponent(btnCargarBoletas)
                         .addGap(18, 18, 18)
-                        .addComponent(btnExportarPlanilla))
+                        .addComponent(btnExportarPlanilla)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVerBoleta, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPanePlanilla, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -248,7 +284,8 @@ public class FrmReportes extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(tabPlanillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCargarBoletas)
-                    .addComponent(btnExportarPlanilla))
+                    .addComponent(btnExportarPlanilla)
+                    .addComponent(btnVerBoleta))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPanePlanilla, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, Short.MAX_VALUE))
@@ -275,6 +312,10 @@ public class FrmReportes extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnVerBoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerBoletaActionPerformed
+        verBoletaSeleccionada();
+    }//GEN-LAST:event_btnVerBoletaActionPerformed
     // </editor-fold>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -282,6 +323,7 @@ public class FrmReportes extends javax.swing.JFrame {
     private javax.swing.JButton btnExportarAsistencia;
     private javax.swing.JButton btnExportarPlanilla;
     private javax.swing.JButton btnGenerarAsistencia;
+    private javax.swing.JButton btnVerBoleta;
     private javax.swing.JComboBox cmbEmpleadoAsist;
     private javax.swing.JComboBox jComboBoxPlanilla;
     private javax.swing.JLabel jLabelPlanilla;

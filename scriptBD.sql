@@ -464,10 +464,59 @@ BEGIN
 END
 GO
 
+-- ========================================================================
+-- 9. TEST DATA — MAYO 2026 (flujo completo con horas extra)
+-- ========================================================================
+
+-- Asistencia Mayo 2026
+-- María (RRHH, Matutina 07-16): día normal + día con extra diurna
+-- Carlos (Ingeniería, Vespertina 13-22): día con extra diurna + nocturna
+-- Pedro (Admin, Matutina 07-16): días normales
+IF NOT EXISTS (SELECT 1 FROM dbo.RegistroAsistencia WHERE YEAR(MarcaEntrada) = 2026 AND MONTH(MarcaEntrada) = 5)
+BEGIN
+    DECLARE @IdM INT, @IdC INT, @IdP INT;
+    SELECT @IdM = IdEmpleado FROM dbo.Empleado WHERE DUI = '12345678-9';
+    SELECT @IdC = IdEmpleado FROM dbo.Empleado WHERE DUI = '87654321-0';
+    SELECT @IdP = IdEmpleado FROM dbo.Empleado WHERE DUI = '55555555-5';
+
+    -- María: día normal
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdM, '2026-05-04 07:00:00', '2026-05-04 16:00:00', 0);
+    -- María: entra temprano + sale tarde → 1h extra diurna
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdM, '2026-05-05 06:30:00', '2026-05-05 16:30:00', 0);
+    -- María: día normal
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdM, '2026-05-06 07:00:00', '2026-05-06 16:00:00', 0);
+
+    -- Carlos: entra antes (12:00 = extra diurna) + sale después (23:00 = extra nocturna)
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdC, '2026-05-04 12:00:00', '2026-05-04 23:00:00', 0);
+    -- Carlos: día normal
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdC, '2026-05-05 13:00:00', '2026-05-05 22:00:00', 0);
+    -- Carlos: sale 30min después → extra nocturna
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdC, '2026-05-06 13:00:00', '2026-05-06 22:30:00', 0);
+
+    -- Pedro: días normales
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdP, '2026-05-04 07:00:00', '2026-05-04 16:00:00', 0);
+    INSERT INTO dbo.RegistroAsistencia (IdEmpleado, MarcaEntrada, MarcaSalida, FaltaJustificada)
+        VALUES (@IdP, '2026-05-05 08:00:00', '2026-05-05 16:00:00', 0);
+END
+GO
+
 PRINT '==============================================';
 PRINT '  BASE DE DATOS CONFIGURADA CORRECTAMENTE   ';
 PRINT '==============================================';
 PRINT '  Usuario: admin                              ';
 PRINT '  Password: admin123                          ';
+PRINT '==============================================';
+
+PRINT '--- Datos de prueba Mayo 2026 ---';
+PRINT '  María García (RRHH, Matutina): 3 días, 1h extra diurna';
+PRINT '  Carlos Martínez (Ingeniería, Vespertina): 3 días, 1h extra diurna + 1.5h extra nocturna';
+PRINT '  Pedro López (Admin, Matutina): 2 días normales';
 PRINT '==============================================';
 GO
